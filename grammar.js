@@ -174,7 +174,7 @@ module.exports = grammar({
         commaSeparated($._string),
         $.word_list_qw,
       ),
-      $.semi_colon,
+      ';',
     ),
 
     use_constant_statement: $ => seq(
@@ -186,7 +186,7 @@ module.exports = grammar({
         ),
         field('value', $.hash_ref),
       ),
-      $.semi_colon,
+      ';',
     ),
 
     special_block: $ => seq(
@@ -200,12 +200,12 @@ module.exports = grammar({
     package_statement: $ => seq(
       'package',
       $.package_name,
-      $.semi_colon
+      ';'
     ),
 
     ellipsis_statement: $ => seq(
       '...',
-      optional($.semi_colon),
+      optional(';'),
     ),
 
     use_no_version: $ => seq(
@@ -214,7 +214,7 @@ module.exports = grammar({
         field('no', 'no'),
       ),
       field('version', $.version),
-      $.semi_colon,
+      ';',
     ),
     
     use_no_feature_statement: $ => seq(
@@ -224,7 +224,7 @@ module.exports = grammar({
       ),
       'feature',
       $._experimental_feature,
-      $.semi_colon,
+      ';',
     ),
 
     _experimental_feature: $ => choice(
@@ -271,7 +271,7 @@ module.exports = grammar({
 
     _expression_statement: $ => seq(
       $._expression,
-      $.semi_colon,
+      ';',
     ),
 
     use_no_statement: $ => seq(
@@ -282,7 +282,7 @@ module.exports = grammar({
       choice($.package_name, $.module_name),
       optional($.version),
       optional(choice($._list, $._string)),
-      $.semi_colon,
+      ';',
     ),
 
     use_no_if_statement: $ => seq(
@@ -298,7 +298,7 @@ module.exports = grammar({
       optional($.version),
       optional('=>'),
       optional(choice($._list, $._string)),
-      $.semi_colon,
+      ';',
     ),
 
     // Module->import( LIST );
@@ -307,7 +307,7 @@ module.exports = grammar({
       '->',
       'import',
       $._list,
-      $.semi_colon,
+      ';',
     ),
 
     use_no_subs_statement: $ => seq(
@@ -317,18 +317,18 @@ module.exports = grammar({
       ),
       'subs',
       $._list,
-      $.semi_colon,
+      ';',
     ),
 
     require_statement: $ => seq(
       'require',
       $.package_name,
-      $.semi_colon,
+      ';',
     ),
 
     if_simple_statement: $ => prec.right(seq(
       $._if_simple,
-      $.semi_colon,
+      ';',
     )),
     _if_simple: $ => prec.right(seq(
       'if',
@@ -337,32 +337,32 @@ module.exports = grammar({
     unless_simple_statement: $ => prec.right(seq(
       'unless',
       field('condition', choice($.parenthesized_expression, $._expression)),
-      $.semi_colon,
+      ';',
     )),
     while_simple_statement: $ => prec.right(seq(
       'while',
       field('condition', choice($.parenthesized_expression, $._expression)),
-      $.semi_colon,
+      ';',
     )),
     until_simple_statement: $ => prec.right(seq(
       'until',
       field('condition', choice($.parenthesized_expression, $._expression)),
-      $.semi_colon,
+      ';',
     )),
     for_simple_statement: $ => prec.right(seq(
       'for',
       field('list', with_or_without_brackets($._expression)),
-      $.semi_colon,
+      ';',
     )),
     foreach_simple_statement: $ => prec.right(seq(
       'foreach',
       field('list', with_or_without_brackets($._expression)),
-      $.semi_colon,
+      ';',
     )),
     when_simple_statement: $ => prec.right(seq(
       'when',
       field('condition', choice($.parenthesized_expression, $._expression)),
-      $.semi_colon,
+      ';',
     )),
 
     // TODO: should be a boolean expression and not the current one?
@@ -470,9 +470,9 @@ module.exports = grammar({
     _for_parenthesize: $ => seq(
       '(',
       optional(field('initializer', $._expression)),
-      $.semi_colon,
+      ';',
       optional(field('condition', $._expression)),
-      $.semi_colon,
+      ';',
       optional(field('incrementor', $._expression)),
       ')'
     ),
@@ -507,7 +507,7 @@ module.exports = grammar({
       // or single declaration without brackets
       choice($.multi_var_declaration, $.single_var_declaration, $.type_glob_declaration),
       optional($._initializer),
-      $.semi_colon,
+      ';',
     ),
 
     multi_var_declaration: $ => seq(
@@ -549,7 +549,7 @@ module.exports = grammar({
           optional($.function_prototype),
           optional($.function_attribute),
           optional($.function_signature),
-          $.semi_colon,
+          ';',
         ),
         // and here is the function definition WITHOUT signatures
         seq(
@@ -627,7 +627,7 @@ module.exports = grammar({
 
     _block_statements: $ => choice(
       $._statement,
-      seq($.return_expression, $.semi_colon),
+      seq($.return_expression, ';'),
       $.loop_control_statement,
     ),
 
@@ -636,7 +636,7 @@ module.exports = grammar({
       optional(field('label', $.identifier)),
       choice(
         $._statement_modifiers,
-        $.semi_colon
+        ';'
       ),
     ),
 
@@ -648,11 +648,11 @@ module.exports = grammar({
         '{',
           repeat(choice(
             $._statement,
-            seq($.return_expression, $.semi_colon),
+            seq($.return_expression, ';'),
           )),
         '}'
       )),
-      $.semi_colon,
+      ';',
     )),
 
     parenthesized_expression: $ => seq(
@@ -1348,8 +1348,6 @@ module.exports = grammar({
       seq('\'', /.*pm/, '\''), 
       seq('\"', /.*pm/, '\"'), 
      ),
-
-    semi_colon: $ => ';',
 
     string_single_quoted: $ => prec(PRECEDENCE.STRING, seq(
       "'",

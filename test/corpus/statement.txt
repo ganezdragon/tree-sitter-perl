@@ -23,5 +23,5 @@ use constant SOUL_MATE => 'SCORPIO';
 ---
 
 (source_file
-  (use_constant_statement (identifier) (string_single_quoted) (semi_colon))
+  (use_constant_statement (identifier) (string_single_quoted) )
 ) 
