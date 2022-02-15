@@ -10065,7 +10065,18 @@
   {
     "type": "package_statement",
     "named": true,
-    "fields": {},
+    "fields": {
+      "version": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "version",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,

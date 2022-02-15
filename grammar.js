@@ -215,6 +215,7 @@ module.exports = grammar({
     package_statement: $ => seq(
       'package',
       $.package_name,
+      optional(field('version', $.version)),
       $.semi_colon
     ),
 
