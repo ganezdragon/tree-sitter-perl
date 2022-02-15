@@ -216,7 +216,10 @@ module.exports = grammar({
       'package',
       $.package_name,
       optional(field('version', $.version)),
-      $.semi_colon
+      choice(
+        $.semi_colon,
+        field('body', $.block)
+      )
     ),
 
     ellipsis_statement: $ => seq(

@@ -10066,6 +10066,16 @@
     "type": "package_statement",
     "named": true,
     "fields": {
+      "body": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "block",
+            "named": true
+          }
+        ]
+      },
       "version": {
         "multiple": false,
         "required": false,
