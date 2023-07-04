@@ -1,7 +1,9 @@
 # tree-sitter-perl
-a perl parser for javascript
+
+Perl grammar for tree-sitter
 
 ## To generate the parser output
+
 `npm run generate`
 
 ## Tests
