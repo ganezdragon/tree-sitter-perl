@@ -1,11 +1,6 @@
-# node stuffs
-node_modules/
-.npmrc
-
-# some build stuff
-9.3.5/
-bin/
-build/
-
-# swift bindings
-.build/
+Cargo.lock
+package-lock.json
+/build
+/node_modules
+/examples/*/
+/target
