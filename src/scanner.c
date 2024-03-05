@@ -193,7 +193,7 @@ static void enqueueBoolQueue(BoolQueue *queue, bool item) {
 // It changes front and size
 static bool dequeueBoolQueue(BoolQueue *queue) {
   if (isBoolQueueEmpty(queue))
-    return NULL;
+    return false;
   bool item = queue->data[queue->front];
   queue->front = (queue->front + 1) % queue->capacity;
   queue->size = queue->size - 1;
@@ -244,8 +244,6 @@ static void advance(TSLexer *lexer) {
 static void skip(TSLexer *lexer) {
   lexer->advance(lexer, true);
 }
-
-int iswspace(wint_t wc);
 
 // runs over spaces like a champ
 static void run_over_spaces(TSLexer *lexer) {
