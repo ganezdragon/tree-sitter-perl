@@ -11,7 +11,7 @@ qq {hello $meow print("dsfsdf) %hash};
     (start_delimiter)
       (interpolation (scalar_variable))
     (end_delimiter))
-  (semi_colon)
+  
 )
 
 =================================================
@@ -23,7 +23,7 @@ qq /im inside another delimiter/;
 ---
 
 (source_file
-  (string_qq_quoted (start_delimiter) (end_delimiter)) (semi_colon)
+  (string_qq_quoted (start_delimiter) (end_delimiter)) 
 )
 
 =================================================
@@ -35,7 +35,7 @@ qq 'this should $interpolate, yes';
 ---
 
 (source_file
-  (string_qq_quoted (start_delimiter) (interpolation (scalar_variable)) (end_delimiter)) (semi_colon)
+  (string_qq_quoted (start_delimiter) (interpolation (scalar_variable)) (end_delimiter)) 
 )
 
 =================================================
@@ -47,7 +47,7 @@ my $string = q{im a non interpolated string};
 ---
 
 (source_file
-  (variable_declaration (scope) (scalar_variable) (string_q_quoted)) (semi_colon)
+  (binary_expression (variable_declaration (scope) (scalar_variable)) (string_q_quoted)) 
 )
 
 =================================================
@@ -59,7 +59,7 @@ my $string = qx{im a non interpolated string};
 ---
 
 (source_file
-  (variable_declaration (scope) (scalar_variable) (command_qx_quoted (start_delimiter) (end_delimiter))) (semi_colon)
+  (binary_expression (variable_declaration (scope) (scalar_variable)) (command_qx_quoted (start_delimiter) (end_delimiter))) 
 )
 
 =================================================
@@ -71,7 +71,7 @@ backtick_quoted
 ---
 
 (source_file
-  (backtick_quoted) (semi_colon)
+  (backtick_quoted) 
 )
 
 =================================================
@@ -87,9 +87,9 @@ my @array = qw /
 ---
 
 (source_file
-  (variable_declaration
-    (scope) (array_variable) (word_list_qw (start_delimiter_qw) (list_item) (list_item) (list_item) (end_delimiter_qw))
-  ) (semi_colon)
+  (binary_expression (variable_declaration
+    (scope) (array_variable)) (word_list_qw (start_delimiter_qw) (list_item) (list_item) (list_item) (end_delimiter_qw))
+  ) 
 )
 
 =================================================
@@ -103,7 +103,7 @@ $string =~ /a b c/msixpodualng;
 (source_file
   (binary_expression
     (scalar_variable) (pattern_matcher (regex_pattern) (regex_option))
-  ) (semi_colon)
+  ) 
 )
 
 =================================================
@@ -117,7 +117,7 @@ $string =~ m/Simple/is;
 (source_file
   (binary_expression
     (scalar_variable) (patter_matcher_m (start_delimiter) (end_delimiter) (regex_option))
-  ) (semi_colon)
+  ) 
 )
 
 =================================================
@@ -131,7 +131,7 @@ $string =~ m/abc/g;
 (source_file
   (binary_expression
     (scalar_variable) (patter_matcher_m (start_delimiter) (end_delimiter) (regex_option))
-  ) (semi_colon)
+  ) 
 )
 
 
@@ -146,7 +146,7 @@ if ($x =~ m/u$/) {
 ---
 
 (source_file
-  (variable_declaration (scope) (scalar_variable) (string_single_quoted)) (semi_colon)
+  (binary_expression (variable_declaration (scope) (scalar_variable)) (string_single_quoted)) 
   (if_statement
     (parenthesized_expression (binary_expression (scalar_variable) (patter_matcher_m (start_delimiter) (end_delimiter))))
       (block)
@@ -162,9 +162,9 @@ my $rex = qr/my.STRING/is;
 ---
 
 (source_file
-  (variable_declaration
-    (scope) (scalar_variable) (regex_pattern_qr (start_delimiter) (end_delimiter) (regex_option))
-    ) (semi_colon)
+  (binary_expression (variable_declaration
+    (scope) (scalar_variable)) (regex_pattern_qr (start_delimiter) (end_delimiter) (regex_option))
+    ) 
 )
 
 =================================================
@@ -178,7 +178,7 @@ $subs =~ s/my.STRING/foo/is;
 (source_file
   (binary_expression
     (scalar_variable)
-    (substitution_pattern_s (start_delimiter) (separator_delimiter) (end_delimiter) (regex_option_for_substitution))) (semi_colon)
+    (substitution_pattern_s (start_delimiter) (separator_delimiter) (end_delimiter) (regex_option_for_substitution))) 
 )
 
 =================================================
@@ -192,7 +192,7 @@ $subs =~ s/search//is;
 (source_file
   (binary_expression
     (scalar_variable)
-    (substitution_pattern_s (start_delimiter) (separator_delimiter) (end_delimiter) (regex_option_for_substitution))) (semi_colon)
+    (substitution_pattern_s (start_delimiter) (separator_delimiter) (end_delimiter) (regex_option_for_substitution))) 
 )
 
 =================================================
@@ -207,4 +207,4 @@ my $subs =~ tr{bar}{foo}cs;
   (binary_expression
     (variable_declaration (scope) (scalar_variable))
     (transliteration_tr_or_y (start_delimiter) (separator_delimiter) (end_delimiter) (regex_option_for_transliteration)))
-    (semi_colon))
+    )

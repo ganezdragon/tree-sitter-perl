@@ -23,7 +23,7 @@ hello();
 
 (source_file
   (call_expression
-    function_name: (identifier) args: (empty_parenthesized_argument)) (semi_colon)
+    function_name: (identifier) args: (parenthesized_argument)) 
 )
 
 =================================================
@@ -35,9 +35,9 @@ my $result = GetSalesforceTemplateInfo($dbh)->{$args->{ALOHA}}->{'NAMASTE'};
 ---
 
 (source_file
-      (variable_declaration
+      (binary_expression (variable_declaration
         (scope)
-        (scalar_variable)
+        (scalar_variable))
         (hash_access_variable
           (hash_access_variable
             (call_expression
@@ -49,7 +49,7 @@ my $result = GetSalesforceTemplateInfo($dbh)->{$args->{ALOHA}}->{'NAMASTE'};
               (scalar_variable)
               (bareword)))
           (string_single_quoted)))
-      (semi_colon))
+      )
 
 =================================================
 Subroutine calling another subroutine without params
@@ -61,7 +61,7 @@ print Dumper %{$args};
 
 (source_file
   (call_expression (identifier) (arguments (argument
-    (call_expression (identifier) (arguments (argument (hash_dereference (scalar_variable)))))))) (semi_colon)
+    (call_expression (identifier) (arguments (argument (hash_dereference (scalar_variable)))))))) 
 )
 
 =================================================

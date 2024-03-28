@@ -7,7 +7,7 @@ my $a;
 ---
 
 (source_file
-  (variable_declaration (scope) (scalar_variable)) (semi_colon)
+  (variable_declaration (scope) (scalar_variable)) 
 )
 
 
@@ -20,7 +20,7 @@ my $a = 3;
 ---
 
 (source_file
-  (variable_declaration (scope) (scalar_variable) (integer)) (semi_colon)
+  (binary_expression (variable_declaration (scope) (scalar_variable)) (integer)) 
 )
 
 =================================================
@@ -32,9 +32,9 @@ my ($self, $args) = @_;
 ---
 
 (source_file
-  (variable_declaration (scope)
+  (binary_expression (variable_declaration (scope)
     (multi_var_declaration
-      (scalar_variable) (scalar_variable)) (array_variable)) (semi_colon)
+      (scalar_variable) (scalar_variable))) (array_variable)) 
 )
 
 =================================================
@@ -46,7 +46,7 @@ my @array;
 ---
 
 (source_file
-  (variable_declaration (scope) (array_variable)) (semi_colon)
+  (variable_declaration (scope) (array_variable)) 
 )
 
 =================================================
@@ -58,7 +58,7 @@ my @array = ('meow', 'woof', 'burp');
 ---
 
 (source_file
-  (variable_declaration (scope) (array_variable) (array (string_single_quoted) (string_single_quoted) (string_single_quoted))) (semi_colon)
+  (binary_expression (variable_declaration (scope) (array_variable)) (array (string_single_quoted) (string_single_quoted) (string_single_quoted))) 
 )
 
 =================================================
@@ -74,7 +74,7 @@ my $hash = {
 ---
 
 (source_file
-  (variable_declaration (scope) (scalar_variable)
+  (binary_expression (variable_declaration (scope) (scalar_variable))
     (hash_ref
       (key_value_pair
         (string_single_quoted) (hash_arrow_operator) (string_single_quoted)
@@ -85,7 +85,7 @@ my $hash = {
       (key_value_pair
         (bareword) (hash_arrow_operator) (string_single_quoted)))
       )
-    (semi_colon))
+    )
 
 =================================================
 use statement
@@ -96,7 +96,7 @@ use Data::Dumper;
 ---
 
 (source_file
-  (use_no_statement (package_name (identifier) (identifier)) (semi_colon))
+  (use_no_statement (package_name (identifier) (identifier)) )
 )
 
 =================================================
@@ -108,7 +108,7 @@ no strict 'refs';
 ---
 
 (source_file
-  (use_no_statement (package_name (identifier)) (string_single_quoted) (semi_colon))
+  (use_no_statement (package_name (identifier)) (string_single_quoted) )
 )
 
 =================================================
@@ -120,7 +120,7 @@ require Data::Dumper;
 ---
 
 (source_file
-  (require_statement (package_name (identifier) (identifier)) (semi_colon))
+  (require_statement (package_name (identifier) (identifier)) )
 )
 
 =================================================
@@ -144,7 +144,7 @@ $#array;
 ---
 
 (source_file
-  (scalar_variable) (semi_colon)
+  (scalar_variable) 
 )
 
 =================================================
@@ -156,7 +156,7 @@ my $string = 'I have # in me';
 ---
 
 (source_file
-  (variable_declaration (scope) (scalar_variable) (string_single_quoted)) (semi_colon)
+  (binary_expression (variable_declaration (scope) (scalar_variable)) (string_single_quoted)) 
 )
 
 =================================================
@@ -168,7 +168,7 @@ my $string = 'I have \' escaping in me';
 ---
 
 (source_file
-  (variable_declaration (scope) (scalar_variable) (string_single_quoted)) (semi_colon)
+  (binary_expression (variable_declaration (scope) (scalar_variable)) (string_single_quoted)) 
 )
 
 =================================================
@@ -180,7 +180,7 @@ Double quoted string with escape sequence
 ---
 
 (source_file
-  (string_double_quoted (escape_sequence)) (semi_colon)
+  (string_double_quoted (escape_sequence)) 
 )
 
 =================================================
@@ -194,9 +194,9 @@ my $line = <$fh>;
 ---
 
 (source_file
-  (while_statement (empty_parenthesized_expression (standard_input))
+  (while_statement (parenthesized_expression (standard_input))
     (block)
   )
-  (variable_declaration (scope) (scalar_variable) (standard_input)) (semi_colon)
-  (variable_declaration (scope) (scalar_variable) (standard_input_to_variable (scalar_variable))) (semi_colon)
+  (binary_expression (variable_declaration (scope) (scalar_variable)) (standard_input)) 
+  (binary_expression (variable_declaration (scope) (scalar_variable)) (standard_input_to_variable (scalar_variable))) 
 )

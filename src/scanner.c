@@ -2,7 +2,6 @@
 
 #include <assert.h>
 // #include <printf.h>  // for debugging
-#include <regex.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -44,6 +43,7 @@
   }
 
 enum TokenType {
+  SCALAR_VARIABLE_EXTERNAL,
   START_DELIMITER,
   END_DELIMITER,
   STRING_CONTENT,
@@ -69,6 +69,7 @@ enum TokenType {
   HEREDOC_CONTENT,
   HEREDOC_END_IDENTIFIER,
   POD_CONTENT,
+  AUTOMATIC_SEMICOLON,
 };
 
 typedef struct
@@ -545,13 +546,124 @@ bool exit_if_heredoc_end_delimiter(Scanner *scanner, TSLexer *lexer) {
   }
 }
 
+bool isSpecialVariableIdentifier(TSLexer *lexer) {
+  if (
+    isnumber(lexer->lookahead) // 0-9
+    // || lexer->lookahead == 'a' // ab
+    // || lexer->lookahead == 'b'
+    || lexer->lookahead == '!'
+    || lexer->lookahead == '_'
+    || lexer->lookahead == '"'
+    // || lexer->lookahead == '#' // no longer supported as part of perl 5.30
+    || lexer->lookahead == '$'
+    || lexer->lookahead == '%'
+    || lexer->lookahead == '&'
+    || lexer->lookahead == '\''
+    || lexer->lookahead == '('
+    || lexer->lookahead == ')'
+    // || lexer->lookahead == '*' // no longer supported as part of perl 5.30
+    || lexer->lookahead == '+'
+    || lexer->lookahead == '-'
+    || lexer->lookahead == '.'
+    || lexer->lookahead == '/'
+    || lexer->lookahead == ':'
+    || lexer->lookahead == ';'
+    || lexer->lookahead == '<'
+    || lexer->lookahead == '='
+    || lexer->lookahead == '>'
+    || lexer->lookahead == '?'
+    || lexer->lookahead == '@'
+    || lexer->lookahead == ']'
+    || lexer->lookahead == '['
+    || lexer->lookahead == '\\'
+    || lexer->lookahead == '`'
+    || lexer->lookahead == '|'
+    || lexer->lookahead == '~'
+  ) {
+    return true;
+  }
+  return false;
+}
+
 static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
   // on ERROR, external scanner is called with all valid_symbols to be true.
   // so for our usecase we need this logic.
   // ref - https://github.com/tree-sitter/tree-sitter/issues/1128
   if (
-      valid_symbols[START_DELIMITER] && valid_symbols[END_DELIMITER] && valid_symbols[STRING_CONTENT] && valid_symbols[STRING_SINGLE_QUOTED_CONTENT] && valid_symbols[STRING_QQ_QUOTED_CONTENT] && valid_symbols[STRING_DOUBLE_QUOTED_CONTENT] && valid_symbols[START_DELIMITER_QW] && valid_symbols[END_DELIMITER_QW] && valid_symbols[START_DELIMITER_REGEX] && valid_symbols[REGEX_PATTERN] && valid_symbols[END_DELIMITER_REGEX] && valid_symbols[START_DELIMITER_SEARCH_REPLACE] && valid_symbols[SEARCH_REPLACE_CONTENT] && valid_symbols[SEPARATOR_DELIMITER_SEARCH_REPLACE] && valid_symbols[END_DELIMITER_SEARCH_REPLACE] && valid_symbols[START_DELIMITER_TRANSLITERATION] && valid_symbols[TRANSLITERATION_CONTENT] && valid_symbols[SEPARATOR_DELIMITER_TRANSLITERATION] && valid_symbols[END_DELIMITER_TRANSLITERATION] && valid_symbols[IMAGINARY_HEREDOC_START] && valid_symbols[HEREDOC_START_IDENTIFIER] && valid_symbols[HEREDOC_CONTENT] && valid_symbols[HEREDOC_END_IDENTIFIER] && valid_symbols[POD_CONTENT]) {
+      valid_symbols[SCALAR_VARIABLE_EXTERNAL]
+      && valid_symbols[START_DELIMITER]
+      && valid_symbols[END_DELIMITER] && valid_symbols[STRING_CONTENT] && valid_symbols[STRING_SINGLE_QUOTED_CONTENT] && valid_symbols[STRING_QQ_QUOTED_CONTENT] && valid_symbols[STRING_DOUBLE_QUOTED_CONTENT] && valid_symbols[START_DELIMITER_QW] && valid_symbols[END_DELIMITER_QW] && valid_symbols[START_DELIMITER_REGEX] && valid_symbols[REGEX_PATTERN] && valid_symbols[END_DELIMITER_REGEX] && valid_symbols[START_DELIMITER_SEARCH_REPLACE] && valid_symbols[SEARCH_REPLACE_CONTENT] && valid_symbols[SEPARATOR_DELIMITER_SEARCH_REPLACE] && valid_symbols[END_DELIMITER_SEARCH_REPLACE] && valid_symbols[START_DELIMITER_TRANSLITERATION] && valid_symbols[TRANSLITERATION_CONTENT] && valid_symbols[SEPARATOR_DELIMITER_TRANSLITERATION] && valid_symbols[END_DELIMITER_TRANSLITERATION] && valid_symbols[IMAGINARY_HEREDOC_START] && valid_symbols[HEREDOC_START_IDENTIFIER] && valid_symbols[HEREDOC_CONTENT] && valid_symbols[HEREDOC_END_IDENTIFIER] && valid_symbols[POD_CONTENT]
+      && valid_symbols[AUTOMATIC_SEMICOLON]) {
     return false;
+  }
+
+  if (valid_symbols[SCALAR_VARIABLE_EXTERNAL]) {
+    // run over spaces
+    run_over_spaces(lexer);
+
+    // some exit conditions
+    if (!lexer->lookahead) {
+      lexer->mark_end(lexer);
+      return false;
+    }
+    
+    bool met_identifier = false;
+    // $_abc is not valid
+    // ie, any scalar variable starting with special scalar identifier is not valid
+    if (isSpecialVariableIdentifier(lexer)) {
+
+      // special case for 0-9 and ab
+      // NOTE/TODO: removed ab as of now
+      // uncomment below two lines to make it work?
+      if (
+        // lexer->lookahead == 'a'
+        // || lexer->lookahead == 'b'
+        isnumber(lexer->lookahead)
+      ) {
+        advance(lexer);
+        if (isalnum(lexer->lookahead)) {
+          lexer->result_symbol = SCALAR_VARIABLE_EXTERNAL;
+          advance(lexer);
+          met_identifier = true;
+        }
+        else {
+          lexer->mark_end(lexer);
+          return false;
+        }
+      }
+      else {
+        lexer->mark_end(lexer);
+        return false;
+      }
+    }
+    // # -> length of array. ex $#array
+    else if (lexer->lookahead == '#' || lexer->lookahead == '*') {
+      lexer->result_symbol = SCALAR_VARIABLE_EXTERNAL;
+      advance(lexer);
+    }
+    // $^A
+    else if (lexer->lookahead == '^') {
+      lexer->result_symbol = SCALAR_VARIABLE_EXTERNAL;
+      advance(lexer);
+      if (isupper(lexer->lookahead) && isalpha(lexer->lookahead)) {
+        advance(lexer);
+        lexer->mark_end(lexer);
+        return true;
+      }
+      else {
+        lexer->mark_end(lexer);
+        return false;
+      }
+    }
+
+    while (isalnum(lexer->lookahead) || lexer->lookahead == '_') {
+      lexer->result_symbol = SCALAR_VARIABLE_EXTERNAL;
+      advance(lexer);
+      met_identifier = true;
+    }
+
+    lexer->mark_end(lexer);
+    return met_identifier;
   }
 
   if (valid_symbols[STRING_SINGLE_QUOTED_CONTENT]) {
@@ -832,6 +944,25 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
     // or if it end of the file also, mark the end of pod content
     lexer->mark_end(lexer);
     return true;
+  }
+
+  if (valid_symbols[AUTOMATIC_SEMICOLON]) {
+    for (;;) {
+      if (lexer->lookahead == '}'|| !lexer->lookahead) {
+        lexer->result_symbol = AUTOMATIC_SEMICOLON;
+        lexer->mark_end(lexer);
+        return true;
+      }
+      else if (lexer->lookahead == ';' || !iswspace(lexer->lookahead)) {
+        return false;
+      }
+      else if (iswspace(lexer->lookahead)) {
+        skip(lexer);
+      }
+    }
+    
+
+    return false;
   }
 
   return false;

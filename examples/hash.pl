@@ -23,3 +23,27 @@ my $ter = {
 };
 
 print Dumper $ter->{first};
+
+# hash access
+my %simple = (
+  ones => 'one',
+  twos => 'two'
+);
+
+print $simple{ones};
+
+sub cake {
+    return {
+        name => "kjj",
+    };
+}
+
+my $value = cake();
+
+print "this is variable $value->{name}";
+
+sub something {
+    return 33333;
+}
+
+my @hash = (1, 2, 3 => 4, something, 3);

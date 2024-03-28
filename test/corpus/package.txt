@@ -7,7 +7,7 @@ package The::Package;
 ---
 
 (source_file
-  (package_statement (package_name (identifier) (identifier)) (semi_colon))
+  (package_statement (package_name (identifier) (identifier)) )
 )
 
 =================================================
@@ -19,7 +19,7 @@ package The::Package v1.23;
 ---
 
 (source_file
-  (package_statement (package_name (identifier) (identifier)) (version) (semi_colon))
+  (package_statement (package_name (identifier) (identifier)) (version) )
 )
 
 =================================================

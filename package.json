@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "a tree-sitter for perl language.",
   "main": "bindings/node",
+  "engines": {
+    "node": ">=16.14.2"
+  },
   "scripts": {
     "install": "prebuild-install || node-gyp rebuild",
     "pre-build": "prebuild -r electron -t 23.0.0 -t 25.0.0",
