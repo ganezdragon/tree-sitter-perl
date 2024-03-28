@@ -8592,10 +8592,6 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_special_scalar_variable_identifier"
-    },
-    {
-      "type": "SYMBOL",
       "name": "_start_delimiter"
     },
     {
@@ -8699,9 +8695,7 @@
       "name": "_automatic_semicolon"
     }
   ],
-  "inline": [
-    "semi_colon"
-  ],
+  "inline": [],
   "supertypes": []
 }
 

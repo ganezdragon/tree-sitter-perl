@@ -47,7 +47,7 @@ module.exports = grammar({
   name: 'perl',
 
   inline: $ => [
-    $.semi_colon,
+    // $.semi_colon,
   ],
 
   conflicts: $ => [
