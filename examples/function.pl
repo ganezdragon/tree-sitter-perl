@@ -36,3 +36,6 @@ map chr, qw(1 2 30);
 
 my @meow = (2,3,2,45,43543,342,76);
 my @array = grep 76 => @meow;
+
+# map array function
+map { $_*2 } @meow;

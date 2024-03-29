@@ -8695,7 +8695,9 @@
       "name": "_automatic_semicolon"
     }
   ],
-  "inline": [],
+  "inline": [
+    "semi_colon"
+  ],
   "supertypes": []
 }
 
