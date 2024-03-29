@@ -6687,6 +6687,10 @@
           "named": true
         },
         {
+          "type": "special_scalar_variable",
+          "named": true
+        },
+        {
           "type": "super",
           "named": true
         }

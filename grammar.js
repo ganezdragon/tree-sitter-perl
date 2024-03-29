@@ -1155,6 +1155,7 @@ module.exports = grammar({
               optional(seq($.super, token.immediate('::'))),
               field('function_name', $.identifier)
             ),
+            $.special_scalar_variable,
             $.scalar_variable,
             $.scalar_dereference,
           ),
@@ -1472,7 +1473,7 @@ module.exports = grammar({
     false: $ => 'false',
 
     special_scalar_variable: $ => prec.right(PRECEDENCE.TERM + 2, seq(
-      '$', with_or_without_curly_brackets(/[!"#$%&'()*+,-./0123456789:;<=>?@\]\[\\_`|~]/), // NOTE: ab is removed as my $a = 1 is possible
+      '$', with_or_without_curly_brackets(/#*|[!"#$%&'()*+,-./0123456789:;<=>?@\]\[\\_`|~]/), // NOTE: ab is removed as my $a = 1 is possible
     )),
 
     scalar_variable: $ => prec(PRECEDENCE.TERM, seq(
