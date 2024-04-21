@@ -1,4 +1,4 @@
-#include "tree_sitter/parser.h"
+#include <tree_sitter/parser.h>
 
 #include <assert.h>
 // #include <printf.h>  // for debugging
@@ -83,6 +83,24 @@ static String string_new() {
   return (String){.cap = 16, .len = 0, .data = calloc(1, sizeof(char) * 17)};
 }
 
+static char *my_strdup(const char *str) {
+  // Calculate the length of the input string
+  size_t len = strlen(str) + 1; // Include space for the null terminator
+  
+  // Allocate memory for the duplicated string
+  char *duplicate = (char *)malloc(len * sizeof(char));
+  
+  // Check if memory allocation was successful
+  if (duplicate == NULL) {
+      return NULL; // Return NULL if memory allocation failed
+  }
+  
+  // Copy the input string to the newly allocated memory
+  strcpy(duplicate, str);
+  
+  return duplicate; // Return a pointer to the duplicated string
+}
+
 // START OF --- a array implementation of STRING queue in C
 typedef struct
 {
@@ -112,7 +130,7 @@ static int isQueueFull(StringQueue *queue) {
 }
 
 // StringQueue is empty when size is 0
-int isQueueEmpty(StringQueue *queue) {
+static int isQueueEmpty(StringQueue *queue) {
   return (queue->size == 0);
 }
 
@@ -122,7 +140,7 @@ static void enqueueStringQueue(StringQueue *queue, String *item) {
   if (isQueueFull(queue))
     queue->capacity = queue->capacity + 1;;
   queue->rear = (queue->rear + 1) % queue->capacity;
-  queue->data[queue->rear] = strdup(item->data);
+  queue->data[queue->rear] = my_strdup(item->data);
   queue->size = queue->size + 1;
 }
 
@@ -177,7 +195,7 @@ static int isBoolQueueFull(BoolQueue *queue) {
 }
 
 // BoolQueue is empty when size is 0
-int isBoolQueueEmpty(BoolQueue *queue) {
+static int isBoolQueueEmpty(BoolQueue *queue) {
   return (queue->size == 0);
 }
 
@@ -440,7 +458,7 @@ static bool parse_start_delimiter(Scanner *scanner, TSLexer *lexer, enum TokenTy
  * POSIX-mandated substitution, and assumes the default value for
  * IFS.
  */
-bool advance_word(Scanner *scanner, TSLexer *lexer) {
+static bool advance_word(Scanner *scanner, TSLexer *lexer) {
   bool empty = true;
   bool has_space_before = false;
   bool allows_interpolation = true;
@@ -482,7 +500,7 @@ bool advance_word(Scanner *scanner, TSLexer *lexer) {
 
   while (
     lexer->lookahead
-    && isalnum(lexer->lookahead)
+    && iswalnum(lexer->lookahead)
     && !(quote ? lexer->lookahead == quote : iswspace(lexer->lookahead))
   ) {
     // TODO: check this below condition
@@ -510,7 +528,7 @@ bool advance_word(Scanner *scanner, TSLexer *lexer) {
   return !empty;
 }
 
-bool exit_if_heredoc_end_delimiter(Scanner *scanner, TSLexer *lexer) {
+static bool exit_if_heredoc_end_delimiter(Scanner *scanner, TSLexer *lexer) {
   String word = string_new();
   lexer->result_symbol = HEREDOC_END_IDENTIFIER;
   while (!iswspace(lexer->lookahead)) {
@@ -544,9 +562,9 @@ bool exit_if_heredoc_end_delimiter(Scanner *scanner, TSLexer *lexer) {
   }
 }
 
-bool isSpecialVariableIdentifier(TSLexer *lexer) {
+static bool isSpecialVariableIdentifier(TSLexer *lexer) {
   if (
-    isnumber(lexer->lookahead) // 0-9
+    isdigit(lexer->lookahead) // 0-9
     // || lexer->lookahead == 'a' // ab
     // || lexer->lookahead == 'b'
     || lexer->lookahead == '!'
@@ -616,10 +634,10 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
       if (
         // lexer->lookahead == 'a'
         // || lexer->lookahead == 'b'
-        isnumber(lexer->lookahead)
+        isdigit(lexer->lookahead)
       ) {
         advance(lexer);
-        if (isalnum(lexer->lookahead)) {
+        if (iswalnum(lexer->lookahead)) {
           lexer->result_symbol = SCALAR_VARIABLE_EXTERNAL;
           advance(lexer);
           met_identifier = true;
@@ -643,7 +661,7 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
     else if (lexer->lookahead == '^') {
       lexer->result_symbol = SCALAR_VARIABLE_EXTERNAL;
       advance(lexer);
-      if (isupper(lexer->lookahead) && isalpha(lexer->lookahead)) {
+      if (iswupper(lexer->lookahead) && iswalpha(lexer->lookahead)) {
         advance(lexer);
         lexer->mark_end(lexer);
         return true;
@@ -654,7 +672,7 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
       }
     }
 
-    while (isalnum(lexer->lookahead) || lexer->lookahead == '_') {
+    while (iswalnum(lexer->lookahead) || lexer->lookahead == '_') {
       lexer->result_symbol = SCALAR_VARIABLE_EXTERNAL;
       advance(lexer);
       met_identifier = true;
@@ -976,7 +994,7 @@ static inline void reset_heredoc(StringQueue *queue) {
   queue->data = NULL;
 }
 
-void reset (Scanner *scanner) {
+static void reset (Scanner *scanner) {
   scanner->heredoc.started_heredoc = false;
   scanner->heredoc.started_heredoc_body = false;
   for (int i = 0; i < scanner->heredoc.heredoc_identifier_queue->size; i++) {

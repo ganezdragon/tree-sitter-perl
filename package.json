@@ -3,38 +3,55 @@
   "version": "1.1.0",
   "description": "a tree-sitter for perl language.",
   "main": "bindings/node",
+  "types": "bindings/node",
   "engines": {
     "node": ">=16.14.2"
   },
   "scripts": {
-    "install": "prebuild-install || node-gyp rebuild",
+    "install": "node-gyp-build",
     "pre-build": "prebuild -r electron -t 23.0.0 -t 25.0.0",
     "build": "tree-sitter generate && node-gyp build",
-    "build-wasm": "tree-sitter build-wasm",
+    "build-wasm": "tree-sitter build -w -d",
     "generate": "tree-sitter generate",
     "test": "tree-sitter test",
-    "example": "tree-sitter parse examples/* --quiet --stat"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "example": "tree-sitter parse examples/* --quiet --stat",
+    "prebuildify": "prebuildify --napi --strip"
   },
   "keywords": [
     "perl",
     "parser",
     "nodejs"
   ],
+  "files": [
+    "grammar.js",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "queries/*",
+    "src/**"
+  ],
   "repository": "git://github.com/ganezdragon/tree-sitter-perl.git",
   "author": "ganezdragon",
   "license": "MIT",
   "dependencies": {
-    "nan": "^2.17.0",
-    "prebuild-install": "^7.1.1"
+    "prebuild-install": "^7.1.1",
+    "node-addon-api": "^7.1.0",
+    "node-gyp-build": "^4.8.0"
+  },
+  "peerDependencies": {
+    "tree-sitter": "^0.21.0"
+  },
+  "peerDependenciesMeta": {
+    "tree_sitter": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@electron/rebuild": "^3.4.1",
     "node-gyp": "^10.0.1",
     "prebuild": "^12.1.0",
-    "tree-sitter-cli": "^0.20.8"
+    "tree-sitter-cli": "^0.22.2",
+    "prebuildify": "^6.0.0"
   },
   "overrides": {
     "prebuild": {
