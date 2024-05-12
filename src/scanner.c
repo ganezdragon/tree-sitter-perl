@@ -89,14 +89,13 @@ static char *my_strdup(const char *str) {
   
   // Allocate memory for the duplicated string
   char *duplicate = (char *)malloc(len * sizeof(char));
-  
-  // Check if memory allocation was successful
   if (duplicate == NULL) {
       return NULL; // Return NULL if memory allocation failed
   }
   
-  // Copy the input string to the newly allocated memory
-  strcpy(duplicate, str);
+  // Copy the input string to the newly allocated memory using strncpy
+  strncpy(duplicate, str, len); // Copy up to 'len' characters from 'str' to 'duplicate'
+  duplicate[len - 1] = '\0'; // Ensure null-termination of the duplicated string
   
   return duplicate; // Return a pointer to the duplicated string
 }
@@ -125,19 +124,19 @@ static StringQueue *createStringQueue() {
 
 // StringQueue is full when size becomes
 // equal to the capacity
-static int isQueueFull(StringQueue *queue) {
+static int isStringQueueFull(StringQueue *queue) {
   return (queue->size == queue->capacity);
 }
 
 // StringQueue is empty when size is 0
-static int isQueueEmpty(StringQueue *queue) {
+static int isStringQueueEmpty(StringQueue *queue) {
   return (queue->size == 0);
 }
 
 // Function to add an item to the queue.
 // It changes rear and size
 static void enqueueStringQueue(StringQueue *queue, String *item) {
-  if (isQueueFull(queue))
+  if (isStringQueueFull(queue))
     queue->capacity = queue->capacity + 1;;
   queue->rear = (queue->rear + 1) % queue->capacity;
   queue->data[queue->rear] = my_strdup(item->data);
@@ -147,7 +146,7 @@ static void enqueueStringQueue(StringQueue *queue, String *item) {
 // Function to remove an item from queue.
 // It changes front and size
 static char *dequeueStringQueue(StringQueue *queue) {
-  if (isQueueEmpty(queue))
+  if (isStringQueueEmpty(queue))
     return NULL;
   char *item = queue->data[queue->front];
   queue->front = (queue->front + 1) % queue->capacity;
@@ -160,7 +159,20 @@ static char *dequeueStringQueue(StringQueue *queue) {
 static char *front(StringQueue *queue) {
   // if (isQueueEmpty(queue))
   //   return CHAR_MIN;
-  return queue->data[queue->front];
+  // return queue->data[queue->front];
+  if (queue->data[queue->front]) {
+    return queue->data[queue->front];
+  }
+  return NULL;
+}
+
+void deleteStringQueue(StringQueue *queue) {
+  if (queue != NULL) {
+    // Free the dynamically allocated data array
+    free(queue->data);
+    // Free the BoolQueue structure itself
+    free(queue);
+  }
 }
 
 // END OF --- a array implementation of STRING queue in C
@@ -224,7 +236,19 @@ static bool dequeueBoolQueue(BoolQueue *queue) {
 static bool frontBoolQueue(BoolQueue *queue) {
   // if (isBoolQueueEmpty(queue))
   //   return CHAR_MIN;
-  return queue->data[queue->front];
+  if (queue->data[queue->front]) {
+    return queue->data[queue->front];
+  }
+  return NULL;
+}
+
+void deleteBoolQueue(BoolQueue *queue) {
+  if (queue != NULL) {
+    // Free the dynamically allocated data array
+    free(queue->data);
+    // Free the BoolQueue structure itself
+    free(queue);
+  }
 }
 
 // END OF --- a array implementation of Boolean queue in C
@@ -525,6 +549,8 @@ static bool advance_word(Scanner *scanner, TSLexer *lexer) {
     scanner->heredoc.started_heredoc = true;
   }
 
+  STRING_FREE(unquoted_word);
+
   return !empty;
 }
 
@@ -560,6 +586,8 @@ static bool exit_if_heredoc_end_delimiter(Scanner *scanner, TSLexer *lexer) {
     lexer->result_symbol = HEREDOC_CONTENT;
     return true;
   }
+
+  STRING_FREE(word);
 }
 
 static bool isSpecialVariableIdentifier(TSLexer *lexer) {
@@ -876,7 +904,7 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
 
   if (
       (valid_symbols[HEREDOC_CONTENT] || valid_symbols[IMAGINARY_HEREDOC_START])
-      && !isQueueEmpty(scanner->heredoc.heredoc_identifier_queue)
+      && !isStringQueueEmpty(scanner->heredoc.heredoc_identifier_queue)
   ) {
     // another exit condition
     if (!lexer->lookahead && !scanner->heredoc.started_heredoc_body) {
@@ -1040,6 +1068,9 @@ bool tree_sitter_perl_external_scanner_scan(
 
 void tree_sitter_perl_external_scanner_destroy(void *payload) {
   Scanner *scanner = (Scanner *)payload;
+  deleteBoolQueue(scanner->heredoc.heredoc_allows_indent);
+  deleteBoolQueue(scanner->heredoc.heredoc_allows_interpolation);
+  deleteStringQueue(scanner->heredoc.heredoc_identifier_queue);
   // for (size_t i = 0; i < scanner->heredocs.len; i++) {
   //     Heredoc *heredoc = &scanner->heredocs.data[i];
   //     STRING_FREE(heredoc->current_leading_word);

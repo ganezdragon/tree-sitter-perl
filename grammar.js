@@ -59,12 +59,13 @@ module.exports = grammar({
 
     [$.package_name],
     [$.hash_ref],
+    [$.hash_ref, $.array],
+    [$.hash_ref, $._expression_without_bareword],
 
     [$._block_statements],
     
     // they are the same, but we want a different token for each
     [$.parenthesized_argument, $.array],
-    [$.parenthesized_expression, $.array],
     [$.function_prototype, $.array],
   ],
 
@@ -304,10 +305,7 @@ module.exports = grammar({
         field('use', 'use'),
         field('no', 'no'),
       ),
-      seq(
-        $._if_simple,
-        ',',
-      ),
+      $._if_simple,
       choice($.package_name, $.module_name, $._string),
       optional($.version),
       optional($._comma_operator),
@@ -346,31 +344,31 @@ module.exports = grammar({
     )),
     _if_simple: $ => prec.right(seq(
       'if',
-      field('condition', choice($.parenthesized_expression, $._expression)),
+      field('condition', choice($.parenthesized_argument, $.arguments)),
     )),
     unless_simple_statement: $ => prec.right(seq(
       'unless',
-      field('condition', choice($.parenthesized_expression, $._expression)),
+      field('condition', choice($.parenthesized_argument, $.arguments)),
       $.semi_colon,
     )),
     while_simple_statement: $ => prec.right(seq(
       'while',
-      field('condition', choice($.parenthesized_expression, $._expression)),
+      field('condition', choice($.parenthesized_argument, $.arguments)),
       $.semi_colon,
     )),
     until_simple_statement: $ => prec.right(seq(
       'until',
-      field('condition', choice($.parenthesized_expression, $._expression)),
+      field('condition', choice($.parenthesized_argument, $.arguments)),
       $.semi_colon,
     )),
     for_simple_statement: $ => prec.right(seq(
       choice('for', 'foreach'),
-      field('list', with_or_without_brackets($._expression)),
+      field('list', choice($.parenthesized_argument, $.arguments)),
       $.semi_colon,
     )),
     when_simple_statement: $ => prec.right(seq(
       'when',
-      field('condition', choice($.parenthesized_expression, $._expression)),
+      field('condition', choice($.parenthesized_argument, $.arguments)),
       $.semi_colon,
     )),
 
@@ -502,12 +500,12 @@ module.exports = grammar({
       field('value', $._expression),
     ),
     
-    scope: $ => choice(
+    scope: $ => prec.right(choice(
       'our',
       'state',
       'my',
       'local',
-    ),
+    )),
 
     // why perl, why!
     function_definition: $ => prec.left(seq(
@@ -556,10 +554,11 @@ module.exports = grammar({
       $.block,
     ),
 
-    block: $ => prec(PRECEDENCE.TERM, seq(
+    block: $ => prec.left(PRECEDENCE.TERM, seq(
       '{',
       optional(repeat($._block_statements)),
-      '}'
+      '}',
+      optional($.semi_colon),
     )),
 
     _function_signature: $ => alias($.array, $.function_signature),
@@ -642,14 +641,14 @@ module.exports = grammar({
       optional($._expression),
     ),
 
-    _expression: $ => with_or_without_brackets(choice(
+    _expression: $ => prec(PRECEDENCE.LOWEST, with_or_without_brackets(choice(
       $._expression_without_bareword,
       $.call_expression_with_bareword,
-    )),
+    ))),
 
     // TODO: change this to _expression_without_bareword
     // NOTE: just a hack to handle identifier vs subroutine call
-    _expression_without_bareword: $ => with_or_without_brackets(choice(
+    _expression_without_bareword: $ => prec(PRECEDENCE.LOWEST, with_or_without_brackets(choice(
       $._primitive_expression,
       $._string,
       $._variables,
@@ -694,11 +693,14 @@ module.exports = grammar({
 
       $.variable_declaration,
 
-      $.key_value_pair,
-    )),
+      // $.key_value_pair,
+    ))),
 
     array_function: $ => prec(PRECEDENCE.TERM, seq(
-      alias($.identifier, $.function_name),
+      choice(
+        getInBuiltFunctionNames(), // reserved keywords
+        alias($.identifier, $.function_name),
+      ),
       $.block,
       commaSeparated($._expression),
     )),
@@ -718,49 +720,49 @@ module.exports = grammar({
       with_or_without_brackets(commaSeparated($._expression)),
     )),
 
-    grep_or_map_function: $ => prec.right(PRECEDENCE.TERM, seq(
-      choice(
-        alias('grep', $.grep),
-        alias('map', $.map),
-      ),
-      choice(
-        seq($.list_block, $._expression),
-        with_or_without_brackets(commaSeparated($._expression)),
-      ),
-    )),
+    // grep_or_map_function: $ => prec.right(PRECEDENCE.TERM, seq(
+    //   choice(
+    //     alias('grep', $.grep),
+    //     alias('map', $.map),
+    //   ),
+    //   choice(
+    //     seq($.list_block, $._expression),
+    //     with_or_without_brackets(commaSeparated($._expression)),
+    //   ),
+    // )),
 
-    join_function: $ => prec.right(PRECEDENCE.TERM, seq(
-      choice(
-        alias('join', $.join),
-      ),
-      with_or_without_brackets(commaSeparated($._expression)),
-    )),
+    // join_function: $ => prec.right(PRECEDENCE.TERM, seq(
+    //   choice(
+    //     alias('join', $.join),
+    //   ),
+    //   with_or_without_brackets(commaSeparated($._expression)),
+    // )),
 
-    reverse_function: $ => prec.right(PRECEDENCE.TERM, seq(
-      alias('reverse', $.reverse),
-      optional(with_or_without_brackets(commaSeparated($._expression))),
-    )),
+    // reverse_function: $ => prec.right(PRECEDENCE.TERM, seq(
+    //   alias('reverse', $.reverse),
+    //   optional(with_or_without_brackets(commaSeparated($._expression))),
+    // )),
 
-    sort_function: $ => prec.right(PRECEDENCE.TERM, seq(
-      alias('sort', $.sort),
-      choice(
-        $._expression,
-        seq($.list_block, $._expression),
-        seq($.call_expression, $._expression),
-      ),
-    )),
+    // sort_function: $ => prec.right(PRECEDENCE.TERM, seq(
+    //   alias('sort', $.sort),
+    //   choice(
+    //     $._expression,
+    //     seq($.list_block, $._expression),
+    //     seq($.call_expression, $._expression),
+    //   ),
+    // )),
 
-    unpack_function: $ => prec.right(PRECEDENCE.TERM, seq(
-      alias('unpack', $.alias),
-      with_or_without_brackets(commaSeparated($._expression)),
-    )),
+    // unpack_function: $ => prec.right(PRECEDENCE.TERM, seq(
+    //   alias('unpack', $.alias),
+    //   with_or_without_brackets(commaSeparated($._expression)),
+    // )),
 
     // TODO: this needs more cases coverage
-    list_block: $ => seq(
-      '{',
-      repeat1(choice($._statement, $._expression_without_bareword)),
-      '}'
-    ),
+    // list_block: $ => seq(
+    //   '{',
+    //   repeat1(choice($._statement, $._expression_without_bareword)),
+    //   '}'
+    // ),
 
     bless: $ => prec.right(seq(
       'bless',
@@ -1128,7 +1130,10 @@ module.exports = grammar({
         field('package_name', $.package_name),
         token.immediate('::'),
       )),
-      field('function_name', $.identifier),
+      field('function_name', choice(
+        getInBuiltFunctionNames(),
+        $.identifier,
+      )),
       field('args', choice($.parenthesized_argument, $.arguments)),
     )),
 
@@ -1158,6 +1163,7 @@ module.exports = grammar({
             $.special_scalar_variable,
             $.scalar_variable,
             $.scalar_dereference,
+            $.parenthesized_argument, // for passing it to the previous item in the chain
           ),
           // anything with bracket is higher precedence.
           // so args without brackets is lower precedence.
@@ -1172,12 +1178,8 @@ module.exports = grammar({
       ')',
     )),
 
-    arguments: $ => prec.left(PRECEDENCE.COMMA_OPERATORS,
-      commaSeparated($.argument),
-    ),
-
-    argument: $ => prec.left(PRECEDENCE.LOWEST,
-      $._expression,
+    arguments: $ => prec.right(PRECEDENCE.COMMA_OPERATORS,
+      commaSeparated($._expression),
     ),
 
     call_expression_recursive: $ => seq(
@@ -1195,11 +1197,13 @@ module.exports = grammar({
       $._array_type,
     ),
 
-    _variables: $ => choice(
+    _variables: $ => prec(PRECEDENCE.ARRAY, choice(
       $.scalar_variable,
+      $.special_scalar_variable,
+      $.package_variable,
       $.array_variable,
       $.hash_variable,
-    ),
+    )),
 
     _scalar_type: $ => choice(
       $.string_single_quoted,
@@ -1544,12 +1548,13 @@ module.exports = grammar({
     hash_ref: $ => prec(PRECEDENCE.HASH, seq(
       optional('+'), // to make into a hash_ref rather than a block
       '{',
-      optional(binaryCommaSeparated(choice(
+      optional(commaSeparated(with_or_without_brackets(choice(
         $.ternary_expression,
-        $.key_value_pair,
+        // $.key_value_pair,
         $.hash_dereference,
         $.hash_variable,
-      ))),
+        $._expression,
+      )))),
       '}'
     )),
 
@@ -1595,24 +1600,26 @@ module.exports = grammar({
     )),
 
     // cat => 'meow', meta => {}
-    key_value_pair: $ => prec.left(PRECEDENCE.COMMA_OPERATORS, seq(
-      field('key', choice(
-        alias($.identifier, $.bareword),
-        alias($.key_words_in_hash_key, $.bareword),
-        $.variable_declaration,
-        $._expression_without_bareword,
-      )),
-      $.hash_arrow_operator,
-      field('value', $._expression),
-    )),
+    // key_value_pair: $ => prec.left(PRECEDENCE.COMMA_OPERATORS, seq(
+    //   field('key', choice(
+    //     alias($.identifier, $.bareword),
+    //     alias($.key_words_in_hash_key, $.bareword),
+    //     $.variable_declaration,
+    //     $._expression_without_bareword,
+    //   )),
+    //   prec.right(seq(
+    //     $.hash_arrow_operator,
+    //     field('value', $._expression),
+    //   )),
+    // )),
 
     // NOTE: this is a hack for keys that are keywords
     key_words_in_hash_key: $ => choice(
       'sub'
     ),
 
-    arrow_operator: $ => prec.left(PRECEDENCE.ARROW_OPERATOR, /->/),
-    hash_arrow_operator: $ => prec.left(PRECEDENCE.COMMA_OPERATORS, /=>/), // alias comma operator
+    arrow_operator: $ => prec.left(PRECEDENCE.ARROW_OPERATOR, '->'),
+    hash_arrow_operator: $ => prec(PRECEDENCE.COMMA_OPERATORS, '=>'), // alias comma operator
 
     // some key words
     super: $ => 'SUPER',
@@ -1634,25 +1641,10 @@ module.exports = grammar({
  * @param {*} rule 
  */
 function commaSeparated(rule) {
-  return prec.left(PRECEDENCE.COMMA_OPERATORS, seq(
+  return prec.right(PRECEDENCE.COMMA_OPERATORS, seq(
     rule,
-    repeat(seq(choice(',', '=>'), rule)),
-    optional(','), // in perl so far you could have this
-  ));
-}
-
-/**
- * repeats the rule binary comma (,) separated, like
- * rule, rule
- * example: my (a, b);
- * using it in the above.
- * @param {*} rule 
- */
-function binaryCommaSeparated(rule) {
-  return prec.left(PRECEDENCE.COMMA_OPERATORS, seq(
-    rule,
-    repeat(seq(',', rule)),
-    optional(','), // in perl so far you could have this
+    repeat(seq(choice(',', '=>'), prec(PRECEDENCE.COMMA_OPERATORS, rule))),
+    optional(choice(',', '=>')), // in perl so far you could have this
   ));
 }
 
@@ -1697,6 +1689,10 @@ function with_or_without_brackets(rule) {
 
 function with_curly_brackets(rule) {
   return prec.left(PRECEDENCE.TERM, seq('{', rule, '}'));
+}
+
+function getInBuiltFunctionNames() {
+  return choice('grep', 'map', 'join', 'sort', 'unpack');
 }
 
 /**
