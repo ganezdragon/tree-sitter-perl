@@ -59,10 +59,14 @@ module.exports = grammar({
 
     [$.package_name],
     [$.hash_ref],
-    [$.hash_ref, $.array],
-    [$.hash_ref, $._expression_without_bareword],
+    // [$.hash_ref, $.array],
+
+    // [$._expression, $._string],
+    // [$._expression],
+    [$.array],
 
     [$._block_statements],
+    // [$._expression_or_return_expression, $._block_statements],
     
     // they are the same, but we want a different token for each
     [$.parenthesized_argument, $.array],
@@ -191,7 +195,7 @@ module.exports = grammar({
       'parent',
       optional(seq($.no_require, ',')),
       choice(
-        commaSeparated($._string),
+        commaSeparated($, $._string),
         $.word_list_qw,
       ),
       $.semi_colon,
@@ -202,7 +206,7 @@ module.exports = grammar({
       'constant',
       choice(
         seq(
-          field('constant', choice($.identifier, $._string)), choice('=>', ','), field('value', $._expression)
+          field('constant', choice($.identifier, $._string)), $.comma_operator, field('value', $._expression)
         ),
         field('value', $.hash_ref),
       ),
@@ -308,7 +312,7 @@ module.exports = grammar({
       $._if_simple,
       choice($.package_name, $.module_name, $._string),
       optional($.version),
-      optional($._comma_operator),
+      optional($.comma_operator),
       optional(choice($._list, $._string)),
       $.semi_colon,
     ),
@@ -375,7 +379,7 @@ module.exports = grammar({
     // TODO: should be a boolean expression and not the current one?
     if_statement: $ => prec.left(seq(
       'if',
-      field('condition', $.parenthesized_expression),
+      field('condition', $.parenthesized_argument),
       field('consequence', $.block),
       repeat(field('alternative', $.elsif_clause)),
       optional(field('alternative', $.else_clause)),
@@ -383,7 +387,7 @@ module.exports = grammar({
 
     unless_statement: $ => prec.left(seq(
       'unless',
-      field('condition', $.parenthesized_expression),
+      field('condition', $.parenthesized_argument),
       field('consequence', $.block),
       repeat(field('alternative', $.elsif_clause)),
       optional(field('alternative', $.else_clause)),
@@ -391,7 +395,7 @@ module.exports = grammar({
 
     elsif_clause: $ => seq(
       'elsif',
-      field('condition', $.parenthesized_expression),
+      field('condition', $.parenthesized_argument),
       field('alternative_if_consequence', $.block),
     ),
 
@@ -410,14 +414,14 @@ module.exports = grammar({
 
     // given_body: $ => seq(
     //   'when',
-    //   $.parenthesized_expression,
+    //   $.parenthesized_argument,
     //   $.block,
     // ),
 
     while_statement: $ => seq(
       optional(seq(field('label', $.identifier), ':')),
       'while',
-      field('condition', $.parenthesized_expression),
+      field('condition', $.parenthesized_argument),
       field('body', $.block),
       optional(field('flow', $.continue)),
     ),
@@ -430,7 +434,7 @@ module.exports = grammar({
     until_statement: $ => seq(
       optional(seq(field('label', $.identifier), ':')),
       'until',
-      field('condition', $.parenthesized_expression),
+      field('condition', $.parenthesized_argument),
       field('body', $.block),
       optional(field('flow', $.continue)),
     ),
@@ -491,7 +495,7 @@ module.exports = grammar({
 
     multi_var_declaration: $ => seq(
       '(',
-      commaSeparated(field('name', $._variables)),
+      commaSeparated($, field('name', $._variables)),
       ')',
     ),
 
@@ -558,7 +562,7 @@ module.exports = grammar({
       '{',
       optional(repeat($._block_statements)),
       '}',
-      optional($.semi_colon),
+      // optional($.semi_colon), // TODO: make semi_colon just appear anywhere
     )),
 
     _function_signature: $ => alias($.array, $.function_signature),
@@ -595,6 +599,7 @@ module.exports = grammar({
 
     _block_statements: $ => choice(
       $._statement,
+      commaSeparated($, $._expression),
       seq($.return_expression, $.semi_colon),
       $.loop_control_statement,
     ),
@@ -623,12 +628,6 @@ module.exports = grammar({
       $.semi_colon,
     )),
 
-    parenthesized_expression: $ => prec(PRECEDENCE.TERM, seq(
-      '(',
-      optional(commaSeparated(prec.left($._expression))),
-      ')'
-    )),
-
     // TODO: do this
     // parenthesized_condition: $ => seq(
     //   '(',
@@ -641,14 +640,7 @@ module.exports = grammar({
       optional($._expression),
     ),
 
-    _expression: $ => prec(PRECEDENCE.LOWEST, with_or_without_brackets(choice(
-      $._expression_without_bareword,
-      $.call_expression_with_bareword,
-    ))),
-
-    // TODO: change this to _expression_without_bareword
-    // NOTE: just a hack to handle identifier vs subroutine call
-    _expression_without_bareword: $ => prec(PRECEDENCE.LOWEST, with_or_without_brackets(choice(
+    _expression_without_l_value: $ => prec(PRECEDENCE.LOWEST, commaSeparated($, choice(
       $._primitive_expression,
       $._string,
       $._variables,
@@ -660,10 +652,16 @@ module.exports = grammar({
       $.unary_expression,
       $.ternary_expression,
 
+      $.goto_expression,
+    ))),
+
+    _expression: $ => prec(PRECEDENCE.LOWEST, commaSeparated($, choice(
+      $._expression_without_call_expression,
+
       $.call_expression,
+      $.call_expression_with_bareword,
       $.call_expression_recursive,
       $.method_invocation,
-      $.goto_expression,
 
       // quote-like operators
       $.command_qx_quoted,
@@ -693,16 +691,18 @@ module.exports = grammar({
 
       $.variable_declaration,
 
+      $.key_words_in_hash_key,
+
       // $.key_value_pair,
     ))),
 
-    array_function: $ => prec(PRECEDENCE.TERM, seq(
+    array_function: $ => prec.left(PRECEDENCE.TERM, seq(
       choice(
         getInBuiltFunctionNames(), // reserved keywords
         alias($.identifier, $.function_name),
       ),
       $.block,
-      commaSeparated($._expression),
+      commaSeparated($, $._expression),
     )),
 
     // TODO: the output tree is wrong for this. fix it.
@@ -715,10 +715,10 @@ module.exports = grammar({
       alias($.identifier, $.scalar_variable),
     ),
 
-    push_function: $ => prec.right(PRECEDENCE.TERM, seq(
-      alias('push', $.push),
-      with_or_without_brackets(commaSeparated($._expression)),
-    )),
+    // push_function: $ => prec.right(PRECEDENCE.TERM, seq(
+    //   alias('push', $.push),
+    //   with_or_without_brackets(commaSeparated($._expression)),
+    // )),
 
     // grep_or_map_function: $ => prec.right(PRECEDENCE.TERM, seq(
     //   choice(
@@ -918,14 +918,14 @@ module.exports = grammar({
 
     _shift_expression: $ => prec.left(PRECEDENCE.SHIFT_OPERATORS, choice(
       seq(
-        field('variable', $._expression_without_bareword),
+        field('variable', $._expression),
         field('operator', '<<'),
-        field('variable', $._expression_without_bareword),
+        field('variable', $._expression),
       ),
       seq(
-        field('variable', $._expression_without_bareword),
+        field('variable', $._expression),
         field('operator', '>>'),
-        field('variable', $._expression_without_bareword),
+        field('variable', $._expression),
       ),
     )),
 
@@ -1070,11 +1070,6 @@ module.exports = grammar({
       )
     )),
 
-    _comma_operator: $ => choice(
-      ',',
-      '=>',
-    ),
-
     _unary_not: $ => prec.right(PRECEDENCE.UNARY_NOT, seq(
       field('operator', 'not'),
       field('variable', $._expression),
@@ -1179,7 +1174,7 @@ module.exports = grammar({
     )),
 
     arguments: $ => prec.right(PRECEDENCE.COMMA_OPERATORS,
-      commaSeparated($._expression),
+      commaSeparated($, $._expression),
     ),
 
     call_expression_recursive: $ => seq(
@@ -1509,7 +1504,7 @@ module.exports = grammar({
           field('key', choice(
             alias($.identifier, $.bareword),
             alias($.key_words_in_hash_key, $.bareword),
-            $._expression_without_bareword,
+            $._expression,
           )),
           '}',
         )
@@ -1533,28 +1528,22 @@ module.exports = grammar({
       $.array_variable,
     ),
 
-    array: $ => prec(PRECEDENCE.TERM, seq(
+    array: $ => prec.left(PRECEDENCE.TERM, seq(
       '(',
-      optional(commaSeparated($._expression)),
+      optional(commaSeparated($, $._expression)),
       ')',
     )),
 
-    array_ref: $ => seq(
+    array_ref: $ => prec.left(PRECEDENCE.TERM, seq(
       '[',
-      optional(commaSeparated($._expression)),
+      optional(commaSeparated($, $._expression)),
       ']',
-    ),
+    )),
 
     hash_ref: $ => prec(PRECEDENCE.HASH, seq(
       optional('+'), // to make into a hash_ref rather than a block
       '{',
-      optional(commaSeparated(with_or_without_brackets(choice(
-        $.ternary_expression,
-        // $.key_value_pair,
-        $.hash_dereference,
-        $.hash_variable,
-        $._expression,
-      )))),
+      optional(commaSeparated($, $._expression)),
       '}'
     )),
 
@@ -1605,7 +1594,7 @@ module.exports = grammar({
     //     alias($.identifier, $.bareword),
     //     alias($.key_words_in_hash_key, $.bareword),
     //     $.variable_declaration,
-    //     $._expression_without_bareword,
+    //     $._expression,
     //   )),
     //   prec.right(seq(
     //     $.hash_arrow_operator,
@@ -1614,12 +1603,12 @@ module.exports = grammar({
     // )),
 
     // NOTE: this is a hack for keys that are keywords
-    key_words_in_hash_key: $ => choice(
+    key_words_in_hash_key: $ => prec.left(choice(
       'sub'
-    ),
+    )),
 
     arrow_operator: $ => prec.left(PRECEDENCE.ARROW_OPERATOR, '->'),
-    hash_arrow_operator: $ => prec(PRECEDENCE.COMMA_OPERATORS, '=>'), // alias comma operator
+    comma_operator: $ => prec(PRECEDENCE.COMMA_OPERATORS, choice(',', '=>')),
 
     // some key words
     super: $ => 'SUPER',
@@ -1640,11 +1629,14 @@ module.exports = grammar({
  * using it in the above.
  * @param {*} rule 
  */
-function commaSeparated(rule) {
-  return prec.right(PRECEDENCE.COMMA_OPERATORS, seq(
-    rule,
-    repeat(seq(choice(',', '=>'), prec(PRECEDENCE.COMMA_OPERATORS, rule))),
-    optional(choice(',', '=>')), // in perl so far you could have this
+function commaSeparated($, rule) {
+  return prec.left(PRECEDENCE.COMMA_OPERATORS, seq(
+    // rule,
+    // repeat(seq($.comma_operator, prec(PRECEDENCE.COMMA_OPERATORS, rule))),
+    // optional($.comma_operator), // in perl so far you could have this
+    with_or_without_brackets(rule),
+    optional(repeat(seq($.comma_operator, prec(PRECEDENCE.COMMA_OPERATORS, with_or_without_brackets(rule))))),
+    optional($.comma_operator), // in perl so far you could have this
   ));
 }
 
