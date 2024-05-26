@@ -71,3 +71,7 @@ my $a = sub {
 
 
 my %holidaymap = map { $_ . "day" => 1 } @holidays;
+
+sub dfsdfs {
+    return hello => 'sdff' && meos => 'dsfdf';
+}

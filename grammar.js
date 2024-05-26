@@ -629,6 +629,11 @@ module.exports = grammar({
     // there are function calls to be precise
     // see - https://stackoverflow.com/questions/24526885/does-anyone-know-how-to-understand-such-kind-of-perl-code-blocks
     named_block_statement: $ => prec(PRECEDENCE.TERM, seq(
+      $.named_block,
+      $.semi_colon,
+    )),
+
+    named_block: $ => prec(PRECEDENCE.TERM, seq(
       repeat1(seq(
         field('function_name', $.identifier),
         '{',
@@ -638,19 +643,11 @@ module.exports = grammar({
           )),
         '}'
       )),
-      $.semi_colon,
     )),
 
-    // TODO: do this
-    // parenthesized_condition: $ => seq(
-    //   '(',
-    //   ')'
-    // ),
-
-    // TODO: return hello => 'dsfs' && meow => 'dsf';
     return_expression: $ => seq(
       'return',
-      optional($._expression),
+      optional(commaSeparated($, $._expression)),
     ),
 
     _expression_without_l_value: $ => prec(PRECEDENCE.LOWEST + 1, commaSeparated($, choice(
@@ -688,6 +685,8 @@ module.exports = grammar({
 
       $.anonymous_function,
 
+      $.named_block,
+
       // object oriented stuffs
       $.bless,
 
@@ -721,7 +720,7 @@ module.exports = grammar({
     // TODO: the output tree is wrong for this. fix it.
     package_variable: $ => seq(
       alias(seq(
-        $.scalar_variable,
+        $._variables,
         token.immediate('::'),
         repeat(seq($.identifier, '::')),
       ), $.package_name),
