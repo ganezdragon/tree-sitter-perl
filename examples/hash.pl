@@ -47,3 +47,27 @@ sub something {
 }
 
 my @hash = (1, 2, 3 => 4, something, 3);
+
+
+my $long_hashref = {
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sdfds => 1,
+  sub => 1,
+};
+
+

@@ -83,6 +83,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -123,7 +127,15 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -290,6 +302,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -330,7 +346,15 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -571,6 +595,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -611,7 +639,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -781,6 +817,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -821,7 +861,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -925,7 +973,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
@@ -989,6 +1037,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -1029,7 +1081,15 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -1200,6 +1260,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -1244,7 +1308,15 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -1411,6 +1483,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -1451,7 +1527,15 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -1581,7 +1665,221 @@
   {
     "type": "bareword",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "anonymous_function",
+          "named": true
+        },
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "array_access_variable",
+          "named": true
+        },
+        {
+          "type": "array_dereference",
+          "named": true
+        },
+        {
+          "type": "array_function",
+          "named": true
+        },
+        {
+          "type": "array_ref",
+          "named": true
+        },
+        {
+          "type": "array_variable",
+          "named": true
+        },
+        {
+          "type": "backtick_quoted",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "bless",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "call_expression_recursive",
+          "named": true
+        },
+        {
+          "type": "call_expression_with_bareword",
+          "named": true
+        },
+        {
+          "type": "command_qx_quoted",
+          "named": true
+        },
+        {
+          "type": "false",
+          "named": true
+        },
+        {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
+          "type": "file_handle",
+          "named": true
+        },
+        {
+          "type": "floating_point",
+          "named": true
+        },
+        {
+          "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_dereference",
+          "named": true
+        },
+        {
+          "type": "hash_ref",
+          "named": true
+        },
+        {
+          "type": "hash_variable",
+          "named": true
+        },
+        {
+          "type": "heredoc_initializer",
+          "named": true
+        },
+        {
+          "type": "hexadecimal",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
+          "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
+          "named": true
+        },
+        {
+          "type": "octal",
+          "named": true
+        },
+        {
+          "type": "package_variable",
+          "named": true
+        },
+        {
+          "type": "patter_matcher_m",
+          "named": true
+        },
+        {
+          "type": "pattern_matcher",
+          "named": true
+        },
+        {
+          "type": "regex_pattern_qr",
+          "named": true
+        },
+        {
+          "type": "scalar_dereference",
+          "named": true
+        },
+        {
+          "type": "scalar_variable",
+          "named": true
+        },
+        {
+          "type": "scientific_notation",
+          "named": true
+        },
+        {
+          "type": "special_scalar_variable",
+          "named": true
+        },
+        {
+          "type": "standard_input",
+          "named": true
+        },
+        {
+          "type": "standard_input_to_identifier",
+          "named": true
+        },
+        {
+          "type": "standard_input_to_variable",
+          "named": true
+        },
+        {
+          "type": "string_double_quoted",
+          "named": true
+        },
+        {
+          "type": "string_q_quoted",
+          "named": true
+        },
+        {
+          "type": "string_qq_quoted",
+          "named": true
+        },
+        {
+          "type": "string_single_quoted",
+          "named": true
+        },
+        {
+          "type": "substitution_pattern_s",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "transliteration_tr_or_y",
+          "named": true
+        },
+        {
+          "type": "true",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        },
+        {
+          "type": "variable_declaration",
+          "named": true
+        },
+        {
+          "type": "word_list_qw",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "bareword_import",
@@ -1884,6 +2182,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -1924,7 +2226,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -2087,6 +2397,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -2127,7 +2441,15 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -2302,6 +2624,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -2342,7 +2668,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -2544,6 +2878,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -2604,6 +2942,10 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "loop_control_statement",
           "named": true
         },
@@ -2613,6 +2955,10 @@
         },
         {
           "type": "named_block_statement",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -2986,7 +3332,7 @@
         "required": true,
         "types": [
           {
-            "type": "parenthesized_expression",
+            "type": "parenthesized_argument",
             "named": true
           }
         ]
@@ -3105,6 +3451,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -3145,7 +3495,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -3315,6 +3673,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -3355,7 +3717,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -3525,6 +3895,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -3565,7 +3939,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -3883,6 +4265,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -3923,7 +4309,15 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -4098,6 +4492,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -4138,7 +4536,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -4384,6 +4790,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -4424,7 +4834,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -4586,11 +5004,19 @@
             "named": true
           },
           {
+            "type": "call_expression_with_bareword",
+            "named": true
+          },
+          {
             "type": "command_qx_quoted",
             "named": true
           },
           {
             "type": "false",
+            "named": true
+          },
+          {
+            "type": "fat_comma",
             "named": true
           },
           {
@@ -4634,7 +5060,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -4738,7 +5172,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
@@ -4802,6 +5236,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -4842,7 +5280,15 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -5009,6 +5455,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -5049,7 +5499,15 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -5233,7 +5691,7 @@
         "required": true,
         "types": [
           {
-            "type": "parenthesized_expression",
+            "type": "parenthesized_argument",
             "named": true
           }
         ]
@@ -5288,6 +5746,225 @@
         },
         {
           "type": "special_scalar_variable",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "keywords_in_hash_key",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "anonymous_function",
+          "named": true
+        },
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "array_access_variable",
+          "named": true
+        },
+        {
+          "type": "array_dereference",
+          "named": true
+        },
+        {
+          "type": "array_function",
+          "named": true
+        },
+        {
+          "type": "array_ref",
+          "named": true
+        },
+        {
+          "type": "array_variable",
+          "named": true
+        },
+        {
+          "type": "backtick_quoted",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "bless",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "call_expression_recursive",
+          "named": true
+        },
+        {
+          "type": "call_expression_with_bareword",
+          "named": true
+        },
+        {
+          "type": "command_qx_quoted",
+          "named": true
+        },
+        {
+          "type": "false",
+          "named": true
+        },
+        {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
+          "type": "file_handle",
+          "named": true
+        },
+        {
+          "type": "floating_point",
+          "named": true
+        },
+        {
+          "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_dereference",
+          "named": true
+        },
+        {
+          "type": "hash_ref",
+          "named": true
+        },
+        {
+          "type": "hash_variable",
+          "named": true
+        },
+        {
+          "type": "heredoc_initializer",
+          "named": true
+        },
+        {
+          "type": "hexadecimal",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
+          "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
+          "named": true
+        },
+        {
+          "type": "octal",
+          "named": true
+        },
+        {
+          "type": "package_variable",
+          "named": true
+        },
+        {
+          "type": "patter_matcher_m",
+          "named": true
+        },
+        {
+          "type": "pattern_matcher",
+          "named": true
+        },
+        {
+          "type": "regex_pattern_qr",
+          "named": true
+        },
+        {
+          "type": "scalar_dereference",
+          "named": true
+        },
+        {
+          "type": "scalar_variable",
+          "named": true
+        },
+        {
+          "type": "scientific_notation",
+          "named": true
+        },
+        {
+          "type": "special_scalar_variable",
+          "named": true
+        },
+        {
+          "type": "standard_input",
+          "named": true
+        },
+        {
+          "type": "standard_input_to_identifier",
+          "named": true
+        },
+        {
+          "type": "standard_input_to_variable",
+          "named": true
+        },
+        {
+          "type": "string_double_quoted",
+          "named": true
+        },
+        {
+          "type": "string_q_quoted",
+          "named": true
+        },
+        {
+          "type": "string_qq_quoted",
+          "named": true
+        },
+        {
+          "type": "string_single_quoted",
+          "named": true
+        },
+        {
+          "type": "substitution_pattern_s",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "transliteration_tr_or_y",
+          "named": true
+        },
+        {
+          "type": "true",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        },
+        {
+          "type": "variable_declaration",
+          "named": true
+        },
+        {
+          "type": "word_list_qw",
           "named": true
         }
       ]
@@ -5459,6 +6136,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -5499,7 +6180,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -5681,6 +6370,20 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -5771,6 +6474,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -5831,11 +6538,19 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
           "named": true
         },
         {
           "type": "named_block_statement",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -6006,6 +6721,11 @@
     }
   },
   {
+    "type": "normal_comma",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "package_name",
     "named": true,
     "fields": {},
@@ -6085,213 +6805,6 @@
       "types": [
         {
           "type": "arguments",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "parenthesized_expression",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "anonymous_function",
-          "named": true
-        },
-        {
-          "type": "array",
-          "named": true
-        },
-        {
-          "type": "array_access_variable",
-          "named": true
-        },
-        {
-          "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
-          "named": true
-        },
-        {
-          "type": "array_ref",
-          "named": true
-        },
-        {
-          "type": "array_variable",
-          "named": true
-        },
-        {
-          "type": "backtick_quoted",
-          "named": true
-        },
-        {
-          "type": "binary_expression",
-          "named": true
-        },
-        {
-          "type": "bless",
-          "named": true
-        },
-        {
-          "type": "call_expression",
-          "named": true
-        },
-        {
-          "type": "call_expression_recursive",
-          "named": true
-        },
-        {
-          "type": "call_expression_with_bareword",
-          "named": true
-        },
-        {
-          "type": "command_qx_quoted",
-          "named": true
-        },
-        {
-          "type": "false",
-          "named": true
-        },
-        {
-          "type": "file_handle",
-          "named": true
-        },
-        {
-          "type": "floating_point",
-          "named": true
-        },
-        {
-          "type": "goto_expression",
-          "named": true
-        },
-        {
-          "type": "hash_access_variable",
-          "named": true
-        },
-        {
-          "type": "hash_dereference",
-          "named": true
-        },
-        {
-          "type": "hash_ref",
-          "named": true
-        },
-        {
-          "type": "hash_variable",
-          "named": true
-        },
-        {
-          "type": "heredoc_initializer",
-          "named": true
-        },
-        {
-          "type": "hexadecimal",
-          "named": true
-        },
-        {
-          "type": "integer",
-          "named": true
-        },
-        {
-          "type": "method_invocation",
-          "named": true
-        },
-        {
-          "type": "octal",
-          "named": true
-        },
-        {
-          "type": "package_variable",
-          "named": true
-        },
-        {
-          "type": "patter_matcher_m",
-          "named": true
-        },
-        {
-          "type": "pattern_matcher",
-          "named": true
-        },
-        {
-          "type": "regex_pattern_qr",
-          "named": true
-        },
-        {
-          "type": "scalar_dereference",
-          "named": true
-        },
-        {
-          "type": "scalar_variable",
-          "named": true
-        },
-        {
-          "type": "scientific_notation",
-          "named": true
-        },
-        {
-          "type": "special_scalar_variable",
-          "named": true
-        },
-        {
-          "type": "standard_input",
-          "named": true
-        },
-        {
-          "type": "standard_input_to_identifier",
-          "named": true
-        },
-        {
-          "type": "standard_input_to_variable",
-          "named": true
-        },
-        {
-          "type": "string_double_quoted",
-          "named": true
-        },
-        {
-          "type": "string_q_quoted",
-          "named": true
-        },
-        {
-          "type": "string_qq_quoted",
-          "named": true
-        },
-        {
-          "type": "string_single_quoted",
-          "named": true
-        },
-        {
-          "type": "substitution_pattern_s",
-          "named": true
-        },
-        {
-          "type": "ternary_expression",
-          "named": true
-        },
-        {
-          "type": "transliteration_tr_or_y",
-          "named": true
-        },
-        {
-          "type": "true",
-          "named": true
-        },
-        {
-          "type": "unary_expression",
-          "named": true
-        },
-        {
-          "type": "variable_declaration",
-          "named": true
-        },
-        {
-          "type": "word_list_qw",
           "named": true
         }
       ]
@@ -6408,7 +6921,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
@@ -6472,6 +6985,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -6512,7 +7029,15 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -6615,7 +7140,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
@@ -6679,6 +7204,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -6719,7 +7248,15 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -6896,6 +7433,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -6944,7 +7485,15 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -7139,6 +7688,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -7199,11 +7752,19 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "method_invocation",
           "named": true
         },
         {
           "type": "named_block_statement",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -7493,6 +8054,10 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "file_handle",
           "named": true
         },
@@ -7553,6 +8118,10 @@
           "named": true
         },
         {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
           "type": "loop_control_statement",
           "named": true
         },
@@ -7562,6 +8131,10 @@
         },
         {
           "type": "named_block_statement",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -7941,6 +8514,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -7981,7 +8558,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -8151,6 +8736,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -8191,7 +8780,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -8375,6 +8972,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -8415,7 +9016,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -8601,6 +9210,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -8641,7 +9254,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -8889,6 +9510,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -8929,7 +9554,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -9081,7 +9714,7 @@
         "required": true,
         "types": [
           {
-            "type": "parenthesized_expression",
+            "type": "parenthesized_argument",
             "named": true
           }
         ]
@@ -9137,7 +9770,7 @@
         "required": true,
         "types": [
           {
-            "type": "parenthesized_expression",
+            "type": "parenthesized_argument",
             "named": true
           }
         ]
@@ -9271,6 +9904,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -9311,7 +9948,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -9408,6 +10053,20 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -9526,11 +10185,19 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "heredoc_initializer",
           "named": true
         },
         {
           "type": "module_name",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -9729,11 +10396,19 @@
       "required": true,
       "types": [
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "heredoc_initializer",
           "named": true
         },
         {
           "type": "no_require",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -9862,6 +10537,10 @@
             "named": true
           },
           {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
             "type": "file_handle",
             "named": true
           },
@@ -9902,7 +10581,15 @@
             "named": true
           },
           {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
             "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
             "named": true
           },
           {
@@ -10079,7 +10766,7 @@
         "required": true,
         "types": [
           {
-            "type": "parenthesized_expression",
+            "type": "parenthesized_argument",
             "named": true
           }
         ]
@@ -10322,10 +11009,6 @@
     "named": false
   },
   {
-    "type": "=>",
-    "named": false
-  },
-  {
     "type": "=~",
     "named": false
   },
@@ -10471,6 +11154,10 @@
   },
   {
     "type": "false",
+    "named": true
+  },
+  {
+    "type": "fat_comma",
     "named": true
   },
   {
@@ -10627,10 +11314,6 @@
   },
   {
     "type": "prototype",
-    "named": true
-  },
-  {
-    "type": "push",
     "named": true
   },
   {

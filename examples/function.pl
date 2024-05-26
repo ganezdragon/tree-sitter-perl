@@ -39,3 +39,35 @@ my @array = grep 76 => @meow;
 
 # map array function
 map { $_*2 } @meow;
+
+my %holidaymap = map { $_ . "day" => 1} @holidays;
+
+
+map { $_ => 1 } @holidays;
+
+
+sub hello {
+    $_ => 1
+}
+
+if (1) {
+    $_ => 1
+}
+
+$a++;
+
+++$b;
+
+{
+	$a + 1;
+    ++$b;
+    $a++;
+}
+
+my $a = sub {
+    my ($notedbh, $noteargs) = @_;
+    push @noteinfo, $noteargs;
+};
+
+
+my %holidaymap = map { $_ . "day" => 1 } @holidays;
