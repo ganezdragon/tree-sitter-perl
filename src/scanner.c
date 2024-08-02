@@ -54,6 +54,7 @@ enum TokenType {
   ELEMENT_IN_QW,
   END_DELIMITER_QW,
   START_DELIMITER_REGEX,
+  START_DELIMITER_SLASH,
   REGEX_PATTERN,
   END_DELIMITER_REGEX,
   START_DELIMITER_SEARCH_REPLACE,
@@ -637,6 +638,7 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
       valid_symbols[SCALAR_VARIABLE_EXTERNAL]
       && valid_symbols[START_DELIMITER]
       && valid_symbols[END_DELIMITER] && valid_symbols[STRING_CONTENT] && valid_symbols[STRING_SINGLE_QUOTED_CONTENT] && valid_symbols[STRING_QQ_QUOTED_CONTENT] && valid_symbols[STRING_DOUBLE_QUOTED_CONTENT] && valid_symbols[START_DELIMITER_QW] && valid_symbols[END_DELIMITER_QW] && valid_symbols[START_DELIMITER_REGEX] && valid_symbols[REGEX_PATTERN] && valid_symbols[END_DELIMITER_REGEX] && valid_symbols[START_DELIMITER_SEARCH_REPLACE] && valid_symbols[SEARCH_REPLACE_CONTENT] && valid_symbols[SEPARATOR_DELIMITER_SEARCH_REPLACE] && valid_symbols[END_DELIMITER_SEARCH_REPLACE] && valid_symbols[START_DELIMITER_TRANSLITERATION] && valid_symbols[TRANSLITERATION_CONTENT] && valid_symbols[SEPARATOR_DELIMITER_TRANSLITERATION] && valid_symbols[END_DELIMITER_TRANSLITERATION] && valid_symbols[IMAGINARY_HEREDOC_START] && valid_symbols[HEREDOC_START_IDENTIFIER] && valid_symbols[HEREDOC_CONTENT] && valid_symbols[HEREDOC_END_IDENTIFIER] && valid_symbols[POD_CONTENT]
+      && valid_symbols[START_DELIMITER_SLASH]
       && valid_symbols[AUTOMATIC_SEMICOLON]) {
     return false;
   }
@@ -808,6 +810,16 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
 
     lexer->mark_end(lexer);
     return true;
+  }
+
+  // for // regex patterns
+  if (valid_symbols[START_DELIMITER_SLASH]) {
+    if (lexer->lookahead == '/') {
+      return parse_start_delimiter(scanner, lexer, START_DELIMITER_SLASH);
+    }
+    else {
+      return false;
+    }
   }
 
   if (valid_symbols[START_DELIMITER_REGEX]) {
