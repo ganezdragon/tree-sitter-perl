@@ -48,6 +48,7 @@ enum TokenType {
   END_DELIMITER,
   STRING_CONTENT,
   STRING_SINGLE_QUOTED_CONTENT,
+  STRING_SINGLE_Q_QUOTED_CONTENT,
   STRING_QQ_QUOTED_CONTENT,
   STRING_DOUBLE_QUOTED_CONTENT,
   START_DELIMITER_QW,
@@ -367,7 +368,7 @@ static bool scan_nested_delimiters(Scanner *scanner, TSLexer *lexer, enum TokenT
   return false;
 }
 
-static bool parse_delimited_and_interpolated_content(Scanner *scanner, TSLexer *lexer, enum TokenType token_type, enum TokenType ending_delimiter) {
+static bool parse_delimited_and_interpolated_content(Scanner *scanner, TSLexer *lexer, enum TokenType token_type, enum TokenType ending_delimiter, bool can_escape, bool can_interpolate) {
   if (lexer->lookahead == get_end_delimiter(scanner)) {
     lexer->result_symbol = ending_delimiter;
     advance(lexer);
@@ -375,11 +376,11 @@ static bool parse_delimited_and_interpolated_content(Scanner *scanner, TSLexer *
     return true;
   } else {
     // oh boy! the interpolation
-    if (lexer->lookahead == '$') {
+    if (can_interpolate && lexer->lookahead == '$') {
       return handle_interpolation(scanner, lexer, token_type);
     }
     // escape sequences, only basic support as of now
-    if (lexer->lookahead == '\\') {
+    if (can_escape && lexer->lookahead == '\\') {
       return handle_escape_sequence(lexer, token_type);
     }
 
@@ -637,7 +638,12 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
   if (
       valid_symbols[SCALAR_VARIABLE_EXTERNAL]
       && valid_symbols[START_DELIMITER]
-      && valid_symbols[END_DELIMITER] && valid_symbols[STRING_CONTENT] && valid_symbols[STRING_SINGLE_QUOTED_CONTENT] && valid_symbols[STRING_QQ_QUOTED_CONTENT] && valid_symbols[STRING_DOUBLE_QUOTED_CONTENT] && valid_symbols[START_DELIMITER_QW] && valid_symbols[END_DELIMITER_QW] && valid_symbols[START_DELIMITER_REGEX] && valid_symbols[REGEX_PATTERN] && valid_symbols[END_DELIMITER_REGEX] && valid_symbols[START_DELIMITER_SEARCH_REPLACE] && valid_symbols[SEARCH_REPLACE_CONTENT] && valid_symbols[SEPARATOR_DELIMITER_SEARCH_REPLACE] && valid_symbols[END_DELIMITER_SEARCH_REPLACE] && valid_symbols[START_DELIMITER_TRANSLITERATION] && valid_symbols[TRANSLITERATION_CONTENT] && valid_symbols[SEPARATOR_DELIMITER_TRANSLITERATION] && valid_symbols[END_DELIMITER_TRANSLITERATION] && valid_symbols[IMAGINARY_HEREDOC_START] && valid_symbols[HEREDOC_START_IDENTIFIER] && valid_symbols[HEREDOC_CONTENT] && valid_symbols[HEREDOC_END_IDENTIFIER] && valid_symbols[POD_CONTENT]
+      && valid_symbols[END_DELIMITER]
+      && valid_symbols[STRING_CONTENT]
+      && valid_symbols[STRING_SINGLE_QUOTED_CONTENT]
+      && valid_symbols[STRING_SINGLE_Q_QUOTED_CONTENT]
+      && valid_symbols[STRING_QQ_QUOTED_CONTENT]
+      && valid_symbols[STRING_DOUBLE_QUOTED_CONTENT] && valid_symbols[START_DELIMITER_QW] && valid_symbols[END_DELIMITER_QW] && valid_symbols[START_DELIMITER_REGEX] && valid_symbols[REGEX_PATTERN] && valid_symbols[END_DELIMITER_REGEX] && valid_symbols[START_DELIMITER_SEARCH_REPLACE] && valid_symbols[SEARCH_REPLACE_CONTENT] && valid_symbols[SEPARATOR_DELIMITER_SEARCH_REPLACE] && valid_symbols[END_DELIMITER_SEARCH_REPLACE] && valid_symbols[START_DELIMITER_TRANSLITERATION] && valid_symbols[TRANSLITERATION_CONTENT] && valid_symbols[SEPARATOR_DELIMITER_TRANSLITERATION] && valid_symbols[END_DELIMITER_TRANSLITERATION] && valid_symbols[IMAGINARY_HEREDOC_START] && valid_symbols[HEREDOC_START_IDENTIFIER] && valid_symbols[HEREDOC_CONTENT] && valid_symbols[HEREDOC_END_IDENTIFIER] && valid_symbols[POD_CONTENT]
       && valid_symbols[START_DELIMITER_SLASH]
       && valid_symbols[AUTOMATIC_SEMICOLON]) {
     return false;
@@ -749,8 +755,12 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
     return parse_start_delimiter(scanner, lexer, START_DELIMITER);
   }
 
+  if (valid_symbols[STRING_SINGLE_Q_QUOTED_CONTENT]) {
+    return parse_delimited_and_interpolated_content(scanner, lexer, STRING_SINGLE_Q_QUOTED_CONTENT, END_DELIMITER, 0, 0);
+  }
+
   if (valid_symbols[STRING_QQ_QUOTED_CONTENT]) {
-    return parse_delimited_and_interpolated_content(scanner, lexer, STRING_QQ_QUOTED_CONTENT, END_DELIMITER);
+    return parse_delimited_and_interpolated_content(scanner, lexer, STRING_QQ_QUOTED_CONTENT, END_DELIMITER, 1, 1);
   }
 
   if (valid_symbols[STRING_DOUBLE_QUOTED_CONTENT]) {
@@ -818,15 +828,20 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
       return parse_start_delimiter(scanner, lexer, START_DELIMITER_SLASH);
     }
     else {
+      lexer->mark_end(lexer);
       return false;
     }
   }
+
+  // if (valid_symbols[START_DELIMITER_SLASH]) {
+  //   return parse_start_delimiter(scan, lexer, START_DELIMITER_SLASH);
+  // }
 
   if (valid_symbols[START_DELIMITER_REGEX]) {
     return parse_start_delimiter(scanner, lexer, START_DELIMITER_REGEX);
   }
   if (valid_symbols[REGEX_PATTERN]) {
-    return parse_delimited_and_interpolated_content(scanner, lexer, REGEX_PATTERN, END_DELIMITER_REGEX);
+    return parse_delimited_and_interpolated_content(scanner, lexer, REGEX_PATTERN, END_DELIMITER_REGEX, 1, 1);
   }
 
   if (valid_symbols[START_DELIMITER_SEARCH_REPLACE]) {

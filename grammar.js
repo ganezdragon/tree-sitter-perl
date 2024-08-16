@@ -70,6 +70,7 @@ module.exports = grammar({
     $._end_delimiter,
     $._string_content,
     $._string_single_quoted_content,
+    $._string_single_q_quoted_content,
     $._string_qq_quoted_content,
     $._string_double_quoted_content,
     $._start_delimiter_qw,
@@ -296,13 +297,13 @@ module.exports = grammar({
       $.semi_colon,
     ),
 
-    use_no_if_statement: $ => prec.right(seq(
+    use_no_if_statement: $ => prec.left(seq(
       choice(
         field('use', 'use'),
         field('no', 'no'),
       ),
       $._if_simple,
-      choice($.package_name, $.module_name, $._string),
+      optional(choice($.package_name, $.module_name, $._string)), // TODO: should this be optional?
       optional($.version),
       optional($._comma_operator),
       optional(choice($._list, $._string)),
@@ -411,7 +412,7 @@ module.exports = grammar({
     // ),
 
     while_statement: $ => seq(
-      optional(seq(field('label', $.identifier), ':')),
+      optional($._label),
       'while',
       field('condition', $.parenthesized_argument),
       field('body', $.block),
@@ -424,7 +425,7 @@ module.exports = grammar({
     ),
 
     until_statement: $ => seq(
-      optional(seq(field('label', $.identifier), ':')),
+      optional($._label),
       'until',
       field('condition', $.parenthesized_argument),
       field('body', $.block),
@@ -433,14 +434,14 @@ module.exports = grammar({
 
     // the C - style for loop
     for_statement_1: $ => seq(
-      optional(seq(field('label', $.identifier), ':')),
+      optional($._label),
       choice('for', 'foreach'),
       $._for_parenthesize,
       field('body', $.block),
     ),
 
     for_statement_2: $ => seq(
-      optional(seq(field('label', $.identifier), ':')),
+      optional($._label),
       choice('for', 'foreach'),
       optional(choice(
         seq(optional($.scope), $.scalar_variable),
@@ -580,13 +581,17 @@ module.exports = grammar({
     ),
 
     standalone_block: $ => prec.left(PRECEDENCE.TERM, seq(
-      optional(
-        seq(field('label', $.identifier), ':'),
-      ),
+      optional($._label),
       $.block,
       optional(field('flow', $.continue)),
       optional($.semi_colon),
     )),
+
+    _label: $ => seq(
+      field('label', $.identifier),
+      optional(' '), // with this hack it works.
+      ':',
+    ),
 
     _block_statements: $ => choice(
       // $._statement,
@@ -626,6 +631,7 @@ module.exports = grammar({
       $._primitive_expression,
       $._string,
       $._variables,
+      $._access_variables,
       $.special_scalar_variable,
       $._dereference,
       $.package_variable,
@@ -645,7 +651,7 @@ module.exports = grammar({
       // quote-like operators
       $.command_qx_quoted,
       $.backtick_quoted,
-      $.patter_matcher_m,
+      $.pattern_matcher_m,
       $.regex_pattern_qr,
       $.substitution_pattern_s,
       $.transliteration_tr_or_y,
@@ -757,7 +763,7 @@ module.exports = grammar({
     goto_expression: $ => prec.right(PRECEDENCE.ASSIGNMENT_OPERATORS, seq(
       'goto',
       choice(
-        seq(field('label', $.identifier), ':'),
+        $._label,
         field('expression', $._expression),
         field('subroutine', $.call_expression),
       ),
@@ -862,7 +868,7 @@ module.exports = grammar({
       ),
       seq(
         field('variable', $._expression),
-        field('operator', '/'),
+        field('operator', /\//),
         field('variable', $._expression),
       ),
       seq(
@@ -1119,6 +1125,20 @@ module.exports = grammar({
       field('args', $._argument_choice),
     )),
 
+    call_expression_with_bracketed_args: $ => prec.left(PRECEDENCE.TERM, seq(
+      // optional(token.immediate('&')),
+      optional('&'),
+      optional(seq(
+        field('package_name', $.package_name),
+        token.immediate('::'),
+      )),
+      field('function_name', choice(
+        getInBuiltFunctionNames(),
+        $.identifier,
+      )),
+      field('args', $.parenthesized_argument),
+    )),
+
     call_expression_with_bareword: $ => prec.left(PRECEDENCE.LOWEST, seq(
       // optional(token.immediate('&')),
       optional('&'),
@@ -1137,6 +1157,7 @@ module.exports = grammar({
       choice(
         field('package_name', choice($.identifier, $.package_name, $.string_single_quoted)),
         field('object', $.scalar_variable),
+        field('string', $._interpolatable_string),
         field('object_return_value', getLValueRules($)),
       ),
       repeat1(prec.right(PRECEDENCE.ARROW_OPERATOR,
@@ -1157,7 +1178,7 @@ module.exports = grammar({
           ),
           // anything with bracket is higher precedence.
           // so args without brackets is lower precedence.
-          optional(field('args', $._argument_choice)), // TODO: make this optional and fix errors
+          optional(field('args', $.parenthesized_argument)), // TODO: make this optional and fix errors
         ),
       ),
     ))),
@@ -1198,9 +1219,12 @@ module.exports = grammar({
       $.package_variable,
       $.array_variable,
       $.hash_variable,
+    )),
+
+    _access_variables: $ => choice(
       $.hash_access_variable,
       $.array_access_variable,
-    )),
+    ),
 
     _scalar_type: $ => choice(
       $.string_single_quoted,
@@ -1212,8 +1236,9 @@ module.exports = grammar({
       $.array_ref,
       $.hash_ref,
 
-      $.array_access_variable,
-      $.hash_access_variable,
+      // remove here since its already declared
+      // $.array_access_variable,
+      // $.hash_access_variable,
     ),
 
     // the strings
@@ -1224,6 +1249,11 @@ module.exports = grammar({
       $.string_qq_quoted,
       $.heredoc_initializer,
     )),
+
+    _interpolatable_string: $ => choice(
+      $.string_double_quoted,
+      $.string_qq_quoted,
+    ),
 
     _resolves_to_digit: $ => choice(
       $.string_single_quoted,
@@ -1299,18 +1329,12 @@ module.exports = grammar({
       repeat($._string_single_quoted_content),
       "'",
     )),
-    // TODO change all + to * in regex
-    // NOTE/TODO:
-    // we are currently only supporting {, /, (, \ as delimiters
-    // in future release should use external scanners for delimiters
+
     string_q_quoted: $ => prec(PRECEDENCE.TERM, seq(
       'q',
-      choice(
-        seq('{', token(prec(PRECEDENCE.TERM, /[^}]+/)), '}'),
-        seq('/', token(prec(PRECEDENCE.TERM, /[^/]+/)), '/'),
-        seq('(', token(prec(PRECEDENCE.TERM, /[^)]+/)), ')'),
-        seq('\'', token(prec(PRECEDENCE.TERM, /[^']+/)), '\''),
-      ),
+      alias($._start_delimiter, $.start_delimiter),
+      repeat($._string_single_q_quoted_content),
+      alias($._end_delimiter, $.end_delimiter),
     )),
 
     string_double_quoted: $ => prec(PRECEDENCE.TERM, seq(
@@ -1318,6 +1342,7 @@ module.exports = grammar({
       repeat(choice($.interpolation, $.escape_sequence, $._string_double_quoted_content)),
       '"',
     )),
+
     string_qq_quoted: $ => prec(PRECEDENCE.TERM, seq(
       'qq',
       alias($._start_delimiter, $.start_delimiter),
@@ -1351,7 +1376,7 @@ module.exports = grammar({
       alias($._end_delimiter_qw, $.end_delimiter_qw),
     )),
 
-    patter_matcher_m: $ => prec(PRECEDENCE.TERM, seq(
+    pattern_matcher_m: $ => prec(PRECEDENCE.TERM, seq(
       'm',
       // /'.*'/, // don't interpolate for a single quote. TODO: not working
       alias($._start_delimiter_regex, $.start_delimiter),
@@ -1360,17 +1385,18 @@ module.exports = grammar({
       optional($.regex_option),
     )),
 
-    pattern_matcher: $ => prec.right(PRECEDENCE.TERM, seq(
-      alias($._start_delimiter_slash, $.start_delimiter),
-      repeat(choice($._regex_pattern, $.interpolation, $.escape_sequence)),
-      alias($._end_delimiter_regex, $.end_delimiter),
+    pattern_matcher: $ => prec.left(PRECEDENCE.TERM, seq(
+      // TODO: currently doesn't parse interpolation.
+      '/',
+      optional($.regex_pattern_content),
+      '/',
       optional($.regex_option),
     )),
 
-    regex_pattern_qr: $ => prec.right(PRECEDENCE.TERM, seq(
+    regex_pattern_qr: $ => prec.left(PRECEDENCE.TERM, seq(
       'qr',
       // /'.*'/, // don't interpolate for a single quote. TODO: not working
-      alias($._start_delimiter_slash, $.start_delimiter),
+      alias($._start_delimiter_regex, $.start_delimiter),
       repeat(choice($._regex_pattern, $.interpolation, $.escape_sequence)),
       alias($._end_delimiter_regex, $.end_delimiter),
       optional($.regex_option),
@@ -1398,7 +1424,7 @@ module.exports = grammar({
     )),
 
     // shamelessly copied from the tree-sitter-javascript
-    regex_pattern: $ => prec.left(PRECEDENCE.TERM, repeat1(
+    regex_pattern_content: $ => prec.dynamic(PRECEDENCE.TERM, repeat1(
       choice(
         seq(
           '[',
@@ -1426,9 +1452,8 @@ module.exports = grammar({
     // escape_character: $ => '\\[.]+',
 
     interpolation: $ => choice(
-      prec(PRECEDENCE.TERM, $._variables),
+      $._variables,
       $.scalar_dereference,
-      $.special_scalar_variable,
       $.hash_access_in_interpolation,
       $.array_access_in_interpolation,
       // $.function_call_in_interpolation,
@@ -1475,7 +1500,7 @@ module.exports = grammar({
       '$', with_or_without_curly_brackets(/#*|[!"#$%&'()*+,-./0123456789:;<=>?@\]\[\\_`|~]/), // NOTE: ab is removed as my $a = 1 is possible
     )),
 
-    scalar_variable: $ => prec(PRECEDENCE.TERM, seq(
+    scalar_variable: $ => prec.left(PRECEDENCE.TERM, seq(
       '$', with_or_without_curly_brackets($._scalar_variable_external)
     )),
 
@@ -1691,10 +1716,9 @@ function getLValueRules($) {
   return choice(
     $._variables,
 
-    $.hash_access_variable,
-    $.array_access_variable,
+    $._access_variables,
 
-    $.call_expression,
+    $.call_expression_with_bracketed_args,
     $.call_expression_recursive,
     $.method_invocation,
   );

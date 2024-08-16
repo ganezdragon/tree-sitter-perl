@@ -75,3 +75,7 @@ my %holidaymap = map { $_ . "day" => 1 } @holidays;
 sub dfsdfs {
     return hello => 'sdff' && meos => 'dsfdf';
 }
+
+dfsdfs %holidaymap, $a if $a;
+
+split /abc/, $meow;

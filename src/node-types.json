@@ -151,11 +151,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -370,11 +370,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -539,11 +539,11 @@
             "named": true
           },
           {
-            "type": "call_expression",
+            "type": "call_expression_recursive",
             "named": true
           },
           {
-            "type": "call_expression_recursive",
+            "type": "call_expression_with_bracketed_args",
             "named": true
           },
           {
@@ -709,11 +709,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -939,11 +939,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -1162,11 +1162,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -1381,11 +1381,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -1616,10 +1616,6 @@
           },
           {
             "type": ".=",
-            "named": false
-          },
-          {
-            "type": "/",
             "named": false
           },
           {
@@ -1861,11 +1857,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -2076,11 +2072,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -2303,11 +2299,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -2589,11 +2585,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -2888,6 +2884,66 @@
     }
   },
   {
+    "type": "call_expression_with_bracketed_args",
+    "named": true,
+    "fields": {
+      "args": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "parenthesized_argument",
+            "named": true
+          }
+        ]
+      },
+      "function_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "grep",
+            "named": false
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "join",
+            "named": false
+          },
+          {
+            "type": "map",
+            "named": false
+          },
+          {
+            "type": "sort",
+            "named": false
+          },
+          {
+            "type": "split",
+            "named": false
+          },
+          {
+            "type": "unpack",
+            "named": false
+          }
+        ]
+      },
+      "package_name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "package_name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "command_qx_quoted",
     "named": true,
     "fields": {},
@@ -3132,11 +3188,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -3394,11 +3450,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -3616,11 +3672,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -3838,11 +3894,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -4208,11 +4264,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -4435,11 +4491,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -4613,11 +4669,11 @@
             "named": true
           },
           {
-            "type": "call_expression",
+            "type": "call_expression_recursive",
             "named": true
           },
           {
-            "type": "call_expression_recursive",
+            "type": "call_expression_with_bracketed_args",
             "named": true
           },
           {
@@ -4783,11 +4839,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -5013,11 +5069,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -5232,11 +5288,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -5438,19 +5494,11 @@
           "named": true
         },
         {
-          "type": "array_access_variable",
-          "named": true
-        },
-        {
           "type": "array_variable",
           "named": true
         },
         {
           "type": "hash_access_in_interpolation",
-          "named": true
-        },
-        {
-          "type": "hash_access_variable",
           "named": true
         },
         {
@@ -5609,11 +5657,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -5764,14 +5812,6 @@
         "required": false,
         "types": [
           {
-            "type": " ",
-            "named": false
-          },
-          {
-            "type": "arguments",
-            "named": true
-          },
-          {
             "type": "parenthesized_argument",
             "named": true
           }
@@ -5834,11 +5874,11 @@
             "named": true
           },
           {
-            "type": "call_expression",
+            "type": "call_expression_recursive",
             "named": true
           },
           {
-            "type": "call_expression_recursive",
+            "type": "call_expression_with_bracketed_args",
             "named": true
           },
           {
@@ -5881,6 +5921,20 @@
           },
           {
             "type": "string_single_quoted",
+            "named": true
+          }
+        ]
+      },
+      "string": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "string_double_quoted",
+            "named": true
+          },
+          {
+            "type": "string_qq_quoted",
             "named": true
           }
         ]
@@ -5931,15 +5985,7 @@
         "required": true,
         "types": [
           {
-            "type": "array_access_variable",
-            "named": true
-          },
-          {
             "type": "array_variable",
-            "named": true
-          },
-          {
-            "type": "hash_access_variable",
             "named": true
           },
           {
@@ -6028,15 +6074,7 @@
       "required": false,
       "types": [
         {
-          "type": "array_access_variable",
-          "named": true
-        },
-        {
           "type": "array_variable",
-          "named": true
-        },
-        {
-          "type": "hash_access_variable",
           "named": true
         },
         {
@@ -6133,38 +6171,26 @@
     }
   },
   {
-    "type": "patter_matcher_m",
+    "type": "pattern_matcher",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
-        {
-          "type": "end_delimiter",
-          "named": true
-        },
-        {
-          "type": "escape_sequence",
-          "named": true
-        },
-        {
-          "type": "interpolation",
-          "named": true
-        },
         {
           "type": "regex_option",
           "named": true
         },
         {
-          "type": "start_delimiter",
+          "type": "regex_pattern_content",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "pattern_matcher",
+    "type": "pattern_matcher_m",
     "named": true,
     "fields": {},
     "children": {
@@ -6196,6 +6222,11 @@
   },
   {
     "type": "pod_statement",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "regex_pattern_content",
     "named": true,
     "fields": {}
   },
@@ -6378,11 +6409,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -6597,11 +6628,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -6834,11 +6865,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -7109,11 +7140,11 @@
           "named": true
         },
         {
-          "type": "patter_matcher_m",
+          "type": "pattern_matcher",
           "named": true
         },
         {
-          "type": "pattern_matcher",
+          "type": "pattern_matcher_m",
           "named": true
         },
         {
@@ -7378,7 +7409,21 @@
   {
     "type": "string_q_quoted",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "end_delimiter",
+          "named": true
+        },
+        {
+          "type": "start_delimiter",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "string_qq_quoted",
@@ -7595,11 +7640,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -7817,11 +7862,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -8053,11 +8098,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -8291,11 +8336,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -8591,11 +8636,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -8997,11 +9042,11 @@
             "named": true
           },
           {
-            "type": "patter_matcher_m",
+            "type": "pattern_matcher",
             "named": true
           },
           {
-            "type": "pattern_matcher",
+            "type": "pattern_matcher_m",
             "named": true
           },
           {
@@ -9207,7 +9252,7 @@
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "array",
@@ -9476,15 +9521,7 @@
         "required": false,
         "types": [
           {
-            "type": "array_access_variable",
-            "named": true
-          },
-          {
             "type": "array_variable",
-            "named": true
-          },
-          {
-            "type": "hash_access_variable",
             "named": true
           },
           {
