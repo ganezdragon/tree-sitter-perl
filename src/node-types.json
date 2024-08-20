@@ -31,15 +31,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -100,6 +100,10 @@
         },
         {
           "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_complex",
           "named": true
         },
         {
@@ -254,15 +258,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -319,6 +323,10 @@
         },
         {
           "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_complex",
           "named": true
         },
         {
@@ -457,6 +465,258 @@
     }
   },
   {
+    "type": "array_access_complex",
+    "named": true,
+    "fields": {
+      "array_variable": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          }
+        ]
+      },
+      "index": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
+            "type": "array_access_variable",
+            "named": true
+          },
+          {
+            "type": "array_dereference",
+            "named": true
+          },
+          {
+            "type": "array_ref",
+            "named": true
+          },
+          {
+            "type": "array_variable",
+            "named": true
+          },
+          {
+            "type": "backtick_quoted",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "bless",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "call_expression_recursive",
+            "named": true
+          },
+          {
+            "type": "call_expression_with_bareword",
+            "named": true
+          },
+          {
+            "type": "command_qx_quoted",
+            "named": true
+          },
+          {
+            "type": "false",
+            "named": true
+          },
+          {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
+            "type": "file_handle",
+            "named": true
+          },
+          {
+            "type": "floating_point",
+            "named": true
+          },
+          {
+            "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_dereference",
+            "named": true
+          },
+          {
+            "type": "hash_ref",
+            "named": true
+          },
+          {
+            "type": "hash_variable",
+            "named": true
+          },
+          {
+            "type": "heredoc_initializer",
+            "named": true
+          },
+          {
+            "type": "hexadecimal",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
+            "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
+            "named": true
+          },
+          {
+            "type": "octal",
+            "named": true
+          },
+          {
+            "type": "package_variable",
+            "named": true
+          },
+          {
+            "type": "pattern_matcher",
+            "named": true
+          },
+          {
+            "type": "pattern_matcher_m",
+            "named": true
+          },
+          {
+            "type": "regex_pattern_qr",
+            "named": true
+          },
+          {
+            "type": "scalar_dereference",
+            "named": true
+          },
+          {
+            "type": "scalar_variable",
+            "named": true
+          },
+          {
+            "type": "scientific_notation",
+            "named": true
+          },
+          {
+            "type": "special_scalar_variable",
+            "named": true
+          },
+          {
+            "type": "standard_input",
+            "named": true
+          },
+          {
+            "type": "standard_input_to_identifier",
+            "named": true
+          },
+          {
+            "type": "standard_input_to_variable",
+            "named": true
+          },
+          {
+            "type": "string_double_quoted",
+            "named": true
+          },
+          {
+            "type": "string_q_quoted",
+            "named": true
+          },
+          {
+            "type": "string_qq_quoted",
+            "named": true
+          },
+          {
+            "type": "string_single_quoted",
+            "named": true
+          },
+          {
+            "type": "substitution_pattern_s",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "transliteration_tr_or_y",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "variable_declaration",
+            "named": true
+          },
+          {
+            "type": "word_list_qw",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "arrow_operator",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "array_access_in_interpolation",
     "named": true,
     "fields": {
@@ -535,6 +795,10 @@
             "named": true
           },
           {
+            "type": "array_ref",
+            "named": true
+          },
+          {
             "type": "array_variable",
             "named": true
           },
@@ -548,6 +812,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_ref",
             "named": true
           },
           {
@@ -593,15 +861,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -658,6 +926,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -823,15 +1095,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -891,226 +1163,7 @@
           "named": true
         },
         {
-          "type": "hash_access_variable",
-          "named": true
-        },
-        {
-          "type": "hash_dereference",
-          "named": true
-        },
-        {
-          "type": "hash_ref",
-          "named": true
-        },
-        {
-          "type": "hash_variable",
-          "named": true
-        },
-        {
-          "type": "heredoc_initializer",
-          "named": true
-        },
-        {
-          "type": "hexadecimal",
-          "named": true
-        },
-        {
-          "type": "integer",
-          "named": true
-        },
-        {
-          "type": "keywords_in_hash_key",
-          "named": true
-        },
-        {
-          "type": "method_invocation",
-          "named": true
-        },
-        {
-          "type": "normal_comma",
-          "named": true
-        },
-        {
-          "type": "octal",
-          "named": true
-        },
-        {
-          "type": "package_variable",
-          "named": true
-        },
-        {
-          "type": "pattern_matcher",
-          "named": true
-        },
-        {
-          "type": "pattern_matcher_m",
-          "named": true
-        },
-        {
-          "type": "regex_pattern_qr",
-          "named": true
-        },
-        {
-          "type": "scalar_dereference",
-          "named": true
-        },
-        {
-          "type": "scalar_variable",
-          "named": true
-        },
-        {
-          "type": "scientific_notation",
-          "named": true
-        },
-        {
-          "type": "special_scalar_variable",
-          "named": true
-        },
-        {
-          "type": "standard_input",
-          "named": true
-        },
-        {
-          "type": "standard_input_to_identifier",
-          "named": true
-        },
-        {
-          "type": "standard_input_to_variable",
-          "named": true
-        },
-        {
-          "type": "string_double_quoted",
-          "named": true
-        },
-        {
-          "type": "string_q_quoted",
-          "named": true
-        },
-        {
-          "type": "string_qq_quoted",
-          "named": true
-        },
-        {
-          "type": "string_single_quoted",
-          "named": true
-        },
-        {
-          "type": "substitution_pattern_s",
-          "named": true
-        },
-        {
-          "type": "ternary_expression",
-          "named": true
-        },
-        {
-          "type": "transliteration_tr_or_y",
-          "named": true
-        },
-        {
-          "type": "true",
-          "named": true
-        },
-        {
-          "type": "unary_expression",
-          "named": true
-        },
-        {
-          "type": "variable_declaration",
-          "named": true
-        },
-        {
-          "type": "word_list_qw",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "array_function",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "anonymous_function",
-          "named": true
-        },
-        {
-          "type": "array",
-          "named": true
-        },
-        {
-          "type": "array_access_variable",
-          "named": true
-        },
-        {
-          "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
-          "named": true
-        },
-        {
-          "type": "array_ref",
-          "named": true
-        },
-        {
-          "type": "array_variable",
-          "named": true
-        },
-        {
-          "type": "backtick_quoted",
-          "named": true
-        },
-        {
-          "type": "binary_expression",
-          "named": true
-        },
-        {
-          "type": "bless",
-          "named": true
-        },
-        {
-          "type": "block",
-          "named": true
-        },
-        {
-          "type": "call_expression",
-          "named": true
-        },
-        {
-          "type": "call_expression_recursive",
-          "named": true
-        },
-        {
-          "type": "call_expression_with_bareword",
-          "named": true
-        },
-        {
-          "type": "command_qx_quoted",
-          "named": true
-        },
-        {
-          "type": "false",
-          "named": true
-        },
-        {
-          "type": "fat_comma",
-          "named": true
-        },
-        {
-          "type": "file_handle",
-          "named": true
-        },
-        {
-          "type": "floating_point",
-          "named": true
-        },
-        {
-          "type": "goto_expression",
+          "type": "hash_access_complex",
           "named": true
         },
         {
@@ -1265,15 +1318,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -1330,6 +1383,10 @@
         },
         {
           "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_complex",
           "named": true
         },
         {
@@ -1741,15 +1798,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -1806,6 +1863,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -1956,15 +2017,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -2021,6 +2082,10 @@
         },
         {
           "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_complex",
           "named": true
         },
         {
@@ -2183,15 +2248,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -2248,6 +2313,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -2429,15 +2498,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -2517,6 +2586,10 @@
           "named": true
         },
         {
+          "type": "hash_access_complex",
+          "named": true
+        },
+        {
           "type": "hash_access_variable",
           "named": true
         },
@@ -2562,10 +2635,6 @@
         },
         {
           "type": "method_invocation",
-          "named": true
-        },
-        {
-          "type": "named_block_statement",
           "named": true
         },
         {
@@ -2766,32 +2835,8 @@
         "required": true,
         "types": [
           {
-            "type": "grep",
-            "named": false
-          },
-          {
             "type": "identifier",
             "named": true
-          },
-          {
-            "type": "join",
-            "named": false
-          },
-          {
-            "type": "map",
-            "named": false
-          },
-          {
-            "type": "sort",
-            "named": false
-          },
-          {
-            "type": "split",
-            "named": false
-          },
-          {
-            "type": "unpack",
-            "named": false
           }
         ]
       },
@@ -2805,6 +2850,220 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "anonymous_function",
+          "named": true
+        },
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
+          "type": "array_access_variable",
+          "named": true
+        },
+        {
+          "type": "array_dereference",
+          "named": true
+        },
+        {
+          "type": "array_ref",
+          "named": true
+        },
+        {
+          "type": "array_variable",
+          "named": true
+        },
+        {
+          "type": "backtick_quoted",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "bless",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "call_expression_recursive",
+          "named": true
+        },
+        {
+          "type": "command_qx_quoted",
+          "named": true
+        },
+        {
+          "type": "false",
+          "named": true
+        },
+        {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
+          "type": "file_handle",
+          "named": true
+        },
+        {
+          "type": "floating_point",
+          "named": true
+        },
+        {
+          "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_complex",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_dereference",
+          "named": true
+        },
+        {
+          "type": "hash_ref",
+          "named": true
+        },
+        {
+          "type": "hash_variable",
+          "named": true
+        },
+        {
+          "type": "heredoc_initializer",
+          "named": true
+        },
+        {
+          "type": "hexadecimal",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
+          "type": "method_invocation",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
+          "named": true
+        },
+        {
+          "type": "octal",
+          "named": true
+        },
+        {
+          "type": "package_variable",
+          "named": true
+        },
+        {
+          "type": "pattern_matcher",
+          "named": true
+        },
+        {
+          "type": "pattern_matcher_m",
+          "named": true
+        },
+        {
+          "type": "regex_pattern_qr",
+          "named": true
+        },
+        {
+          "type": "scalar_dereference",
+          "named": true
+        },
+        {
+          "type": "scalar_variable",
+          "named": true
+        },
+        {
+          "type": "scientific_notation",
+          "named": true
+        },
+        {
+          "type": "special_scalar_variable",
+          "named": true
+        },
+        {
+          "type": "standard_input",
+          "named": true
+        },
+        {
+          "type": "standard_input_to_identifier",
+          "named": true
+        },
+        {
+          "type": "standard_input_to_variable",
+          "named": true
+        },
+        {
+          "type": "string_double_quoted",
+          "named": true
+        },
+        {
+          "type": "string_q_quoted",
+          "named": true
+        },
+        {
+          "type": "string_qq_quoted",
+          "named": true
+        },
+        {
+          "type": "string_single_quoted",
+          "named": true
+        },
+        {
+          "type": "substitution_pattern_s",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "transliteration_tr_or_y",
+          "named": true
+        },
+        {
+          "type": "true",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        },
+        {
+          "type": "variable_declaration",
+          "named": true
+        },
+        {
+          "type": "word_list_qw",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -2842,32 +3101,8 @@
         "required": true,
         "types": [
           {
-            "type": "grep",
-            "named": false
-          },
-          {
             "type": "identifier",
             "named": true
-          },
-          {
-            "type": "join",
-            "named": false
-          },
-          {
-            "type": "map",
-            "named": false
-          },
-          {
-            "type": "sort",
-            "named": false
-          },
-          {
-            "type": "split",
-            "named": false
-          },
-          {
-            "type": "unpack",
-            "named": false
           }
         ]
       },
@@ -2902,32 +3137,8 @@
         "required": true,
         "types": [
           {
-            "type": "grep",
-            "named": false
-          },
-          {
             "type": "identifier",
             "named": true
-          },
-          {
-            "type": "join",
-            "named": false
-          },
-          {
-            "type": "map",
-            "named": false
-          },
-          {
-            "type": "sort",
-            "named": false
-          },
-          {
-            "type": "split",
-            "named": false
-          },
-          {
-            "type": "unpack",
-            "named": false
           }
         ]
       },
@@ -3072,15 +3283,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -3137,6 +3348,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -3334,15 +3549,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -3399,6 +3614,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -3556,15 +3775,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -3621,6 +3840,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -3778,15 +4001,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -3843,6 +4066,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -4148,15 +4375,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -4213,6 +4440,10 @@
         },
         {
           "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_complex",
           "named": true
         },
         {
@@ -4375,15 +4606,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -4440,6 +4671,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -4599,6 +4834,258 @@
     }
   },
   {
+    "type": "hash_access_complex",
+    "named": true,
+    "fields": {
+      "hash_variable": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          }
+        ]
+      },
+      "key": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
+            "type": "array_access_variable",
+            "named": true
+          },
+          {
+            "type": "array_dereference",
+            "named": true
+          },
+          {
+            "type": "array_ref",
+            "named": true
+          },
+          {
+            "type": "array_variable",
+            "named": true
+          },
+          {
+            "type": "backtick_quoted",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "bless",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "call_expression_recursive",
+            "named": true
+          },
+          {
+            "type": "call_expression_with_bareword",
+            "named": true
+          },
+          {
+            "type": "command_qx_quoted",
+            "named": true
+          },
+          {
+            "type": "false",
+            "named": true
+          },
+          {
+            "type": "fat_comma",
+            "named": true
+          },
+          {
+            "type": "file_handle",
+            "named": true
+          },
+          {
+            "type": "floating_point",
+            "named": true
+          },
+          {
+            "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_dereference",
+            "named": true
+          },
+          {
+            "type": "hash_ref",
+            "named": true
+          },
+          {
+            "type": "hash_variable",
+            "named": true
+          },
+          {
+            "type": "heredoc_initializer",
+            "named": true
+          },
+          {
+            "type": "hexadecimal",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
+            "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "normal_comma",
+            "named": true
+          },
+          {
+            "type": "octal",
+            "named": true
+          },
+          {
+            "type": "package_variable",
+            "named": true
+          },
+          {
+            "type": "pattern_matcher",
+            "named": true
+          },
+          {
+            "type": "pattern_matcher_m",
+            "named": true
+          },
+          {
+            "type": "regex_pattern_qr",
+            "named": true
+          },
+          {
+            "type": "scalar_dereference",
+            "named": true
+          },
+          {
+            "type": "scalar_variable",
+            "named": true
+          },
+          {
+            "type": "scientific_notation",
+            "named": true
+          },
+          {
+            "type": "special_scalar_variable",
+            "named": true
+          },
+          {
+            "type": "standard_input",
+            "named": true
+          },
+          {
+            "type": "standard_input_to_identifier",
+            "named": true
+          },
+          {
+            "type": "standard_input_to_variable",
+            "named": true
+          },
+          {
+            "type": "string_double_quoted",
+            "named": true
+          },
+          {
+            "type": "string_q_quoted",
+            "named": true
+          },
+          {
+            "type": "string_qq_quoted",
+            "named": true
+          },
+          {
+            "type": "string_single_quoted",
+            "named": true
+          },
+          {
+            "type": "substitution_pattern_s",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "transliteration_tr_or_y",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "variable_declaration",
+            "named": true
+          },
+          {
+            "type": "word_list_qw",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "arrow_operator",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "hash_access_in_interpolation",
     "named": true,
     "fields": {
@@ -4665,6 +5152,10 @@
             "named": true
           },
           {
+            "type": "array_ref",
+            "named": true
+          },
+          {
             "type": "array_variable",
             "named": true
           },
@@ -4678,6 +5169,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_ref",
             "named": true
           },
           {
@@ -4723,15 +5218,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -4788,6 +5283,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -4953,15 +5452,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -5018,6 +5517,10 @@
         },
         {
           "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_complex",
           "named": true
         },
         {
@@ -5172,15 +5675,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -5237,6 +5740,10 @@
         },
         {
           "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_complex",
           "named": true
         },
         {
@@ -5541,15 +6048,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -5606,6 +6113,10 @@
         },
         {
           "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_complex",
           "named": true
         },
         {
@@ -5822,32 +6333,8 @@
         "required": false,
         "types": [
           {
-            "type": "grep",
-            "named": false
-          },
-          {
             "type": "identifier",
             "named": true
-          },
-          {
-            "type": "join",
-            "named": false
-          },
-          {
-            "type": "map",
-            "named": false
-          },
-          {
-            "type": "sort",
-            "named": false
-          },
-          {
-            "type": "split",
-            "named": false
-          },
-          {
-            "type": "unpack",
-            "named": false
           }
         ]
       },
@@ -5870,6 +6357,10 @@
             "named": true
           },
           {
+            "type": "array_ref",
+            "named": true
+          },
+          {
             "type": "array_variable",
             "named": true
           },
@@ -5883,6 +6374,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_ref",
             "named": true
           },
           {
@@ -5985,7 +6480,15 @@
         "required": true,
         "types": [
           {
+            "type": "array_access_variable",
+            "named": true
+          },
+          {
             "type": "array_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable",
             "named": true
           },
           {
@@ -6017,44 +6520,6 @@
         },
         {
           "type": "normal_comma",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "named_block",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "block",
-          "named": true
-        },
-        {
-          "type": "call_expression_with_bareword",
-          "named": true
-        },
-        {
-          "type": "named_block",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "named_block_statement",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "named_block",
           "named": true
         }
       ]
@@ -6293,15 +6758,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -6358,6 +6823,10 @@
         },
         {
           "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_complex",
           "named": true
         },
         {
@@ -6512,15 +6981,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -6577,6 +7046,10 @@
         },
         {
           "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_complex",
           "named": true
         },
         {
@@ -6741,15 +7214,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -6810,6 +7283,10 @@
         },
         {
           "type": "goto_expression",
+          "named": true
+        },
+        {
+          "type": "hash_access_complex",
           "named": true
         },
         {
@@ -6988,15 +7465,15 @@
           "named": true
         },
         {
+          "type": "array_access_complex",
+          "named": true
+        },
+        {
           "type": "array_access_variable",
           "named": true
         },
         {
           "type": "array_dereference",
-          "named": true
-        },
-        {
-          "type": "array_function",
           "named": true
         },
         {
@@ -7076,6 +7553,10 @@
           "named": true
         },
         {
+          "type": "hash_access_complex",
+          "named": true
+        },
+        {
           "type": "hash_access_variable",
           "named": true
         },
@@ -7117,10 +7598,6 @@
         },
         {
           "type": "method_invocation",
-          "named": true
-        },
-        {
-          "type": "named_block_statement",
           "named": true
         },
         {
@@ -7524,15 +8001,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -7589,6 +8066,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -7746,15 +8227,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -7811,6 +8292,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -7982,15 +8467,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -8047,6 +8532,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -8220,15 +8709,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -8285,6 +8774,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -8520,15 +9013,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -8585,6 +9078,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -8926,15 +9423,15 @@
             "named": true
           },
           {
+            "type": "array_access_complex",
+            "named": true
+          },
+          {
             "type": "array_access_variable",
             "named": true
           },
           {
             "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_function",
             "named": true
           },
           {
@@ -8991,6 +9488,10 @@
           },
           {
             "type": "goto_expression",
+            "named": true
+          },
+          {
+            "type": "hash_access_complex",
             "named": true
           },
           {
@@ -9521,7 +10022,15 @@
         "required": false,
         "types": [
           {
+            "type": "array_access_variable",
+            "named": true
+          },
+          {
             "type": "array_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable",
             "named": true
           },
           {
@@ -10053,10 +10562,6 @@
     "named": false
   },
   {
-    "type": "grep",
-    "named": false
-  },
-  {
     "type": "gt",
     "named": false
   },
@@ -10093,10 +10598,6 @@
     "named": false
   },
   {
-    "type": "join",
-    "named": false
-  },
-  {
     "type": "last",
     "named": false
   },
@@ -10118,10 +10619,6 @@
   },
   {
     "type": "m",
-    "named": false
-  },
-  {
-    "type": "map",
     "named": false
   },
   {
@@ -10170,11 +10667,11 @@
   },
   {
     "type": "prototype",
-    "named": false
+    "named": true
   },
   {
     "type": "prototype",
-    "named": true
+    "named": false
   },
   {
     "type": "q",
@@ -10233,14 +10730,6 @@
     "named": true
   },
   {
-    "type": "sort",
-    "named": false
-  },
-  {
-    "type": "split",
-    "named": false
-  },
-  {
     "type": "start_delimiter",
     "named": true
   },
@@ -10274,10 +10763,6 @@
   },
   {
     "type": "unless",
-    "named": false
-  },
-  {
-    "type": "unpack",
     "named": false
   },
   {
