@@ -62,6 +62,7 @@ module.exports = grammar({
     [$.array],
     [$.arguments, $.array],
     [$.function_prototype, $.array],
+    [$.parenthesized_argument, $.array],
   ],
 
   externals: $ => [
@@ -588,7 +589,7 @@ module.exports = grammar({
 
     _label: $ => seq(
       field('label', $.identifier),
-      optional(' '), // with this hack it works.
+      optional($._any_whitespace), // with this hack it works.
       ':',
     ),
 
@@ -1131,7 +1132,7 @@ module.exports = grammar({
       field('function_name', choice(
         $.identifier,
       )),
-      optional(' '), // just a hack - should I remove this?
+      optional($._any_whitespace), // just a hack - should I remove this?
     )),
 
     method_invocation: $ => prec.left(PRECEDENCE.TERM, seq(
@@ -1165,7 +1166,7 @@ module.exports = grammar({
 
     _argument_choice: $ => choice(
       $.parenthesized_argument,
-      prec.left(seq(' ', $.arguments)),
+      prec.left(seq(optional($._any_whitespace), $.arguments)),
     ),
 
     parenthesized_argument: $ => prec.left(PRECEDENCE.TERM, seq(
@@ -1643,6 +1644,13 @@ module.exports = grammar({
     // some key words
     super: $ => 'SUPER',
     no_require: $ => '-norequire',
+
+    _any_whitespace: $ => choice(
+      ' ',
+      '\n',
+      '\t',
+      '\r'
+    ),
 
     // single line comment
     comments: $ => prec(PRECEDENCE.COMMENTS, seq(
