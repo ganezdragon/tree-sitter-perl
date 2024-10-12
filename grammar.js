@@ -4,41 +4,41 @@ const PRECEDENCE = {
   // A TERM has the highest precedence in Perl.
   // They include variables, quote and quote-like operators, any expression in parentheses,
   // and any function whose arguments are parenthesized
-  TERM: 1,
-  ARROW_OPERATOR: 2,
-  COMMENTS: 3, // comments over anything. Except in strings or regex.
+  TERM: 100,
+  ARROW_OPERATOR: 99,
+  COMMENTS: 98, // comments over anything. Except in strings or regex.
 
 
   // begin of operators
-  AUTO_INCREMENT_DECREMENT: 10,
-  EXPONENTIATION: 11,
-  SYMBOLIC_UNARY: 12,
-  BINDING_OPERATORS: 13,
-  BODMAS_1: 14,
-  BODMAS_2: 15,
-  SHIFT_OPERATORS: 16,
-  RELATIONAL_OPERATORS: 17,
-  EQUALITY_OPERATORS: 18,
-  ISA_OPERATOR: 19,
-  BITWISE_AND: 20,
-  BITWISE_OR_XOR: 21,
-  LOGICAL_AND: 22,
-  LOGICAL_ORS: 23,
-  RANGE_OPERATOR: 24,
-  TERNARY_OPERATOR: 25,
-  ASSIGNMENT_OPERATORS: 26,
-  COMMA_OPERATORS: 27,
-  UNARY_NOT: 28,
-  UNARY_AND: 29,
-  OR_XOR: 30,
+  AUTO_INCREMENT_DECREMENT: 80,
+  EXPONENTIATION: 79,
+  SYMBOLIC_UNARY: 78,
+  BINDING_OPERATORS: 77,
+  BODMAS_1: 76,
+  BODMAS_2: 75,
+  SHIFT_OPERATORS: 74,
+  RELATIONAL_OPERATORS: 73,
+  EQUALITY_OPERATORS: 72,
+  ISA_OPERATOR: 71,
+  BITWISE_AND: 70,
+  BITWISE_OR_XOR: 69,
+  LOGICAL_AND: 68,
+  LOGICAL_ORS: 67,
+  RANGE_OPERATOR: 66,
+  TERNARY_OPERATOR: 65,
+  ASSIGNMENT_OPERATORS: 64,
+  COMMA_OPERATORS: 63,
+  UNARY_NOT: 62,
+  UNARY_AND: 61,
+  OR_XOR: 60,
   // end of operators
 
-  HASH: 31,
-  ARRAY: 32,
+  HASH: 12,
+  ARRAY: 11,
 
-  ESCAPE_SEQ: 33,
+  ESCAPE_SEQ: 10,
 
-  LOWEST: 100
+  LOWEST: 1
 };
 
 /// <reference types="tree-sitter-cli/dsl" />
@@ -59,14 +59,14 @@ module.exports = grammar({
 
     [$.package_name],
     [$.call_expression_with_bareword],
-    [$.call_expression_with_bareword, $.package_name],
     [$.hash_ref],
-    [$.hash_access_variable, $.hash_ref],
     [$.array],
     [$.parenthesized_argument, $.array],
     [$.arguments, $.array],
     [$.function_prototype, $.array],
+    [$.array_access_variable, $.array_ref],
     [$.call_expression_with_args_with_brackets, $.array],
+    [$._expression, $.call_expression_with_args_without_brackets],
   ],
 
   externals: $ => [
@@ -329,13 +329,13 @@ module.exports = grammar({
     )),
 
     // Module->import( LIST );
-    bareword_import: $ => seq(
+    bareword_import: $ => prec(PRECEDENCE.ARROW_OPERATOR, seq(
       field('module', $.identifier),
       '->',
       'import',
       $._list,
       $.semi_colon,
-    ),
+    )),
 
     use_no_subs_statement: $ => seq(
       choice(
@@ -686,11 +686,11 @@ module.exports = grammar({
 
     )),
 
-    _expression: $ => prec(PRECEDENCE.LOWEST, commaSeparated($, choice(
+    _expression: $ => prec(PRECEDENCE.LOWEST, choice(
       $._expression_without_bareword,
 
       $.call_expression_with_bareword,
-    ))),
+    )),
 
     // array_function: $ => prec.right(PRECEDENCE.TERM, seq(
     //   $.call_expression_with_bareword,
@@ -1131,7 +1131,7 @@ module.exports = grammar({
 
     // begin of function calls
 
-    call_expression_with_spaced_args: $ => prec.left(PRECEDENCE.TERM, seq(
+    call_expression_with_spaced_args: $ => prec.left(PRECEDENCE.LOWEST, seq(
       $.call_expression_with_bareword,
       choice(
         $.block,
@@ -1158,7 +1158,7 @@ module.exports = grammar({
         $._variables,
         $._access_variables,
       )),
-      optional(field('args', $.parenthesized_argument)),
+      field('args', $.parenthesized_argument),
     )),
 
     // call_expression_with_bareword: $ => prec.left(PRECEDENCE.LOWEST, seq(
@@ -1178,7 +1178,7 @@ module.exports = grammar({
 
     _and_before_sub: $ => prec.left(PRECEDENCE.LOWEST, /&/),
 
-    method_invocation: $ => prec.left(PRECEDENCE.TERM, seq(
+    method_invocation: $ => prec.left(PRECEDENCE.ARROW_OPERATOR, seq(
       choice(
         field('package_name', choice($.identifier, $.package_name, $.string_single_quoted)),
         field('object', $.scalar_variable),
@@ -1187,7 +1187,7 @@ module.exports = grammar({
       ),
       repeat1(prec.right(PRECEDENCE.ARROW_OPERATOR,
         seq(
-          $.method_arrow_operator,
+          $.arrow_operator,
           choice(
             seq(
               optional(seq($.super, token.immediate('::'))),
@@ -1242,7 +1242,7 @@ module.exports = grammar({
       $._array_type,
     ),
 
-    _variables: $ => prec.left(PRECEDENCE.ARRAY, choice(
+    _variables: $ => prec.left(PRECEDENCE.TERM, choice(
       $.scalar_variable,
       $.special_scalar_variable,
       $.package_variable,
@@ -1525,7 +1525,7 @@ module.exports = grammar({
     true: $ => 'true',
     false: $ => 'false',
 
-    special_scalar_variable: $ => prec.right(PRECEDENCE.TERM + 2, seq(
+    special_scalar_variable: $ => prec.right(PRECEDENCE.TERM, seq(
       '$', with_or_without_curly_brackets(/#*|[!"#$%&'()*+,-./0123456789:;<=>?@\]\[\\_`|~]/), // NOTE: ab is removed as my $a = 1 is possible
     )),
 
@@ -1533,10 +1533,10 @@ module.exports = grammar({
       '$', with_or_without_curly_brackets($._scalar_variable_external)
     )),
 
-    array_access_variable: $ => prec.left(PRECEDENCE.ARRAY, seq(
+    array_access_variable: $ => prec.left(PRECEDENCE.TERM, seq(
       field('array_variable', getLValueRules($)),
       repeat1(
-        prec.right(PRECEDENCE.ARRAY, seq(
+        prec.right(PRECEDENCE.TERM, seq(
           optional($.arrow_operator),
           '[',
           field('index', commaSeparated($, $._expression)),
@@ -1545,10 +1545,10 @@ module.exports = grammar({
       ),
     )),
 
-    array_access_complex: $ => prec.left(PRECEDENCE.ARRAY, seq(
+    array_access_complex: $ => prec.left(PRECEDENCE.TERM, seq(
       field('array_variable', $.array),
       repeat1(
-        prec.right(PRECEDENCE.ARRAY, seq(
+        prec.right(PRECEDENCE.TERM, seq(
           optional($.arrow_operator),
           '[',
           field('index', commaSeparated($, $._expression)),
@@ -1557,9 +1557,9 @@ module.exports = grammar({
       ),
     )),
 
-    hash_access_variable: $ => prec.left(PRECEDENCE.HASH, seq(
+    hash_access_variable: $ => prec.left(PRECEDENCE.TERM, seq(
       field('hash_variable', getLValueRules($)),
-      repeat1(prec.right(PRECEDENCE.HASH,
+      repeat1(prec.right(PRECEDENCE.ARROW_OPERATOR,
         seq(
           optional($.arrow_operator),
           '{',
@@ -1569,7 +1569,7 @@ module.exports = grammar({
       )),
     )),
 
-    hash_access_complex: $ => prec.left(PRECEDENCE.HASH, seq(
+    hash_access_complex: $ => prec.left(PRECEDENCE.TERM, seq(
       field('hash_variable', $.array),
       repeat1(prec.right(
         seq(
@@ -1645,23 +1645,32 @@ module.exports = grammar({
         with_curly_brackets($._expression),
         with_or_without_curly_brackets($.scalar_dereference),
         with_or_without_curly_brackets($.scalar_variable),
-      ),      
+      ),
     )),
     length_expression: $ => prec.right(PRECEDENCE.TERM, seq(
       '$#',
       choice(
-        with_or_without_curly_brackets($._expression),
+        with_curly_brackets($._expression),
+        with_or_without_curly_brackets($.identifier),
       ),      
     )),
 
-    array_dereference: $ => prec.left(PRECEDENCE.TERM, seq(
+    array_dereference: $ => prec.right(PRECEDENCE.TERM, seq(
       '@',
-      with_or_without_curly_brackets($._expression),
+      choice(
+        with_curly_brackets($._expression),
+        with_or_without_curly_brackets($.array_dereference),
+        with_or_without_curly_brackets($.scalar_variable),
+      ),
     )),
 
     hash_dereference: $ => prec.left(PRECEDENCE.TERM ,seq(
       '%',
-      with_or_without_curly_brackets($._expression),
+      choice(
+        with_curly_brackets($._expression),
+        with_or_without_curly_brackets($.hash_dereference),
+        with_or_without_curly_brackets($.scalar_variable),
+      ),
     )),
 
     // cat => 'meow', meta => {}
@@ -1678,7 +1687,7 @@ module.exports = grammar({
     //   )),
     // )),
 
-    keywords_in_hash_key: $ => prec.left(PRECEDENCE.TERM, 
+    keywords_in_hash_key: $ => prec.left(PRECEDENCE.LOWEST, 
       choice(
         'sub',
         'state',
@@ -1686,7 +1695,7 @@ module.exports = grammar({
     ),
 
     // these two are same, but different operators. Check https://perldoc.perl.org/perlobj#Method-Invocation
-    arrow_operator: $ => prec.left(PRECEDENCE.TERM, '->'),
+    arrow_operator: $ => prec.left(PRECEDENCE.ARROW_OPERATOR, '->'),
     method_arrow_operator: $ => prec.left(PRECEDENCE.ARROW_OPERATOR, '->'),
 
     _comma_operator: $ => prec(PRECEDENCE.COMMA_OPERATORS, choice($.normal_comma, $.fat_comma)),
@@ -1830,6 +1839,8 @@ function getLValueRules($) {
     with_curly_brackets($.call_expression_with_spaced_args),
     $.call_expression_recursive,
     $.method_invocation,
+
+    $.anonymous_function,
 
     $.scalar_dereference,
   );

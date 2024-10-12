@@ -555,6 +555,10 @@
         "required": true,
         "types": [
           {
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
             "type": "array",
             "named": true
           },
@@ -879,7 +883,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
@@ -951,10 +955,6 @@
           "named": true
         },
         {
-          "type": "fat_comma",
-          "named": true
-        },
-        {
           "type": "file_handle",
           "named": true
         },
@@ -1004,10 +1004,6 @@
         },
         {
           "type": "method_invocation",
-          "named": true
-        },
-        {
-          "type": "normal_comma",
           "named": true
         },
         {
@@ -1582,14 +1578,6 @@
         "required": true,
         "types": [
           {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
             "type": "anonymous_function",
             "named": true
           },
@@ -1658,10 +1646,6 @@
             "named": true
           },
           {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
             "type": "file_handle",
             "named": true
           },
@@ -1711,10 +1695,6 @@
           },
           {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -1885,10 +1865,6 @@
           "named": true
         },
         {
-          "type": "fat_comma",
-          "named": true
-        },
-        {
           "type": "file_handle",
           "named": true
         },
@@ -1938,10 +1914,6 @@
         },
         {
           "type": "method_invocation",
-          "named": true
-        },
-        {
-          "type": "normal_comma",
           "named": true
         },
         {
@@ -2044,17 +2016,9 @@
     "named": true,
     "fields": {
       "class": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "anonymous_function",
             "named": true
@@ -2124,10 +2088,6 @@
             "named": true
           },
           {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
             "type": "file_handle",
             "named": true
           },
@@ -2177,10 +2137,6 @@
           },
           {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -2784,7 +2740,7 @@
     "fields": {
       "args": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "parenthesized_argument",
@@ -2937,17 +2893,9 @@
     "named": true,
     "fields": {
       "variable": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "anonymous_function",
             "named": true
@@ -3017,10 +2965,6 @@
             "named": true
           },
           {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
             "type": "file_handle",
             "named": true
           },
@@ -3070,10 +3014,6 @@
           },
           {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -3207,17 +3147,9 @@
         ]
       },
       "condition": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "anonymous_function",
             "named": true
@@ -3287,10 +3219,6 @@
             "named": true
           },
           {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
             "type": "file_handle",
             "named": true
           },
@@ -3340,10 +3268,6 @@
           },
           {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -3441,17 +3365,9 @@
         ]
       },
       "incrementor": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "anonymous_function",
             "named": true
@@ -3521,10 +3437,6 @@
             "named": true
           },
           {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
             "type": "file_handle",
             "named": true
           },
@@ -3574,10 +3486,6 @@
           },
           {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -3675,17 +3583,9 @@
         ]
       },
       "initializer": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "anonymous_function",
             "named": true
@@ -3755,10 +3655,6 @@
             "named": true
           },
           {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
             "type": "file_handle",
             "named": true
           },
@@ -3808,10 +3704,6 @@
           },
           {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -4296,17 +4188,9 @@
     "named": true,
     "fields": {
       "expression": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "anonymous_function",
             "named": true
@@ -4376,10 +4260,6 @@
             "named": true
           },
           {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
             "type": "file_handle",
             "named": true
           },
@@ -4429,10 +4309,6 @@
           },
           {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -4613,6 +4489,10 @@
         "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
           {
             "type": "array",
             "named": true
@@ -4938,7 +4818,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
@@ -5010,10 +4890,6 @@
           "named": true
         },
         {
-          "type": "fat_comma",
-          "named": true
-        },
-        {
           "type": "file_handle",
           "named": true
         },
@@ -5063,10 +4939,6 @@
         },
         {
           "type": "method_invocation",
-          "named": true
-        },
-        {
-          "type": "normal_comma",
           "named": true
         },
         {
@@ -5551,7 +5423,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
@@ -5623,10 +5495,6 @@
           "named": true
         },
         {
-          "type": "fat_comma",
-          "named": true
-        },
-        {
           "type": "file_handle",
           "named": true
         },
@@ -5663,6 +5531,10 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "integer",
           "named": true
         },
@@ -5676,10 +5548,6 @@
         },
         {
           "type": "method_invocation",
-          "named": true
-        },
-        {
-          "type": "normal_comma",
           "named": true
         },
         {
@@ -5833,11 +5701,6 @@
     }
   },
   {
-    "type": "method_arrow_operator",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "method_invocation",
     "named": true,
     "fields": {
@@ -5875,6 +5738,10 @@
         "multiple": true,
         "required": false,
         "types": [
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
           {
             "type": "array",
             "named": true
@@ -5991,7 +5858,7 @@
           "named": true
         },
         {
-          "type": "method_arrow_operator",
+          "type": "arrow_operator",
           "named": true
         },
         {
@@ -6470,7 +6337,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
@@ -6542,10 +6409,6 @@
           "named": true
         },
         {
-          "type": "fat_comma",
-          "named": true
-        },
-        {
           "type": "file_handle",
           "named": true
         },
@@ -6595,10 +6458,6 @@
         },
         {
           "type": "method_invocation",
-          "named": true
-        },
-        {
-          "type": "normal_comma",
           "named": true
         },
         {
@@ -6783,10 +6642,6 @@
           "named": true
         },
         {
-          "type": "fat_comma",
-          "named": true
-        },
-        {
           "type": "file_handle",
           "named": true
         },
@@ -6844,10 +6699,6 @@
         },
         {
           "type": "method_invocation",
-          "named": true
-        },
-        {
-          "type": "normal_comma",
           "named": true
         },
         {
@@ -7506,17 +7357,9 @@
     "named": true,
     "fields": {
       "condition": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "anonymous_function",
             "named": true
@@ -7586,10 +7429,6 @@
             "named": true
           },
           {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
             "type": "file_handle",
             "named": true
           },
@@ -7639,10 +7478,6 @@
           },
           {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -7740,17 +7575,9 @@
         ]
       },
       "false": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "anonymous_function",
             "named": true
@@ -7820,10 +7647,6 @@
             "named": true
           },
           {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
             "type": "file_handle",
             "named": true
           },
@@ -7873,10 +7696,6 @@
           },
           {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -7988,17 +7807,9 @@
         ]
       },
       "true": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "anonymous_function",
             "named": true
@@ -8068,10 +7879,6 @@
             "named": true
           },
           {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
             "type": "file_handle",
             "named": true
           },
@@ -8121,10 +7928,6 @@
           },
           {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -8238,17 +8041,9 @@
         ]
       },
       "variable": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "anonymous_function",
             "named": true
@@ -8318,10 +8113,6 @@
             "named": true
           },
           {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
             "type": "file_handle",
             "named": true
           },
@@ -8371,10 +8162,6 @@
           },
           {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -8554,14 +8341,6 @@
         "required": false,
         "types": [
           {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
             "type": "anonymous_function",
             "named": true
           },
@@ -8630,10 +8409,6 @@
             "named": true
           },
           {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
             "type": "file_handle",
             "named": true
           },
@@ -8683,10 +8458,6 @@
           },
           {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -8960,17 +8731,9 @@
         ]
       },
       "value": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "anonymous_function",
             "named": true
@@ -9040,10 +8803,6 @@
             "named": true
           },
           {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
             "type": "file_handle",
             "named": true
           },
@@ -9093,10 +8852,6 @@
           },
           {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -9609,11 +9364,19 @@
           "named": true
         },
         {
+          "type": "fat_comma",
+          "named": true
+        },
+        {
           "type": "heredoc_initializer",
           "named": true
         },
         {
           "type": "module_name",
+          "named": true
+        },
+        {
+          "type": "normal_comma",
           "named": true
         },
         {
@@ -10432,11 +10195,11 @@
   },
   {
     "type": "prototype",
-    "named": true
+    "named": false
   },
   {
     "type": "prototype",
-    "named": false
+    "named": true
   },
   {
     "type": "q",
