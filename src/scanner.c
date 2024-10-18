@@ -7,40 +7,43 @@
 #include <ctype.h>
 #include <wctype.h>
 
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
+// Define the maximum string length
+#define MAX_STRING_LENGTH 1000
 
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
+// #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
-// String related macros
-#define STRING_RESIZE(vec, _cap)                                         \
-  void *tmp = realloc((vec).data, ((_cap) + 1) * sizeof((vec).data[0])); \
-  assert(tmp != NULL);                                                   \
-  (vec).data = tmp;                                                      \
-  memset((vec).data + (vec).len, 0,                                      \
-         (((_cap) + 1) - (vec).len) * sizeof((vec).data[0]));            \
-  (vec).cap = (_cap);
+// #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
-#define STRING_GROW(vec, _cap)    \
-  if ((vec).cap < (_cap)) {       \
-    STRING_RESIZE((vec), (_cap)); \
-  }
+// // String related macros
+// #define STRING_RESIZE(vec, _cap)                                         \
+//   void *tmp = realloc((vec).data, ((_cap) + 1) * sizeof((vec).data[0])); \
+//   assert(tmp != NULL);                                                   \
+//   (vec).data = tmp;                                                      \
+//   memset((vec).data + (vec).len, 0,                                      \
+//          (((_cap) + 1) - (vec).len) * sizeof((vec).data[0]));            \
+//   (vec).cap = (_cap);
 
-#define STRING_PUSH(vec, el)                      \
-  if ((vec).cap == (vec).len) {                   \
-    STRING_RESIZE((vec), MAX(16, (vec).len * 2)); \
-  }                                               \
-  (vec).data[(vec).len++] = (el);
+// #define STRING_GROW(vec, _cap)    \
+//   if ((vec).cap < (_cap)) {       \
+//     STRING_RESIZE((vec), (_cap)); \
+//   }
 
-#define STRING_FREE(vec)  \
-  if ((vec).data != NULL) \
-    free((vec).data);     \
-  (vec).data = NULL;
+// #define STRING_PUSH(vec, el)                      \
+//   if ((vec).cap == (vec).len) {                   \
+//     STRING_RESIZE((vec), MAX(16, (vec).len * 2)); \
+//   }                                               \
+//   (vec).data[(vec).len++] = (el);
 
-#define STRING_CLEAR(vec)                            \
-  {                                                  \
-    (vec).len = 0;                                   \
-    memset((vec).data, 0, (vec).cap * sizeof(char)); \
-  }
+// #define STRING_FREE(vec)  \
+//   if ((vec).data != NULL) \
+//     free((vec).data);     \
+//   (vec).data = NULL;
+
+// #define STRING_CLEAR(vec)                            \
+//   {                                                  \
+//     (vec).len = 0;                                   \
+//     memset((vec).data, 0, (vec).cap * sizeof(char)); \
+//   }
 
 enum TokenType {
   SCALAR_VARIABLE_EXTERNAL,
@@ -74,202 +77,292 @@ enum TokenType {
   AUTOMATIC_SEMICOLON,
 };
 
-typedef struct
-{
-  uint32_t cap;
-  uint32_t len;
-  char *data;
-} String;
+// typedef struct
+// {
+//   uint32_t cap;
+//   uint32_t len;
+//   char *data;
+// } String;
 
-static String string_new() {
-  return (String){.cap = 16, .len = 0, .data = calloc(1, sizeof(char) * 17)};
+// static String string_new() {
+//   return (String){.cap = 16, .len = 0, .data = calloc(1, sizeof(char) * 17)};
+// }
+
+// static char *my_strdup(const char *str) {
+//   // Calculate the length of the input string
+//   size_t len = strlen(str) + 1; // Include space for the null terminator
+  
+//   // Allocate memory for the duplicated string
+//   char *duplicate = (char *)calloc(len, len * sizeof(char));
+//   if (duplicate == NULL) {
+//       return NULL; // Return NULL if memory allocation failed
+//   }
+  
+//   // Copy the input string to the newly allocated memory using strncpy
+//   strncpy(duplicate, str, len); // Copy up to 'len' characters from 'str' to 'duplicate'
+//   duplicate[len - 1] = '\0'; // Ensure null-termination of the duplicated string
+  
+//   return duplicate; // Return a pointer to the duplicated string
+// }
+
+// START OF --- common implementation of queue in C
+// Enum to represent data types
+typedef enum {
+    STRING,
+    BOOLEAN
+} DataType;
+
+// Union to represent data
+typedef union {
+    char string[MAX_STRING_LENGTH];
+    bool boolean;
+} Data;
+
+// Structure to represent a queue node
+typedef struct Node {
+    Data data;
+    DataType type;
+    struct Node* next;
+} Node;
+
+// Structure to represent the queue
+typedef struct {
+    Node* front;
+    Node* rear;
+} Queue;
+
+// Function to create a new queue node
+Node* create_node(Data data, DataType type) {
+    Node* node = (Node*) malloc(sizeof(Node));
+    node->data = data;
+    node->type = type;
+    node->next = NULL;
+    return node;
 }
 
-static char *my_strdup(const char *str) {
-  // Calculate the length of the input string
-  size_t len = strlen(str) + 1; // Include space for the null terminator
-  
-  // Allocate memory for the duplicated string
-  char *duplicate = (char *)malloc(len * sizeof(char));
-  if (duplicate == NULL) {
-      return NULL; // Return NULL if memory allocation failed
-  }
-  
-  // Copy the input string to the newly allocated memory using strncpy
-  strncpy(duplicate, str, len); // Copy up to 'len' characters from 'str' to 'duplicate'
-  duplicate[len - 1] = '\0'; // Ensure null-termination of the duplicated string
-  
-  return duplicate; // Return a pointer to the duplicated string
+// Function to create a new queue
+Queue* create_queue() {
+    Queue* queue = (Queue*) malloc(sizeof(Queue));
+    queue->front = NULL;
+    queue->rear = NULL;
+    return queue;
 }
+
+// Function to check if the queue is empty
+int is_empty(Queue* queue) {
+    return queue->front == NULL;
+}
+
+// Function to add data to the end of the queue
+void enqueue(Queue* queue, Data data, DataType type) {
+    Node* node = create_node(data, type);
+    if (is_empty(queue)) {
+        queue->front = node;
+        queue->rear = node;
+    } else {
+        queue->rear->next = node;
+        queue->rear = node;
+    }
+}
+
+// Function to remove data from the front of the queue
+Data dequeue(Queue* queue) {
+    if (is_empty(queue)) {
+        Data empty_data;
+        return empty_data;
+    }
+    Data data = queue->front->data;
+    Node* temp = queue->front;
+    queue->front = queue->front->next;
+    if (queue->front == NULL) {
+        queue->rear = NULL;
+    }
+    free(temp);
+    return data;
+}
+
+// Function to return the data at the front of the queue without removing it
+Data peek(Queue* queue) {
+    if (is_empty(queue)) {
+        Data empty_data;
+        return empty_data;
+    }
+    return queue->front->data;
+}
+
+// END OF --- common implementation of queue in C
+
+// void string_push(char source[], ) {}
+
 
 // START OF --- a array implementation of STRING queue in C
-typedef struct
-{
-  int front, rear, size;
-  int capacity;
-  char **data;
-} StringQueue;
+// typedef struct
+// {
+//   int front, rear, size;
+//   int capacity;
+//   char **data;
+// } StringQueue;
 
-// function to create a queue
-// of given capacity.
-// It initializes size of queue as 0
-static StringQueue *createStringQueue() {
-  StringQueue *queue = calloc(1, sizeof(StringQueue));
+// // function to create a queue
+// // of given capacity.
+// // It initializes size of queue as 0
+// static StringQueue *createStringQueue() {
+//   StringQueue *queue = calloc(1, sizeof(StringQueue));
 
-  queue->capacity = 1;
-  queue->front = queue->size = 0;
+//   queue->capacity = 1;
+//   queue->front = queue->size = 0;
 
-  queue->rear = queue->capacity - 1;
-  queue->data = (char **)calloc(1, queue->capacity * sizeof(char));
-  return queue;
-}
+//   queue->rear = queue->capacity - 1;
+//   queue->data = (char **)calloc(1, queue->capacity * sizeof(char));
+//   return queue;
+// }
 
-// StringQueue is full when size becomes
-// equal to the capacity
-static int isStringQueueFull(StringQueue *queue) {
-  return (queue->size == queue->capacity);
-}
+// // StringQueue is full when size becomes
+// // equal to the capacity
+// static int isStringQueueFull(StringQueue *queue) {
+//   return (queue->size == queue->capacity);
+// }
 
-// StringQueue is empty when size is 0
-static int isStringQueueEmpty(StringQueue *queue) {
-  return (queue->size == 0);
-}
+// // StringQueue is empty when size is 0
+// static int isStringQueueEmpty(StringQueue *queue) {
+//   return (queue->size == 0);
+// }
 
-// Function to add an item to the queue.
-// It changes rear and size
-static void enqueueStringQueue(StringQueue *queue, String *item) {
-  if (isStringQueueFull(queue))
-    queue->capacity = queue->capacity + 1;;
-  queue->rear = (queue->rear + 1) % queue->capacity;
-  queue->data[queue->rear] = my_strdup(item->data);
-  queue->size = queue->size + 1;
-}
+// // Function to add an item to the queue.
+// // It changes rear and size
+// static void enqueueStringQueue(StringQueue *queue, String *item) {
+//   if (isStringQueueFull(queue))
+//     queue->capacity = queue->capacity + 1;;
+//   queue->rear = (queue->rear + 1) % queue->capacity;
+//   queue->data[queue->rear] = my_strdup(item->data);
+//   queue->size = queue->size + 1;
+// }
 
-// Function to remove an item from queue.
-// It changes front and size
-static char *dequeueStringQueue(StringQueue *queue) {
-  if (isStringQueueEmpty(queue))
-    return NULL;
-  char *item = queue->data[queue->front];
-  queue->front = (queue->front + 1) % queue->capacity;
-  queue->size = queue->size - 1;
-  queue->capacity = queue->capacity - 1;
-  return item;
-}
+// // Function to remove an item from queue.
+// // It changes front and size
+// static char *dequeueStringQueue(StringQueue *queue) {
+//   if (isStringQueueEmpty(queue))
+//     return NULL;
+//   char *item = queue->data[queue->front];
+//   queue->front = (queue->front + 1) % queue->capacity;
+//   queue->size = queue->size - 1;
+//   queue->capacity = queue->capacity - 1;
+//   return item;
+// }
 
-// Function to get front of queue
-static char *front(StringQueue *queue) {
-  // if (isQueueEmpty(queue))
-  //   return CHAR_MIN;
-  // return queue->data[queue->front];
-  if (queue->data[queue->front]) {
-    return queue->data[queue->front];
-  }
-  return NULL;
-}
+// // Function to get front of queue
+// static char *front(StringQueue *queue) {
+//   // if (isQueueEmpty(queue))
+//   //   return CHAR_MIN;
+//   // return queue->data[queue->front];
+//   if (queue->data[queue->front]) {
+//     return queue->data[queue->front];
+//   }
+//   return NULL;
+// }
 
-void deleteStringQueue(StringQueue *queue) {
-  if (queue != NULL) {
-    // Free the dynamically allocated data array
-    free(queue->data);
-    // Free the BoolQueue structure itself
-    free(queue);
-  }
-}
+// void deleteStringQueue(StringQueue *queue) {
+//   if (queue != NULL) {
+//     // Free the dynamically allocated data array
+//     free(queue->data);
+//     // Free the BoolQueue structure itself
+//     free(queue);
+//   }
+// }
 
-// END OF --- a array implementation of STRING queue in C
+// // END OF --- a array implementation of STRING queue in C
 
-// START OF --- a array implementation of Boolean queue in C
-typedef struct
-{
-  int front, rear, size;
-  int capacity;
-  bool *data;
-} BoolQueue;
+// // START OF --- a array implementation of Boolean queue in C
+// typedef struct
+// {
+//   int front, rear, size;
+//   int capacity;
+//   bool *data;
+// } BoolQueue;
 
-// function to create a queue
-// of given capacity.
-// It initializes size of queue as 0
-static BoolQueue *createBoolQueue() {
-  BoolQueue *queue = calloc(1, sizeof(BoolQueue));
+// // function to create a queue
+// // of given capacity.
+// // It initializes size of queue as 0
+// static BoolQueue *createBoolQueue() {
+//   BoolQueue *queue = calloc(1, sizeof(BoolQueue));
 
-  queue->capacity = 1;
-  queue->front = queue->size = 0;
+//   queue->capacity = 1;
+//   queue->front = queue->size = 0;
 
-  // This is important, see the enqueue
-  queue->rear = queue->capacity - 1;
-  queue->data = (bool *)calloc(1, queue->capacity * sizeof(bool));
-  return queue;
-}
+//   // This is important, see the enqueue
+//   queue->rear = queue->capacity - 1;
+//   queue->data = (bool *)calloc(1, queue->capacity * sizeof(bool));
+//   return queue;
+// }
 
-// BoolQueue is full when size becomes
-// equal to the capacity
-static int isBoolQueueFull(BoolQueue *queue) {
-  return (queue->size == queue->capacity);
-}
+// // BoolQueue is full when size becomes
+// // equal to the capacity
+// static int isBoolQueueFull(BoolQueue *queue) {
+//   return (queue->size == queue->capacity);
+// }
 
-// BoolQueue is empty when size is 0
-static int isBoolQueueEmpty(BoolQueue *queue) {
-  return (queue->size == 0);
-}
+// // BoolQueue is empty when size is 0
+// static int isBoolQueueEmpty(BoolQueue *queue) {
+//   return (queue->size == 0);
+// }
 
-// Function to add an item to the queue.
-// It changes rear and size
-static void enqueueBoolQueue(BoolQueue *queue, bool item) {
-  if (isBoolQueueFull(queue))
-    queue->capacity = queue->capacity + 1;;
-  queue->rear = (queue->rear + 1) % queue->capacity;
-  queue->data[queue->rear] = item;
-  queue->size = queue->size + 1;
-}
+// // Function to add an item to the queue.
+// // It changes rear and size
+// static void enqueueBoolQueue(BoolQueue *queue, bool item) {
+//   if (isBoolQueueFull(queue))
+//     queue->capacity = queue->capacity + 1;;
+//   queue->rear = (queue->rear + 1) % queue->capacity;
+//   queue->data[queue->rear] = item;
+//   queue->size = queue->size + 1;
+// }
 
-// Function to remove an item from queue.
-// It changes front and size
-static bool dequeueBoolQueue(BoolQueue *queue) {
-  if (isBoolQueueEmpty(queue))
-    return false;
-  bool item = queue->data[queue->front];
-  queue->front = (queue->front + 1) % queue->capacity;
-  queue->size = queue->size - 1;
-  return item;
-}
+// // Function to remove an item from queue.
+// // It changes front and size
+// static bool dequeueBoolQueue(BoolQueue *queue) {
+//   if (isBoolQueueEmpty(queue))
+//     return false;
+//   bool item = queue->data[queue->front];
+//   queue->front = (queue->front + 1) % queue->capacity;
+//   queue->size = queue->size - 1;
+//   return item;
+// }
 
-// Function to get front of queue
-static bool frontBoolQueue(BoolQueue *queue) {
-  // if (isBoolQueueEmpty(queue))
-  //   return CHAR_MIN;
-  if (queue->data[queue->front]) {
-    return queue->data[queue->front];
-  }
-  return NULL;
-}
+// // Function to get front of queue
+// static bool frontBoolQueue(BoolQueue *queue) {
+//   // if (isBoolQueueEmpty(queue))
+//   //   return CHAR_MIN;
+//   if (queue->data[queue->front]) {
+//     return queue->data[queue->front];
+//   }
+//   return NULL;
+// }
 
-void deleteBoolQueue(BoolQueue *queue) {
-  if (queue != NULL) {
-    // Free the dynamically allocated data array
-    free(queue->data);
-    // Free the BoolQueue structure itself
-    free(queue);
-  }
-}
+// void deleteBoolQueue(BoolQueue *queue) {
+//   if (queue != NULL) {
+//     // Free the dynamically allocated data array
+//     free(queue->data);
+//     // Free the BoolQueue structure itself
+//     free(queue);
+//   }
+// }
 
-// END OF --- a array implementation of Boolean queue in C
+// // END OF --- a array implementation of Boolean queue in C
 
 typedef struct {
   bool started_heredoc;
   bool started_heredoc_body;
-  StringQueue *heredoc_identifier_queue;
-  BoolQueue *heredoc_allows_interpolation;
-  BoolQueue *heredoc_allows_indent;
+  Queue *heredoc_identifier_queue;
+  Queue *heredoc_allows_interpolation;
+  Queue *heredoc_allows_indent;
 } Heredoc;
 
 static Heredoc heredoc_new() {
   Heredoc heredoc = {
       .started_heredoc = false,
       .started_heredoc_body = false,
-      .heredoc_identifier_queue = createStringQueue(),
-      .heredoc_allows_interpolation = createBoolQueue(),
-      .heredoc_allows_indent = createBoolQueue(),
+      .heredoc_identifier_queue = create_queue(),
+      .heredoc_allows_interpolation = create_queue(),
+      .heredoc_allows_indent = create_queue(),
   };
   return heredoc;
 }
@@ -301,6 +394,10 @@ static void run_over_spaces(TSLexer *lexer) {
 static void run_with_spaces(TSLexer *lexer) {
   while (iswspace(lexer->lookahead))
     advance(lexer);
+}
+
+static bool is_identifier(TSLexer *lexer) {
+  return (iswalnum(lexer->lookahead) || lexer->lookahead == '_');
 }
 
 static int32_t get_end_delimiter(Scanner *scanner) {
@@ -488,14 +585,18 @@ static bool advance_word(Scanner *scanner, TSLexer *lexer) {
   bool empty = true;
   bool has_space_before = false;
   bool allows_interpolation = true;
-  String unquoted_word = string_new();
+  char unquoted_word[1000] = "";
 
   // <<~EOF
   if (lexer->lookahead == '~') {
-    enqueueBoolQueue(scanner->heredoc.heredoc_allows_indent, true);
+    Data true_data;
+    true_data.boolean = true;
+    enqueue(scanner->heredoc.heredoc_allows_indent, true_data, BOOLEAN);
     advance(lexer);
   } else {
-    enqueueBoolQueue(scanner->heredoc.heredoc_allows_indent, false);
+    Data false_data;
+    false_data.boolean = false;
+    enqueue(scanner->heredoc.heredoc_allows_indent, false_data, BOOLEAN);
   }
 
   // <<\EOF, <<~\EOF
@@ -526,7 +627,7 @@ static bool advance_word(Scanner *scanner, TSLexer *lexer) {
 
   while (
     lexer->lookahead
-    && iswalnum(lexer->lookahead)
+    && is_identifier(lexer)
     && !(quote ? lexer->lookahead == quote : iswspace(lexer->lookahead))
   ) {
     // TODO: check this below condition
@@ -536,7 +637,9 @@ static bool advance_word(Scanner *scanner, TSLexer *lexer) {
         return false;
     }
     empty = false;
-    STRING_PUSH(unquoted_word, lexer->lookahead);
+
+    // should convert to string?
+    strncat(unquoted_word, (char*) &lexer->lookahead, 1);
     advance(lexer);
   }
 
@@ -545,23 +648,29 @@ static bool advance_word(Scanner *scanner, TSLexer *lexer) {
   }
 
   if (!empty) {
-    enqueueStringQueue(scanner->heredoc.heredoc_identifier_queue, &unquoted_word);
-    enqueueBoolQueue(scanner->heredoc.heredoc_allows_interpolation, allows_interpolation);
+    Data identifier_string_data;
+    strncpy(identifier_string_data.string, unquoted_word, 1000);
+    enqueue(scanner->heredoc.heredoc_identifier_queue, identifier_string_data, STRING);
+
+    Data allows_interpolation_data;
+    allows_interpolation_data.boolean = allows_interpolation;
+    enqueue(scanner->heredoc.heredoc_allows_interpolation, allows_interpolation_data, BOOLEAN);
 
     scanner->heredoc.started_heredoc = true;
   }
 
-  STRING_FREE(unquoted_word);
+  // STRING_FREE(unquoted_word);
 
   return !empty;
 }
 
 static bool exit_if_heredoc_end_delimiter(Scanner *scanner, TSLexer *lexer) {
-  String word = string_new();
+  char word[1000] = "";
   lexer->result_symbol = HEREDOC_END_IDENTIFIER;
   while (!iswspace(lexer->lookahead)) {
     // printf("string here - %c", lexer->lookahead);
-    STRING_PUSH(word, lexer->lookahead);
+    // STRING_PUSH(word, lexer->lookahead);
+    strncat(word, (char*) &lexer->lookahead, 1);
     advance(lexer);
 
     if (!lexer->lookahead) {
@@ -573,15 +682,15 @@ static bool exit_if_heredoc_end_delimiter(Scanner *scanner, TSLexer *lexer) {
   // printf ("front of identifier queue %s \n", front(scanner->heredoc.heredoc_identifier_queue));
 
   // if (word == front(scanner->heredoc.heredoc_identifier_queue).data)
-  if (! strcmp(word.data, front(scanner->heredoc.heredoc_identifier_queue))) {
+  if (! strcmp(word, peek(scanner->heredoc.heredoc_identifier_queue).string)) {
     lexer->result_symbol = HEREDOC_END_IDENTIFIER;
     lexer->mark_end(lexer);
 
     // unset stuffs
     scanner->heredoc.started_heredoc = false;
     scanner->heredoc.started_heredoc_body = false;
-    dequeueStringQueue(scanner->heredoc.heredoc_identifier_queue);
-    dequeueBoolQueue(scanner->heredoc.heredoc_allows_interpolation);
+    dequeue(scanner->heredoc.heredoc_identifier_queue);
+    dequeue(scanner->heredoc.heredoc_allows_interpolation);
     return true;
   }
   else {
@@ -589,7 +698,7 @@ static bool exit_if_heredoc_end_delimiter(Scanner *scanner, TSLexer *lexer) {
     return true;
   }
 
-  STRING_FREE(word);
+  // STRING_FREE(word);
 }
 
 static bool isSpecialVariableIdentifier(TSLexer *lexer) {
@@ -708,7 +817,7 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
       }
     }
 
-    while (iswalnum(lexer->lookahead) || lexer->lookahead == '_') {
+    while (is_identifier(lexer)) {
       lexer->result_symbol = SCALAR_VARIABLE_EXTERNAL;
       advance(lexer);
       met_identifier = true;
@@ -923,6 +1032,7 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
   if (valid_symbols[HEREDOC_START_IDENTIFIER]) {
     lexer->result_symbol = HEREDOC_START_IDENTIFIER;
 
+    // printf("before...\n");
     bool found_delimiter = advance_word(scanner, lexer);
     // printf("found delimieter %d \n", found_delimiter);
     // printf("found identifier %d \n", scanner->heredoc.heredoc_identifier_queue->size);
@@ -931,7 +1041,7 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
 
   if (
       (valid_symbols[HEREDOC_CONTENT] || valid_symbols[IMAGINARY_HEREDOC_START])
-      && !isStringQueueEmpty(scanner->heredoc.heredoc_identifier_queue)
+      && !is_empty(scanner->heredoc.heredoc_identifier_queue)
   ) {
     // another exit condition
     if (!lexer->lookahead && !scanner->heredoc.started_heredoc_body) {
@@ -949,13 +1059,13 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
     if (scanner->heredoc.started_heredoc_body) {
       switch (lexer->lookahead) {
         case '\\': {
-          if (frontBoolQueue(scanner->heredoc.heredoc_allows_interpolation)) {
+          if (peek(scanner->heredoc.heredoc_allows_interpolation).boolean) {
             return handle_escape_sequence(lexer, HEREDOC_CONTENT);
           }
         }
 
         case '$': {
-          if (frontBoolQueue(scanner->heredoc.heredoc_allows_interpolation)) {
+          if (peek(scanner->heredoc.heredoc_allows_interpolation).boolean) {
             return false;
           }
         }
@@ -964,7 +1074,7 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
           skip(lexer);
           lexer->mark_end(lexer);
           // TODO: validate all possible intended heredocs properly
-          if (frontBoolQueue(scanner->heredoc.heredoc_allows_indent)) {
+          if (peek(scanner->heredoc.heredoc_allows_indent).boolean) {
             while (iswspace(lexer->lookahead)) {
               advance(lexer);
             }
@@ -1045,16 +1155,16 @@ static unsigned serialize(Scanner *scanner, char *buffer) {
   return size;
 }
 
-static inline void reset_heredoc(StringQueue *queue) {
-  queue->data = NULL;
-}
+// static inline void reset_heredoc(StringQueue *queue) {
+//   queue->data = NULL;
+// }
 
 static void reset (Scanner *scanner) {
   scanner->heredoc.started_heredoc = false;
   scanner->heredoc.started_heredoc_body = false;
-  for (int i = 0; i < scanner->heredoc.heredoc_identifier_queue->size; i++) {
-    reset_heredoc(&scanner->heredoc.heredoc_identifier_queue[i]);
-  }
+  // for (int i = 0; i < scanner->heredoc.heredoc_identifier_queue->size; i++) {
+    // reset_heredoc(&scanner->heredoc.heredoc_identifier_queue[i]);
+  // }
 }
 
 static void deserialize(Scanner *scanner, const char *buffer, unsigned length) {
@@ -1095,9 +1205,9 @@ bool tree_sitter_perl_external_scanner_scan(
 
 void tree_sitter_perl_external_scanner_destroy(void *payload) {
   Scanner *scanner = (Scanner *)payload;
-  deleteBoolQueue(scanner->heredoc.heredoc_allows_indent);
-  deleteBoolQueue(scanner->heredoc.heredoc_allows_interpolation);
-  deleteStringQueue(scanner->heredoc.heredoc_identifier_queue);
+  // deleteBoolQueue(scanner->heredoc.heredoc_allows_indent);
+  // deleteBoolQueue(scanner->heredoc.heredoc_allows_interpolation);
+  // deleteStringQueue(scanner->heredoc.heredoc_identifier_queue);
   // for (size_t i = 0; i < scanner->heredocs.len; i++) {
   //     Heredoc *heredoc = &scanner->heredocs.data[i];
   //     STRING_FREE(heredoc->current_leading_word);
