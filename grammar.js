@@ -1244,6 +1244,7 @@ module.exports = grammar({
 
     _variables: $ => prec.left(PRECEDENCE.TERM, choice(
       $.scalar_variable,
+      $.typeglob,
       $.special_scalar_variable,
       $.package_variable,
       $.array_variable,
@@ -1465,6 +1466,7 @@ module.exports = grammar({
         ),              // square-bracket-delimited character class
         seq('\\', /./), // escaped character
         /[^/\\\[\n]/,   // any character besides '[', '\', '/', '\n'
+        '#'             // forcing #, so that it doesn't go into perl comments
       ),
     )),
 
@@ -1531,6 +1533,10 @@ module.exports = grammar({
 
     scalar_variable: $ => prec.left(PRECEDENCE.TERM, seq(
       '$', with_or_without_curly_brackets($._scalar_variable_external)
+    )),
+
+    typeglob: $ => prec(PRECEDENCE.TERM, seq(
+      '*', with_or_without_curly_brackets($.identifier),
     )),
 
     array_access_variable: $ => prec.left(PRECEDENCE.TERM, seq(

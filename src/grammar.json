@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "perl",
   "word": "identifier",
   "rules": {
@@ -899,30 +900,17 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "PREC_RIGHT",
-              "value": 0,
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_comma_operator"
-                  },
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "_list"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "_string"
-                      }
-                    ]
-                  }
-                ]
-              }
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_list"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_string"
+                }
+              ]
             },
             {
               "type": "BLANK"
@@ -5781,6 +5769,10 @@
           },
           {
             "type": "SYMBOL",
+            "name": "typeglob"
+          },
+          {
+            "type": "SYMBOL",
             "name": "special_scalar_variable"
           },
           {
@@ -6802,6 +6794,10 @@
             {
               "type": "PATTERN",
               "value": "[^/\\\\\\[\\n]"
+            },
+            {
+              "type": "STRING",
+              "value": "#"
             }
           ]
         }
@@ -7094,6 +7090,49 @@
                     {
                       "type": "SYMBOL",
                       "name": "_scalar_variable_external"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "typeglob": {
+      "type": "PREC",
+      "value": 100,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "*"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "identifier"
+              },
+              {
+                "type": "PREC_LEFT",
+                "value": 100,
+                "content": {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "{"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "identifier"
                     },
                     {
                       "type": "STRING",

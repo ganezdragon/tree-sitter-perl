@@ -1104,20 +1104,28 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
       lexer->result_symbol = POD_CONTENT;
 
       // if it is =cut that marks the end of pod content
-      if (lexer->lookahead == '=') {
+      // it should be newline with no spaces before
+      if (lexer->lookahead == '\n') {
         lexer->advance(lexer, false);
-        if (lexer->lookahead == 'c') {
+        if (lexer->lookahead == '=') {
           lexer->advance(lexer, false);
-          if (lexer->lookahead == 'u') {
+          if (lexer->lookahead == 'c') {
             lexer->advance(lexer, false);
-            if (lexer->lookahead == 't') {
+            if (lexer->lookahead == 'u') {
               lexer->advance(lexer, false);
-              lexer->mark_end(lexer);
-              return true;
+              if (lexer->lookahead == 't') {
+                lexer->advance(lexer, false);
+                while(lexer->lookahead && lexer->lookahead != '\n') {
+                  lexer->advance(lexer, false);
+                }
+                lexer->mark_end(lexer);
+                return true;
+              }
             }
           }
         }
-      } else {
+      }
+      else {
         lexer->advance(lexer, false);
       }
     }
