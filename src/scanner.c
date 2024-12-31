@@ -74,6 +74,7 @@ enum TokenType {
   HEREDOC_CONTENT,
   HEREDOC_END_IDENTIFIER,
   POD_CONTENT,
+  DATA_NOT_FOR_COMPILER,
   AUTOMATIC_SEMICOLON,
 };
 
@@ -753,6 +754,7 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
       && valid_symbols[STRING_SINGLE_Q_QUOTED_CONTENT]
       && valid_symbols[STRING_QQ_QUOTED_CONTENT]
       && valid_symbols[STRING_DOUBLE_QUOTED_CONTENT] && valid_symbols[START_DELIMITER_QW] && valid_symbols[END_DELIMITER_QW] && valid_symbols[START_DELIMITER_REGEX] && valid_symbols[REGEX_PATTERN] && valid_symbols[END_DELIMITER_REGEX] && valid_symbols[START_DELIMITER_SEARCH_REPLACE] && valid_symbols[SEARCH_REPLACE_CONTENT] && valid_symbols[SEPARATOR_DELIMITER_SEARCH_REPLACE] && valid_symbols[END_DELIMITER_SEARCH_REPLACE] && valid_symbols[START_DELIMITER_TRANSLITERATION] && valid_symbols[TRANSLITERATION_CONTENT] && valid_symbols[SEPARATOR_DELIMITER_TRANSLITERATION] && valid_symbols[END_DELIMITER_TRANSLITERATION] && valid_symbols[IMAGINARY_HEREDOC_START] && valid_symbols[HEREDOC_START_IDENTIFIER] && valid_symbols[HEREDOC_CONTENT] && valid_symbols[HEREDOC_END_IDENTIFIER] && valid_symbols[POD_CONTENT]
+      && valid_symbols[DATA_NOT_FOR_COMPILER]
       && valid_symbols[START_DELIMITER_SLASH]
       && valid_symbols[AUTOMATIC_SEMICOLON]) {
     return false;
@@ -1135,6 +1137,15 @@ static inline bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symb
     return true;
   }
 
+  if (valid_symbols[DATA_NOT_FOR_COMPILER]) {
+    lexer->result_symbol = DATA_NOT_FOR_COMPILER;
+    while(lexer->lookahead) {
+      advance(lexer);
+    }
+
+    lexer->mark_end(lexer);
+    return true;
+  }
   if (valid_symbols[AUTOMATIC_SEMICOLON]) {
     for (;;) {
       if (lexer->lookahead == '}'|| !lexer->lookahead) {

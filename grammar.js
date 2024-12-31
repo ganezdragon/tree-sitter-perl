@@ -100,6 +100,7 @@ module.exports = grammar({
     $.heredoc_end_identifier,
     // end of heredocs
     $._pod_content,
+    $.data_not_for_compiler,
     $._automatic_semicolon,
   ],
   
@@ -145,11 +146,11 @@ module.exports = grammar({
       $.ellipsis_statement,
       $.special_block,
 
-      $.special_literal,
-
       $.heredoc_body_statement,
 
       $.pod_statement,
+
+      $.label,
     )),
 
     // pseudocode
@@ -183,8 +184,16 @@ module.exports = grammar({
       '__LINE__',
       '__PACKAGE__',
       '__SUB__',
-      '__END__',
-      '__DATA__',
+      seq(
+        choice(
+          '__END__',
+          '__DATA__',
+        ),
+        choice(
+          $.data_not_for_compiler,
+          $.pod_statement,
+        ),
+      ),
     )),
 
     use_parent_statement: $ => seq(
@@ -295,7 +304,7 @@ module.exports = grammar({
         field('use', 'use'),
         field('no', 'no'),
       ),
-      choice($.package_name, $.module_name),
+      field('package_name', choice($.package_name, $.module_name)),
       optional($.version),
       optional(choice($._list, $._string)),
       $.semi_colon,
@@ -349,7 +358,7 @@ module.exports = grammar({
 
     require_statement: $ => seq(
       'require',
-      $.package_name,
+      field('package_name', $.package_name),
       $.semi_colon,
     ),
 
@@ -430,7 +439,7 @@ module.exports = grammar({
     // ),
 
     while_statement: $ => seq(
-      optional($._label),
+      optional($.label),
       'while',
       field('condition', $.array),
       field('body', $.block),
@@ -443,7 +452,7 @@ module.exports = grammar({
     ),
 
     until_statement: $ => seq(
-      optional($._label),
+      optional($.label),
       'until',
       field('condition', $.array),
       field('body', $.block),
@@ -452,14 +461,14 @@ module.exports = grammar({
 
     // the C - style for loop
     for_statement_1: $ => seq(
-      optional($._label),
+      optional($.label),
       choice('for', 'foreach'),
       $._for_parenthesize,
       field('body', $.block),
     ),
 
     for_statement_2: $ => seq(
-      optional($._label),
+      optional($.label),
       choice('for', 'foreach'),
       optional(choice(
         seq(optional($.scope), $.scalar_variable),
@@ -507,7 +516,7 @@ module.exports = grammar({
 
     multi_var_declaration: $ => with_brackets(commaSeparated($, $._variable_dec)),
 
-    _variable_dec: $ => field('name', choice($._variables, $._access_variables)),
+    _variable_dec: $ => field('variable_name', choice($._variables, $._access_variables)),
 
     // _initializer: $ => prec.right(PRECEDENCE.ASSIGNMENT_OPERATORS, seq(
     //   '=',
@@ -598,16 +607,16 @@ module.exports = grammar({
     ),
 
     standalone_block: $ => prec.left(PRECEDENCE.TERM, seq(
-      optional($._label),
+      optional($.label),
       $.block,
       optional(field('flow', $.continue)),
       optional($.semi_colon),
     )),
 
-    _label: $ => seq(
+    label: $ => prec(PRECEDENCE.COMMENTS, seq(
       field('label', $.identifier),
       ':',
-    ),
+    )),
 
     _block_statements: $ => choice(
       // $._statement,
@@ -669,6 +678,8 @@ module.exports = grammar({
       $.pattern_matcher,
 
       $._i_o_operator,
+
+      $.special_literal,
 
       $.anonymous_function,
 
@@ -773,7 +784,7 @@ module.exports = grammar({
     goto_expression: $ => prec.right(PRECEDENCE.ASSIGNMENT_OPERATORS, seq(
       'goto',
       choice(
-        $._label,
+        $.label,
         field('expression', $._expression),
         field('subroutine', $.call_expression_with_args_without_brackets),
       ),
@@ -1153,12 +1164,12 @@ module.exports = grammar({
     )),
 
     call_expression_with_variable: $ => prec.left(PRECEDENCE.TERM, seq(
-      optional($._and_before_sub),
+      $._and_before_sub,
       with_or_without_curly_brackets(choice(
         $._variables,
         $._access_variables,
       )),
-      field('args', $.parenthesized_argument),
+      optional(field('args', $.parenthesized_argument)),
     )),
 
     // call_expression_with_bareword: $ => prec.left(PRECEDENCE.LOWEST, seq(
@@ -1466,7 +1477,7 @@ module.exports = grammar({
         ),              // square-bracket-delimited character class
         seq('\\', /./), // escaped character
         /[^/\\\[\n]/,   // any character besides '[', '\', '/', '\n'
-        '#'             // forcing #, so that it doesn't go into perl comments
+        seq(optional('\\'), '#')      // forcing #, so that it doesn't go into perl comments
       ),
     )),
 
@@ -1604,10 +1615,8 @@ module.exports = grammar({
       $.array_variable,
     ),
 
-    array: $ => prec.left(PRECEDENCE.TERM, seq(
-      '(',
-      optional(commaSeparated($, $._expression)),
-      ')',
+    array: $ => prec.left(PRECEDENCE.TERM, with_brackets(
+      optional(commaSeparated($, $._expression))
     )),
 
     array_ref: $ => prec.left(PRECEDENCE.TERM, seq(

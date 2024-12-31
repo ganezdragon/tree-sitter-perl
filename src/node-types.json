@@ -187,6 +187,10 @@
           "named": true
         },
         {
+          "type": "special_literal",
+          "named": true
+        },
+        {
           "type": "special_scalar_variable",
           "named": true
         },
@@ -419,6 +423,10 @@
         },
         {
           "type": "scientific_notation",
+          "named": true
+        },
+        {
+          "type": "special_literal",
           "named": true
         },
         {
@@ -817,6 +825,10 @@
             "named": true
           },
           {
+            "type": "special_literal",
+            "named": true
+          },
+          {
             "type": "special_scalar_variable",
             "named": true
           },
@@ -1055,6 +1067,10 @@
           "named": true
         },
         {
+          "type": "special_literal",
+          "named": true
+        },
+        {
           "type": "special_scalar_variable",
           "named": true
         },
@@ -1287,6 +1303,10 @@
         },
         {
           "type": "scientific_notation",
+          "named": true
+        },
+        {
+          "type": "special_literal",
           "named": true
         },
         {
@@ -1754,6 +1774,10 @@
             "named": true
           },
           {
+            "type": "special_literal",
+            "named": true
+          },
+          {
             "type": "special_scalar_variable",
             "named": true
           },
@@ -1974,6 +1998,10 @@
         },
         {
           "type": "scientific_notation",
+          "named": true
+        },
+        {
+          "type": "special_literal",
           "named": true
         },
         {
@@ -2201,6 +2229,10 @@
           },
           {
             "type": "scientific_notation",
+            "named": true
+          },
+          {
+            "type": "special_literal",
             "named": true
           },
           {
@@ -2447,6 +2479,10 @@
         },
         {
           "type": "keywords_in_hash_key",
+          "named": true
+        },
+        {
+          "type": "label",
           "named": true
         },
         {
@@ -2780,7 +2816,7 @@
     "fields": {
       "args": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "parenthesized_argument",
@@ -3093,6 +3129,10 @@
             "named": true
           },
           {
+            "type": "special_literal",
+            "named": true
+          },
+          {
             "type": "special_scalar_variable",
             "named": true
           },
@@ -3351,6 +3391,10 @@
             "named": true
           },
           {
+            "type": "special_literal",
+            "named": true
+          },
+          {
             "type": "special_scalar_variable",
             "named": true
           },
@@ -3570,6 +3614,10 @@
           },
           {
             "type": "scientific_notation",
+            "named": true
+          },
+          {
+            "type": "special_literal",
             "named": true
           },
           {
@@ -3795,6 +3843,10 @@
             "named": true
           },
           {
+            "type": "special_literal",
+            "named": true
+          },
+          {
             "type": "special_scalar_variable",
             "named": true
           },
@@ -3859,17 +3911,17 @@
             "named": true
           }
         ]
-      },
-      "label": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "label",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -3895,16 +3947,6 @@
             "named": true
           }
         ]
-      },
-      "label": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
       }
     },
     "children": {
@@ -3917,6 +3959,10 @@
         },
         {
           "type": "hash_variable",
+          "named": true
+        },
+        {
+          "type": "label",
           "named": true
         },
         {
@@ -4181,6 +4227,10 @@
           "named": true
         },
         {
+          "type": "special_literal",
+          "named": true
+        },
+        {
           "type": "special_scalar_variable",
           "named": true
         },
@@ -4408,6 +4458,10 @@
             "named": true
           },
           {
+            "type": "special_literal",
+            "named": true
+          },
+          {
             "type": "special_scalar_variable",
             "named": true
           },
@@ -4473,16 +4527,6 @@
           }
         ]
       },
-      "label": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      },
       "subroutine": {
         "multiple": false,
         "required": false,
@@ -4493,6 +4537,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "label",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -4812,6 +4866,10 @@
             "named": true
           },
           {
+            "type": "special_literal",
+            "named": true
+          },
+          {
             "type": "special_scalar_variable",
             "named": true
           },
@@ -5050,6 +5108,10 @@
           "named": true
         },
         {
+          "type": "special_literal",
+          "named": true
+        },
+        {
           "type": "special_scalar_variable",
           "named": true
         },
@@ -5285,6 +5347,10 @@
           "named": true
         },
         {
+          "type": "special_literal",
+          "named": true
+        },
+        {
           "type": "special_scalar_variable",
           "named": true
         },
@@ -5507,6 +5573,22 @@
     "fields": {}
   },
   {
+    "type": "label",
+    "named": true,
+    "fields": {
+      "label": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "length_expression",
     "named": true,
     "fields": {},
@@ -5668,6 +5750,10 @@
         },
         {
           "type": "scientific_notation",
+          "named": true
+        },
+        {
+          "type": "special_literal",
           "named": true
         },
         {
@@ -6189,16 +6275,17 @@
   {
     "type": "require_statement",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "package_name",
-          "named": true
-        }
-      ]
+    "fields": {
+      "package_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "package_name",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -6367,6 +6454,10 @@
         },
         {
           "type": "scientific_notation",
+          "named": true
+        },
+        {
+          "type": "special_literal",
           "named": true
         },
         {
@@ -6594,6 +6685,10 @@
         },
         {
           "type": "scientific_notation",
+          "named": true
+        },
+        {
+          "type": "special_literal",
           "named": true
         },
         {
@@ -6846,6 +6941,10 @@
           "named": true
         },
         {
+          "type": "special_literal",
+          "named": true
+        },
+        {
           "type": "special_scalar_variable",
           "named": true
         },
@@ -7082,6 +7181,10 @@
           "named": true
         },
         {
+          "type": "label",
+          "named": true
+        },
+        {
           "type": "length_expression",
           "named": true
         },
@@ -7279,7 +7382,21 @@
   {
     "type": "special_literal",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "data_not_for_compiler",
+          "named": true
+        },
+        {
+          "type": "pod_statement",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "special_scalar_variable",
@@ -7299,24 +7416,18 @@
             "named": true
           }
         ]
-      },
-      "label": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "block",
+          "named": true
+        },
+        {
+          "type": "label",
           "named": true
         }
       ]
@@ -7630,6 +7741,10 @@
             "named": true
           },
           {
+            "type": "special_literal",
+            "named": true
+          },
+          {
             "type": "special_scalar_variable",
             "named": true
           },
@@ -7849,6 +7964,10 @@
           },
           {
             "type": "scientific_notation",
+            "named": true
+          },
+          {
+            "type": "special_literal",
             "named": true
           },
           {
@@ -8088,6 +8207,10 @@
             "named": true
           },
           {
+            "type": "special_literal",
+            "named": true
+          },
+          {
             "type": "special_scalar_variable",
             "named": true
           },
@@ -8323,6 +8446,10 @@
           },
           {
             "type": "scientific_notation",
+            "named": true
+          },
+          {
+            "type": "special_literal",
             "named": true
           },
           {
@@ -8641,6 +8768,10 @@
             "named": true
           },
           {
+            "type": "special_literal",
+            "named": true
+          },
+          {
             "type": "special_scalar_variable",
             "named": true
           },
@@ -8835,17 +8966,17 @@
             "named": true
           }
         ]
-      },
-      "label": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "label",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -9036,6 +9167,10 @@
           },
           {
             "type": "scientific_notation",
+            "named": true
+          },
+          {
+            "type": "special_literal",
             "named": true
           },
           {
@@ -9416,6 +9551,10 @@
           "named": true
         },
         {
+          "type": "special_literal",
+          "named": true
+        },
+        {
           "type": "special_scalar_variable",
           "named": true
         },
@@ -9500,6 +9639,20 @@
           }
         ]
       },
+      "package_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "module_name",
+            "named": true
+          },
+          {
+            "type": "package_name",
+            "named": true
+          }
+        ]
+      },
       "use": {
         "multiple": false,
         "required": false,
@@ -9513,7 +9666,7 @@
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "array",
@@ -9525,14 +9678,6 @@
         },
         {
           "type": "heredoc_initializer",
-          "named": true
-        },
-        {
-          "type": "module_name",
-          "named": true
-        },
-        {
-          "type": "package_name",
           "named": true
         },
         {
@@ -9693,7 +9838,7 @@
     "type": "variable_declaration",
     "named": true,
     "fields": {
-      "name": {
+      "variable_name": {
         "multiple": false,
         "required": false,
         "types": [
@@ -9825,17 +9970,17 @@
             "named": true
           }
         ]
-      },
-      "label": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "label",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -10174,6 +10319,10 @@
     "named": false
   },
   {
+    "type": "data_not_for_compiler",
+    "named": true
+  },
+  {
     "type": "else",
     "named": false
   },
@@ -10335,11 +10484,11 @@
   },
   {
     "type": "prototype",
-    "named": true
+    "named": false
   },
   {
     "type": "prototype",
-    "named": false
+    "named": true
   },
   {
     "type": "q",
