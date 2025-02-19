@@ -607,6 +607,10 @@
             "named": true
           },
           {
+            "type": "call_expression_with_variable",
+            "named": true
+          },
+          {
             "type": "hash_access_variable",
             "named": true
           },
@@ -896,7 +900,7 @@
       }
     },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
@@ -4648,6 +4652,10 @@
             "named": true
           },
           {
+            "type": "call_expression_with_variable",
+            "named": true
+          },
+          {
             "type": "hash_access_variable",
             "named": true
           },
@@ -4937,7 +4945,7 @@
       }
     },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
@@ -5883,7 +5891,7 @@
     "named": true,
     "fields": {
       "args": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
           {
@@ -5893,7 +5901,7 @@
         ]
       },
       "function_name": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
           {
@@ -5950,6 +5958,10 @@
           },
           {
             "type": "call_expression_with_spaced_args",
+            "named": true
+          },
+          {
+            "type": "call_expression_with_variable",
             "named": true
           },
           {

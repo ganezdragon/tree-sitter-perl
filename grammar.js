@@ -61,6 +61,8 @@ module.exports = grammar({
     [$.call_expression_with_bareword],
     [$.hash_ref],
     [$.array],
+    [$.hash_ref, $.block],
+    [$.hash_ref, $.hash_access_variable],
     [$.parenthesized_argument, $.array],
     [$.arguments, $.array],
     [$.function_prototype, $.array],
@@ -634,10 +636,10 @@ module.exports = grammar({
       ),
     ),
 
-    return_expression: $ => seq(
+    return_expression: $ => prec.left(seq(
       'return',
       optional(commaSeparated($, $._expression)),
-    ),
+    )),
 
     // _expression_without_array: $ => prec(PRECEDENCE.LOWEST, choice(
     // )),
@@ -1196,27 +1198,23 @@ module.exports = grammar({
         field('string', $._interpolatable_string),
         field('object_return_value', getLValueRules($)),
       ),
-      repeat1(prec.right(PRECEDENCE.ARROW_OPERATOR,
+      $.arrow_operator,
+      choice(
         seq(
-          $.arrow_operator,
-          choice(
-            seq(
-              optional(seq($.super, token.immediate('::'))),
-              field('function_name', choice(
-                $.identifier,
-              )),
-            ),
-            $.special_scalar_variable,
-            $.scalar_variable,
-            $.scalar_dereference,
-            $.array, // for passing it to the previous item in the chain
-          ),
-          // anything with bracket is higher precedence.
-          // so args without brackets is lower precedence.
-          optional(field('args', $.parenthesized_argument)),
+          optional(seq($.super, token.immediate('::'))),
+          field('function_name', choice(
+            $.identifier,
+          )),
         ),
+        $.special_scalar_variable,
+        $.scalar_variable,
+        $.scalar_dereference,
+        $.array, // for passing it to the previous item in the chain
       ),
-    ))),
+      // anything with bracket is higher precedence.
+      // so args without brackets is lower precedence.
+      optional(field('args', $.parenthesized_argument)),
+    )),
 
     _argument_choice: $ => prec(PRECEDENCE.COMMA_OPERATORS, choice(
       $.parenthesized_argument,
@@ -1228,7 +1226,7 @@ module.exports = grammar({
     ),
 
     arguments: $ => prec.right(PRECEDENCE.COMMA_OPERATORS,
-      commaSeparated($, choice($.block, $._expression)),
+      commmaSeparatedWithoutOuterBrackets($, choice($.block, $._expression)),
     ),
 
     spaced_arguments: $ => prec.right(PRECEDENCE.LOWEST, seq(
@@ -1552,14 +1550,10 @@ module.exports = grammar({
 
     array_access_variable: $ => prec.left(PRECEDENCE.TERM, seq(
       field('array_variable', getLValueRules($)),
-      repeat1(
-        prec.right(PRECEDENCE.TERM, seq(
-          optional($.arrow_operator),
-          '[',
-          field('index', commaSeparated($, $._expression)),
-          ']',
-        ))
-      ),
+      optional($.arrow_operator),
+      '[',
+      field('index', commaSeparated($, $._expression)),
+      ']',
     )),
 
     array_access_complex: $ => prec.left(PRECEDENCE.TERM, seq(
@@ -1576,14 +1570,10 @@ module.exports = grammar({
 
     hash_access_variable: $ => prec.left(PRECEDENCE.TERM, seq(
       field('hash_variable', getLValueRules($)),
-      repeat1(prec.right(PRECEDENCE.ARROW_OPERATOR,
-        seq(
-          optional($.arrow_operator),
-          '{',
-          field('key', commaSeparated($, $._expression)),
-          '}',
-        )
-      )),
+      optional($.arrow_operator),
+      '{',
+      field('key', commaSeparated($, $._expression)),
+      '}',
     )),
 
     hash_access_complex: $ => prec.left(PRECEDENCE.TERM, seq(
@@ -1625,7 +1615,7 @@ module.exports = grammar({
       ']',
     )),
 
-    hash_ref: $ => prec.left(PRECEDENCE.HASH, seq(
+    hash_ref: $ => prec.left(PRECEDENCE.TERM, seq(
       optional('+'), // to make into a hash_ref rather than a block
       '{',
       optional(commaSeparated($, $._expression)),
@@ -1676,6 +1666,8 @@ module.exports = grammar({
         with_curly_brackets($._expression),
         with_or_without_curly_brackets($.array_dereference),
         with_or_without_curly_brackets($.scalar_variable),
+        with_or_without_brackets($.special_scalar_variable),
+        with_or_without_brackets($.hash_access_variable),
       ),
     )),
 
@@ -1685,6 +1677,8 @@ module.exports = grammar({
         with_curly_brackets($._expression),
         with_or_without_curly_brackets($.hash_dereference),
         with_or_without_curly_brackets($.scalar_variable),
+        with_or_without_brackets($.special_scalar_variable),
+        with_or_without_brackets($.hash_access_variable),
       ),
     )),
 
@@ -1706,6 +1700,7 @@ module.exports = grammar({
       choice(
         'sub',
         'state',
+        'for',
       ),
     ),
 
@@ -1751,6 +1746,14 @@ function commaSeparated($, rule) {
     with_or_without_brackets(rule),
     optional(repeat(prec.left(PRECEDENCE.COMMA_OPERATORS, seq($._comma_operator, prec(PRECEDENCE.COMMA_OPERATORS, with_or_without_brackets(rule)))))),
     optional($._comma_operator), // in perl so far you could have this
+  ));
+}
+
+function commmaSeparatedWithoutOuterBrackets($, rule) {
+  return prec.left(PRECEDENCE.COMMA_OPERATORS, seq(
+    rule,
+    optional(repeat(prec.left(PRECEDENCE.COMMA_OPERATORS, seq($._comma_operator, prec(PRECEDENCE.COMMA_OPERATORS, with_or_without_brackets(rule)))))),
+    optional($._comma_operator),
   ));
 }
 
@@ -1849,7 +1852,7 @@ function getLValueRules($) {
     $.array, // TODO: is it replacement of above?
 
     $.call_expression_with_args_with_brackets,
-    // $.call_expression_with_variable,
+    $.call_expression_with_variable,
     $.call_expression_with_bareword,
     with_curly_brackets($.call_expression_with_spaced_args),
     $.call_expression_recursive,
