@@ -112,3 +112,8 @@ printArgs 1, 2;
 printArgs;
 printArgs(12,3,2);
 printArgs()->sdfs();
+
+
+$somehash{"value" . $value} .= "";
+
+$SomePackage::SubPackage{value};

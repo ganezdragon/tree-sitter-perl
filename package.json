@@ -11,7 +11,7 @@
     "install": "node-gyp-build",
     "pre-build": "prebuild -r electron -t 23.0.0 -t 25.0.0",
     "build": "tree-sitter generate && node-gyp build",
-    "build-wasm": "tree-sitter build -w -d",
+    "build-wasm": "tree-sitter build -w",
     "generate": "tree-sitter generate",
     "test": "tree-sitter test",
     "example": "tree-sitter parse examples/* --quiet --stat",

@@ -2,13 +2,32 @@
   {
     "type": "anonymous_function",
     "named": true,
-    "fields": {},
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "block",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": false,
-      "required": true,
+      "multiple": true,
+      "required": false,
       "types": [
         {
-          "type": "block",
+          "type": "function_attribute",
+          "named": true
+        },
+        {
+          "type": "function_prototype",
+          "named": true
+        },
+        {
+          "type": "function_signature",
           "named": true
         }
       ]
@@ -59,19 +78,11 @@
           "named": true
         },
         {
-          "type": "block",
-          "named": true
-        },
-        {
           "type": "call_expression_recursive",
           "named": true
         },
         {
           "type": "call_expression_with_args_with_brackets",
-          "named": true
-        },
-        {
-          "type": "call_expression_with_args_without_brackets",
           "named": true
         },
         {
@@ -112,6 +123,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -310,10 +325,6 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
@@ -351,6 +362,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -583,6 +598,10 @@
             "named": true
           },
           {
+            "type": "array_dereference",
+            "named": true
+          },
+          {
             "type": "array_ref",
             "named": true
           },
@@ -615,7 +634,7 @@
             "named": true
           },
           {
-            "type": "hash_ref",
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -713,10 +732,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -754,6 +769,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -963,10 +982,6 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
@@ -1000,6 +1015,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -1194,10 +1213,6 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
@@ -1235,6 +1250,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -1670,10 +1689,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -1707,6 +1722,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -1897,10 +1916,6 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
@@ -1934,6 +1949,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -2128,10 +2147,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -2165,6 +2180,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -2390,15 +2409,15 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
         {
           "type": "call_expression_with_spaced_args",
+          "named": true
+        },
+        {
+          "type": "call_expression_with_sub",
           "named": true
         },
         {
@@ -2447,6 +2466,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -2711,33 +2734,7 @@
         "required": false,
         "types": [
           {
-            "type": "arguments",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "call_expression_with_bareword",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "call_expression_with_args_without_brackets",
-    "named": true,
-    "fields": {
-      "args": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "arguments",
+            "type": "array",
             "named": true
           }
         ]
@@ -2785,30 +2782,56 @@
     "named": true,
     "fields": {
       "args": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
             "type": "arguments",
+            "named": true
+          },
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "scalar_variable",
             "named": true
           }
         ]
       }
     },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
-          "type": "block",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
-        },
+        }
+      ]
+    }
+  },
+  {
+    "type": "call_expression_with_sub",
+    "named": true,
+    "fields": {
+      "args": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "function_definition_without_sub",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
         {
-          "type": "scalar_variable",
+          "type": "call_expression_with_bareword",
           "named": true
         }
       ]
@@ -2823,7 +2846,7 @@
         "required": false,
         "types": [
           {
-            "type": "parenthesized_argument",
+            "type": "array",
             "named": true
           }
         ]
@@ -2843,6 +2866,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -3025,10 +3052,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -3062,6 +3085,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -3287,10 +3314,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -3324,6 +3347,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -3513,10 +3540,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -3550,6 +3573,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -3739,10 +3766,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -3776,6 +3799,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -4048,6 +4075,50 @@
     }
   },
   {
+    "type": "function_definition_without_sub",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "block",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "function_attribute",
+          "named": true
+        },
+        {
+          "type": "function_prototype",
+          "named": true
+        },
+        {
+          "type": "function_signature",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "function_prototype",
     "named": true,
     "fields": {},
@@ -4115,10 +4186,6 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
@@ -4156,6 +4223,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -4354,10 +4425,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -4391,6 +4458,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -4536,7 +4607,7 @@
         "required": false,
         "types": [
           {
-            "type": "call_expression_with_args_without_brackets",
+            "type": "call_expression_with_spaced_args",
             "named": true
           }
         ]
@@ -4660,6 +4731,10 @@
             "named": true
           },
           {
+            "type": "hash_access_variable_simple",
+            "named": true
+          },
+          {
             "type": "hash_ref",
             "named": true
           },
@@ -4702,35 +4777,11 @@
         ]
       },
       "key": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "anonymous_function",
-            "named": true
-          },
-          {
-            "type": "array",
-            "named": true
-          },
-          {
             "type": "array_access_variable",
-            "named": true
-          },
-          {
-            "type": "array_dereference",
-            "named": true
-          },
-          {
-            "type": "array_ref",
             "named": true
           },
           {
@@ -4738,19 +4789,7 @@
             "named": true
           },
           {
-            "type": "backtick_quoted",
-            "named": true
-          },
-          {
             "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "bless",
-            "named": true
-          },
-          {
-            "type": "call_expression_recursive",
             "named": true
           },
           {
@@ -4758,43 +4797,7 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
-            "type": "call_expression_with_bareword",
-            "named": true
-          },
-          {
-            "type": "call_expression_with_spaced_args",
-            "named": true
-          },
-          {
-            "type": "call_expression_with_variable",
-            "named": true
-          },
-          {
-            "type": "command_qx_quoted",
-            "named": true
-          },
-          {
-            "type": "false",
-            "named": true
-          },
-          {
-            "type": "fat_comma",
-            "named": true
-          },
-          {
-            "type": "file_handle",
-            "named": true
-          },
-          {
             "type": "floating_point",
-            "named": true
-          },
-          {
-            "type": "goto_expression",
             "named": true
           },
           {
@@ -4802,11 +4805,7 @@
             "named": true
           },
           {
-            "type": "hash_dereference",
-            "named": true
-          },
-          {
-            "type": "hash_ref",
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -4822,6 +4821,10 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer",
             "named": true
           },
@@ -4830,15 +4833,7 @@
             "named": true
           },
           {
-            "type": "length_expression",
-            "named": true
-          },
-          {
             "type": "method_invocation",
-            "named": true
-          },
-          {
-            "type": "normal_comma",
             "named": true
           },
           {
@@ -4847,18 +4842,6 @@
           },
           {
             "type": "package_variable",
-            "named": true
-          },
-          {
-            "type": "pattern_matcher",
-            "named": true
-          },
-          {
-            "type": "pattern_matcher_m",
-            "named": true
-          },
-          {
-            "type": "regex_pattern_qr",
             "named": true
           },
           {
@@ -4874,23 +4857,7 @@
             "named": true
           },
           {
-            "type": "special_literal",
-            "named": true
-          },
-          {
             "type": "special_scalar_variable",
-            "named": true
-          },
-          {
-            "type": "standard_input",
-            "named": true
-          },
-          {
-            "type": "standard_input_to_identifier",
-            "named": true
-          },
-          {
-            "type": "standard_input_to_variable",
             "named": true
           },
           {
@@ -4910,35 +4877,7 @@
             "named": true
           },
           {
-            "type": "substitution_pattern_s",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "transliteration_tr_or_y",
-            "named": true
-          },
-          {
-            "type": "true",
-            "named": true
-          },
-          {
             "type": "typeglob",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          },
-          {
-            "type": "variable_declaration",
-            "named": true
-          },
-          {
-            "type": "word_list_qw",
             "named": true
           }
         ]
@@ -4946,13 +4885,167 @@
     },
     "children": {
       "multiple": false,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "arrow_operator",
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "hash_access_variable_simple",
+    "named": true,
+    "fields": {
+      "hash_variable": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "array_access_variable",
+            "named": true
+          },
+          {
+            "type": "array_dereference",
+            "named": true
+          },
+          {
+            "type": "array_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
+            "named": true
+          },
+          {
+            "type": "hash_dereference",
+            "named": true
+          },
+          {
+            "type": "package_variable",
+            "named": true
+          },
+          {
+            "type": "scalar_variable",
+            "named": true
+          }
+        ]
+      },
+      "key": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "array_access_variable",
+            "named": true
+          },
+          {
+            "type": "array_variable",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "call_expression_with_args_with_brackets",
+            "named": true
+          },
+          {
+            "type": "floating_point",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
+            "named": true
+          },
+          {
+            "type": "hash_variable",
+            "named": true
+          },
+          {
+            "type": "heredoc_initializer",
+            "named": true
+          },
+          {
+            "type": "hexadecimal",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "keywords_in_hash_key",
+            "named": true
+          },
+          {
+            "type": "method_invocation",
+            "named": true
+          },
+          {
+            "type": "octal",
+            "named": true
+          },
+          {
+            "type": "package_variable",
+            "named": true
+          },
+          {
+            "type": "scalar_dereference",
+            "named": true
+          },
+          {
+            "type": "scalar_variable",
+            "named": true
+          },
+          {
+            "type": "scientific_notation",
+            "named": true
+          },
+          {
+            "type": "special_scalar_variable",
+            "named": true
+          },
+          {
+            "type": "string_double_quoted",
+            "named": true
+          },
+          {
+            "type": "string_q_quoted",
+            "named": true
+          },
+          {
+            "type": "string_qq_quoted",
+            "named": true
+          },
+          {
+            "type": "string_single_quoted",
+            "named": true
+          },
+          {
+            "type": "typeglob",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -5008,10 +5101,6 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
@@ -5045,6 +5134,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -5239,10 +5332,6 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
@@ -5280,6 +5369,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -5649,10 +5742,6 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
@@ -5686,6 +5775,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -5966,6 +6059,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -6353,10 +6450,6 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
@@ -6394,6 +6487,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -6592,10 +6689,6 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
@@ -6629,6 +6722,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -6833,10 +6930,6 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
@@ -6874,6 +6967,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -7097,15 +7194,15 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
         {
           "type": "call_expression_with_spaced_args",
+          "named": true
+        },
+        {
+          "type": "call_expression_with_sub",
           "named": true
         },
         {
@@ -7154,6 +7251,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -7645,10 +7746,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -7682,6 +7779,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -7871,10 +7972,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -7908,6 +8005,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -8111,10 +8212,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -8148,6 +8245,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -8353,10 +8454,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -8390,6 +8487,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -8672,10 +8773,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -8709,6 +8806,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -9074,10 +9175,6 @@
             "named": true
           },
           {
-            "type": "call_expression_with_args_without_brackets",
-            "named": true
-          },
-          {
             "type": "call_expression_with_bareword",
             "named": true
           },
@@ -9111,6 +9208,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -9443,10 +9544,6 @@
           "named": true
         },
         {
-          "type": "call_expression_with_args_without_brackets",
-          "named": true
-        },
-        {
           "type": "call_expression_with_bareword",
           "named": true
         },
@@ -9484,6 +9581,10 @@
         },
         {
           "type": "hash_access_variable",
+          "named": true
+        },
+        {
+          "type": "hash_access_variable_simple",
           "named": true
         },
         {
@@ -9864,6 +9965,10 @@
           },
           {
             "type": "hash_access_variable",
+            "named": true
+          },
+          {
+            "type": "hash_access_variable_simple",
             "named": true
           },
           {
@@ -10383,6 +10488,10 @@
     "named": false
   },
   {
+    "type": "func",
+    "named": false
+  },
+  {
     "type": "ge",
     "named": false
   },
@@ -10448,6 +10557,10 @@
   },
   {
     "type": "m",
+    "named": false
+  },
+  {
+    "type": "method",
     "named": false
   },
   {

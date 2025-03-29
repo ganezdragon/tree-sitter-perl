@@ -79,3 +79,11 @@ sub dfsdfs {
 dfsdfs %holidaymap, $a if $a;
 
 split /abc/, $meow;
+
+# action sdfsd($dsf,$dsf) {
+    
+# }
+
+method sdfsd($dsf,$dsf) {
+    
+}

@@ -58,17 +58,14 @@ module.exports = grammar({
     [$._class_instance_exp],
 
     [$.package_name],
-    [$.call_expression_with_bareword],
     [$.hash_ref],
     [$.array],
     [$.hash_ref, $.block],
-    [$.hash_ref, $.hash_access_variable],
     [$.parenthesized_argument, $.array],
-    [$.arguments, $.array],
     [$.function_prototype, $.array],
     [$.array_access_variable, $.array_ref],
-    [$.call_expression_with_args_with_brackets, $.array],
-    [$._expression, $.call_expression_with_args_without_brackets],
+    [$._variables, $.array_dereference],
+    [$.hash_ref, $.array_dereference],
   ],
 
   externals: $ => [
@@ -153,6 +150,9 @@ module.exports = grammar({
       $.pod_statement,
 
       $.label,
+
+      // custom grammar
+      $.call_expression_with_sub, // for Method::Signatures::Simple syntaxes
     )),
 
     // pseudocode
@@ -532,51 +532,57 @@ module.exports = grammar({
       'local',
     )),
 
-    // why perl, why!
-    function_definition: $ => prec.left(seq(
-      optional($.scope),
-      'sub',
-      field('name', $.identifier),
+    _function_options: $ => prec.left(
       choice(
         seq(
-          optional($.function_prototype),
+          $.function_prototype,
           optional($.function_attribute),
-          choice(
-            $.semi_colon,
-            field('body', $.block),
-          ),
+        ),
+        seq(
+          optional($.function_prototype),
+          $.function_attribute,
         ),
         seq(
           $.function_prototype,
           optional($._function_signature),
-          choice(
-            $.semi_colon,
-            field('body', $.block),
-          ),
         ),
         seq(
           optional($.function_prototype),
           $._function_signature,
-          choice(
-            $.semi_colon,
-            field('body', $.block),
-          ),
         ),
         seq(
           ':', 'prototype',
           $.function_prototype,
           $._function_signature,
-          choice(
-            $.semi_colon,
-            field('body', $.block),
-          ),
         ),
-      )
+      ),
+    ),
+
+    // why perl, why!
+    function_definition: $ => prec.left(seq(
+      optional($.scope),
+      'sub',
+      field('name', $.identifier),
+      optional($._function_options),
+      choice(
+        $.semi_colon,
+        field('body', $.block),
+      ),
+    )),
+
+    function_definition_without_sub: $ => prec.left(PRECEDENCE.LOWEST, seq(
+      field('name', $.identifier),
+      optional($._function_options),
+      // choice(
+      //   $.semi_colon,
+        field('body', $.block),
+      // ),
     )),
 
     anonymous_function: $ => seq(
       'sub',
-      $.block,
+      optional(seq($._function_options, $.semi_colon)),
+      field('body', $.block),
     ),
 
     block: $ => prec.left(PRECEDENCE.TERM, seq(
@@ -663,7 +669,6 @@ module.exports = grammar({
 
     _expression_without_bareword: $ => prec(PRECEDENCE.LOWEST, choice(
       $.call_expression_with_args_with_brackets,
-      $.call_expression_with_args_without_brackets,
       $.call_expression_with_variable,
       $.call_expression_with_spaced_args,
       $.call_expression_recursive,
@@ -788,7 +793,7 @@ module.exports = grammar({
       choice(
         $.label,
         field('expression', $._expression),
-        field('subroutine', $.call_expression_with_args_without_brackets),
+        field('subroutine', $.call_expression_with_spaced_args),
       ),
     )),
 
@@ -1144,34 +1149,46 @@ module.exports = grammar({
 
     // begin of function calls
 
+    // from https://perldoc.perl.org/perlsub#Prototypes
+    // An & requires an anonymous subroutine, which, if passed as the first argument, may look like a bare block: It does not require the sub keyword or a subsequent comma.
     call_expression_with_spaced_args: $ => prec.left(PRECEDENCE.LOWEST, seq(
       $.call_expression_with_bareword,
-      choice(
-        $.block,
-        $.scalar_variable,
-      ),
-      field('args', $.arguments),
+      field('args', choice(
+        seq(
+          // map, grep
+          choice(
+            $.block,
+            $.scalar_variable,
+          ),
+          $.arguments,
+        ),
+
+        choice($.block, $.arguments),
+      )),
+    )),
+
+    call_expression_with_sub: $ => prec.left(PRECEDENCE.LOWEST, seq(
+      choice('method', 'func', $.call_expression_with_bareword),
+      field('args', $.function_definition_without_sub),
     )),
 
     call_expression_with_args_with_brackets: $ => prec.left(PRECEDENCE.TERM, seq(
       $.call_expression_with_bareword,
-      '(',
-      optional(field('args', $.arguments)),
-      ')',
+      optional(field('args', $.array)),
     )),
 
-    call_expression_with_args_without_brackets: $ => prec.left(PRECEDENCE.LOWEST, seq(
-      $.call_expression_with_bareword,
-      field('args', $.arguments),
-    )),
+    // call_expression_with_args_without_brackets: $ => prec.left(PRECEDENCE.LOWEST, seq(
+    //   $.call_expression_with_bareword,
+    //   field('args', $.arguments),
+    // )),
 
     call_expression_with_variable: $ => prec.left(PRECEDENCE.TERM, seq(
-      $._and_before_sub,
-      with_or_without_curly_brackets(choice(
-        $._variables,
-        $._access_variables,
-      )),
-      optional(field('args', $.parenthesized_argument)),
+      choice(
+        seq($._and_before_sub, with_or_without_curly_brackets($._variables)),
+        seq($._and_before_sub, with_curly_brackets($._access_variables)),
+        // $._access_variables,
+      ),
+      optional(field('args', $.array)),
     )),
 
     // call_expression_with_bareword: $ => prec.left(PRECEDENCE.LOWEST, seq(
@@ -1226,7 +1243,7 @@ module.exports = grammar({
     ),
 
     arguments: $ => prec.right(PRECEDENCE.COMMA_OPERATORS,
-      commmaSeparatedWithoutOuterBrackets($, choice($.block, $._expression)),
+      commmaSeparatedWithoutOuterBrackets($, $._expression),
     ),
 
     spaced_arguments: $ => prec.right(PRECEDENCE.LOWEST, seq(
@@ -1261,6 +1278,7 @@ module.exports = grammar({
     )),
 
     _access_variables: $ => choice(
+      $.hash_access_variable_simple,
       $.hash_access_variable,
       $.array_access_variable,
     ),
@@ -1549,7 +1567,27 @@ module.exports = grammar({
     )),
 
     array_access_variable: $ => prec.left(PRECEDENCE.TERM, seq(
-      field('array_variable', getLValueRules($)),
+      field('array_variable', choice(
+        $._variables,
+        $.array_dereference,
+        $.array_ref,
+
+        $._access_variables,
+        // $.hash_access_complex,
+        // $.array_access_complex,
+        $.array, // TODO: is it replacement of above?
+
+        $.call_expression_with_args_with_brackets,
+        $.call_expression_with_variable,
+        $.call_expression_with_bareword,
+        with_curly_brackets($.call_expression_with_spaced_args),
+        $.call_expression_recursive,
+        $.method_invocation,
+
+        $.anonymous_function,
+
+        $.scalar_dereference,
+      )),
       optional($.arrow_operator),
       '[',
       field('index', commaSeparated($, $._expression)),
@@ -1568,11 +1606,20 @@ module.exports = grammar({
       ),
     )),
 
+    hash_access_variable_simple: $ => prec.left(PRECEDENCE.TERM, seq(
+      field('hash_variable', getHashKeySimpleLeft($)),
+      '{',
+      field('key', getHashKeyValues($)),
+      // field('key', commaSeparated($, $._expression)),
+      '}',
+    )),
+
     hash_access_variable: $ => prec.left(PRECEDENCE.TERM, seq(
       field('hash_variable', getLValueRules($)),
-      optional($.arrow_operator),
+      $.arrow_operator,
       '{',
-      field('key', commaSeparated($, $._expression)),
+      // field('key', commaSeparated($, $._expression)),
+      field('key', getHashKeyValues($)),
       '}',
     )),
 
@@ -1606,7 +1653,7 @@ module.exports = grammar({
     ),
 
     array: $ => prec.left(PRECEDENCE.TERM, with_brackets(
-      optional(commaSeparated($, $._expression))
+      optional(commmaSeparatedWithoutOuterBrackets($, $._expression))
     )),
 
     array_ref: $ => prec.left(PRECEDENCE.TERM, seq(
@@ -1618,7 +1665,7 @@ module.exports = grammar({
     hash_ref: $ => prec.left(PRECEDENCE.TERM, seq(
       optional('+'), // to make into a hash_ref rather than a block
       '{',
-      optional(commaSeparated($, $._expression)),
+      optional(choice($.call_expression_with_spaced_args, commaSeparated($, $._expression))),
       '}'
     )),
 
@@ -1667,6 +1714,7 @@ module.exports = grammar({
         with_or_without_curly_brackets($.array_dereference),
         with_or_without_curly_brackets($.scalar_variable),
         with_or_without_brackets($.special_scalar_variable),
+        with_or_without_brackets($.hash_access_variable_simple),
         with_or_without_brackets($.hash_access_variable),
       ),
     )),
@@ -1678,6 +1726,7 @@ module.exports = grammar({
         with_or_without_curly_brackets($.hash_dereference),
         with_or_without_curly_brackets($.scalar_variable),
         with_or_without_brackets($.special_scalar_variable),
+        with_or_without_brackets($.hash_access_variable_simple),
         with_or_without_brackets($.hash_access_variable),
       ),
     )),
@@ -1754,6 +1803,13 @@ function commmaSeparatedWithoutOuterBrackets($, rule) {
     rule,
     optional(repeat(prec.left(PRECEDENCE.COMMA_OPERATORS, seq($._comma_operator, prec(PRECEDENCE.COMMA_OPERATORS, with_or_without_brackets(rule)))))),
     optional($._comma_operator),
+  ));
+}
+
+function commaSeparatedNext($, rule) {
+  return prec.left(PRECEDENCE.COMMA_OPERATORS, seq(
+    optional(repeat(prec.left(PRECEDENCE.COMMA_OPERATORS, seq($._comma_operator, prec(PRECEDENCE.COMMA_OPERATORS, with_or_without_brackets(rule)))))),
+    optional($._comma_operator), // in perl so far you could have this
   ));
 }
 
@@ -1861,6 +1917,34 @@ function getLValueRules($) {
     $.anonymous_function,
 
     $.scalar_dereference,
+  );
+}
+
+function getHashKeyValues($) {
+  return choice(
+    $.keywords_in_hash_key,
+    $.call_expression_with_args_with_brackets,
+    // $.call_expression_with_spaced_args,
+    $._variables,
+    $._string,
+    $.binary_expression,
+    $._numeric_literals,
+    $._access_variables,
+    $.method_invocation,
+    $.scalar_dereference,
+    $.identifier,
+  );
+}
+
+function getHashKeySimpleLeft($) {
+  return choice(
+    $.array_variable,
+    $.array,
+    $._access_variables,
+    $.scalar_variable,
+    $.hash_dereference,
+    $.array_dereference,
+    $.package_variable,
   );
 }
 
